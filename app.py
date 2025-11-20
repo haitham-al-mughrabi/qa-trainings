@@ -136,41 +136,79 @@ def attendance():
         
     return render_template('attendance.html', students=students, trainings=trainings, summary=summary)
 
-@app.route('/progress', methods=['GET', 'POST'])
+@app.route('/progress')
 def progress():
-    if request.method == 'POST':
-        topic_id = request.form.get('topic_id')
-        
-        for key, value in request.form.items():
-            if key.startswith('student_'):
-                student_id = int(key.split('_')[1])
-                status = value
-                
-                progress_record = Progress.query.filter_by(student_id=student_id, topic_id=topic_id).first()
-                if progress_record:
-                    progress_record.status = status
-                else:
-                    new_record = Progress(student_id=student_id, topic_id=topic_id, status=status)
-                    db.session.add(new_record)
-        
-        db.session.commit()
-        return redirect(url_for('progress'))
-
-    students = Student.query.all()
     trainings = Training.query.all()
+    students = Student.query.all()
     
-    # Calculate progress summary
-    summary = {}
-    total_topics = Topic.query.count()
-    for student in students:
-        completed = Progress.query.filter_by(student_id=student.id, status='Completed').count()
-        summary[student.id] = {
-            'completed': completed,
-            'total': total_topics,
-            'percentage': int((completed / total_topics) * 100) if total_topics > 0 else 0
+    # Build hierarchical data structure
+    progress_data = {}
+    
+    for training in trainings:
+        training_stats = {
+            'name': training.name,
+            'id': training.id,
+            'phases': {},
+            'total_topics': len(training.topics),
+            'students': {}
         }
         
-    return render_template('progress.html', students=students, trainings=trainings, summary=summary)
+        # Group topics by phase
+        for topic in training.topics:
+            phase_key = topic.phase or 'No Phase'
+            if phase_key not in training_stats['phases']:
+                training_stats['phases'][phase_key] = {
+                    'topics': [],
+                    'students': {}
+                }
+            
+            # Get progress for this topic
+            topic_progress = {}
+            for student in students:
+                prog = Progress.query.filter_by(student_id=student.id, topic_id=topic.id).first()
+                status = prog.status if prog else 'Not Started'
+                topic_progress[student.id] = status
+                
+                # Aggregate to phase level
+                if student.id not in training_stats['phases'][phase_key]['students']:
+                    training_stats['phases'][phase_key]['students'][student.id] = {
+                        'completed': 0, 'in_progress': 0, 'not_started': 0, 'total': 0
+                    }
+                
+                training_stats['phases'][phase_key]['students'][student.id]['total'] += 1
+                if status == 'Completed':
+                    training_stats['phases'][phase_key]['students'][student.id]['completed'] += 1
+                elif status == 'In Progress':
+                    training_stats['phases'][phase_key]['students'][student.id]['in_progress'] += 1
+                else:
+                    training_stats['phases'][phase_key]['students'][student.id]['not_started'] += 1
+                
+                # Aggregate to training level
+                if student.id not in training_stats['students']:
+                    training_stats['students'][student.id] = {
+                        'completed': 0, 'in_progress': 0, 'not_started': 0, 'total': 0
+                    }
+                
+                training_stats['students'][student.id]['total'] += 1
+                if status == 'Completed':
+                    training_stats['students'][student.id]['completed'] += 1
+                elif status == 'In Progress':
+                    training_stats['students'][student.id]['in_progress'] += 1
+                else:
+                    training_stats['students'][student.id]['not_started'] += 1
+            
+            training_stats['phases'][phase_key]['topics'].append({
+                'id': topic.id,
+                'name': topic.name,
+                'progress': topic_progress
+            })
+        
+        progress_data[training.id] = training_stats
+    
+    return render_template('progress.html', 
+                         trainings=trainings,
+                         students=[{'id': s.id, 'name': s.name} for s in students],
+                         progress_data=progress_data)
 
 @app.route('/student/<int:student_id>')
 def student_profile(student_id):
