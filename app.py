@@ -172,6 +172,54 @@ def progress():
         
     return render_template('progress.html', students=students, trainings=trainings, summary=summary)
 
+@app.route('/student/<int:student_id>')
+def student_profile(student_id):
+    student = Student.query.get_or_404(student_id)
+    
+    # Get all attendance records for this student
+    attendance_records = Attendance.query.filter_by(student_id=student_id).all()
+    
+    # Get all progress records for this student
+    progress_records = Progress.query.filter_by(student_id=student_id).all()
+    
+    # Get unique trainings the student is enrolled in (based on attendance or progress)
+    attended_topic_ids = set([a.topic_id for a in attendance_records])
+    progress_topic_ids = set([p.topic_id for p in progress_records])
+    all_topic_ids = attended_topic_ids.union(progress_topic_ids)
+    
+    topics = Topic.query.filter(Topic.id.in_(all_topic_ids)).all() if all_topic_ids else []
+    training_ids = set([t.training_id for t in topics])
+    trainings = Training.query.filter(Training.id.in_(training_ids)).all() if training_ids else []
+    
+    # Calculate statistics
+    total_topics = len(topics)
+    attended_count = len([a for a in attendance_records if a.status == 'Present'])
+    completed_count = len([p for p in progress_records if p.status == 'Completed'])
+    
+    # Create attendance map
+    attendance_map = {a.topic_id: a for a in attendance_records}
+    progress_map = {p.topic_id: p for p in progress_records}
+    
+    stats = {
+        'total_trainings': len(trainings),
+        'total_topics': total_topics,
+        'attendance_rate': int((attended_count / total_topics * 100)) if total_topics > 0 else 0,
+        'completion_rate': int((completed_count / total_topics * 100)) if total_topics > 0 else 0
+    }
+    
+    return render_template('student_profile.html', 
+                         student=student, 
+                         trainings=trainings,
+                         topics=topics,
+                         attendance_map=attendance_map,
+                         progress_map=progress_map,
+                         stats=stats)
+
+@app.route('/students')
+def students_list():
+    students = Student.query.order_by(Student.name).all()
+    return render_template('students.html', students=students)
+
 # ============================================
 # ADMIN ROUTES
 # ============================================
