@@ -4,10 +4,10 @@ db = SQLAlchemy()
 
 class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    slug = db.Column(db.String(100), unique=True, nullable=False)
-    description = db.Column(db.Text)
-    topics = db.relationship('Topic', backref='training', lazy=True)
+    name = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(200), nullable=True)  # Made nullable
+    description = db.Column(db.Text, nullable=True)
+    topics = db.relationship('Topic', backref='training', lazy=True, cascade='all, delete-orphan')
 
 class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)

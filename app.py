@@ -241,7 +241,13 @@ def admin_add_training():
         name = request.form.get('name')
         description = request.form.get('description')
         
-        training = Training(name=name, description=description)
+        # Generate slug from name
+        slug = name.lower().replace(' ', '-').replace('&', 'and')
+        # Remove special characters
+        import string
+        slug = ''.join(c for c in slug if c.isalnum() or c == '-')
+        
+        training = Training(name=name, slug=slug, description=description)
         db.session.add(training)
         db.session.commit()
         
@@ -256,6 +262,13 @@ def admin_edit_training(training_id):
     if request.method == 'POST':
         training.name = request.form.get('name')
         training.description = request.form.get('description')
+        
+        # Update slug from name
+        slug = training.name.lower().replace(' ', '-').replace('&', 'and')
+        import string
+        slug = ''.join(c for c in slug if c.isalnum() or c == '-')
+        training.slug = slug
+        
         db.session.commit()
         
         return redirect(url_for('admin_dashboard'))
