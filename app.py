@@ -172,6 +172,143 @@ def progress():
         
     return render_template('progress.html', students=students, trainings=trainings, summary=summary)
 
+# ============================================
+# ADMIN ROUTES
+# ============================================
+
+@app.route('/admin')
+def admin_dashboard():
+    trainings = Training.query.all()
+    topics = Topic.query.all()
+    students = Student.query.all()
+    return render_template('admin_dashboard.html', 
+                         trainings=trainings, 
+                         topics=topics, 
+                         students=students)
+
+# Training Management
+@app.route('/admin/trainings/add', methods=['GET', 'POST'])
+def admin_add_training():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
+        
+        training = Training(name=name, description=description)
+        db.session.add(training)
+        db.session.commit()
+        
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('admin_training_form.html', training=None)
+
+@app.route('/admin/trainings/<int:training_id>/edit', methods=['GET', 'POST'])
+def admin_edit_training(training_id):
+    training = Training.query.get_or_404(training_id)
+    
+    if request.method == 'POST':
+        training.name = request.form.get('name')
+        training.description = request.form.get('description')
+        db.session.commit()
+        
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('admin_training_form.html', training=training)
+
+@app.route('/admin/trainings/<int:training_id>/delete', methods=['POST'])
+def admin_delete_training(training_id):
+    training = Training.query.get_or_404(training_id)
+    db.session.delete(training)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
+# Topic Management
+@app.route('/admin/topics/add', methods=['GET', 'POST'])
+def admin_add_topic():
+    if request.method == 'POST':
+        training_id = request.form.get('training_id')
+        name = request.form.get('name')
+        phase = request.form.get('phase')
+        instructor = request.form.get('instructor')
+        video_url = request.form.get('video_url')
+        description = request.form.get('description')
+        order = request.form.get('order', 0)
+        
+        topic = Topic(
+            training_id=training_id,
+            name=name,
+            phase=phase,
+            instructor=instructor,
+            video_url=video_url,
+            description=description,
+            order=order
+        )
+        db.session.add(topic)
+        db.session.commit()
+        
+        return redirect(url_for('admin_dashboard'))
+    
+    trainings = Training.query.all()
+    return render_template('admin_topic_form.html', topic=None, trainings=trainings)
+
+@app.route('/admin/topics/<int:topic_id>/edit', methods=['GET', 'POST'])
+def admin_edit_topic(topic_id):
+    topic = Topic.query.get_or_404(topic_id)
+    
+    if request.method == 'POST':
+        topic.training_id = request.form.get('training_id')
+        topic.name = request.form.get('name')
+        topic.phase = request.form.get('phase')
+        topic.instructor = request.form.get('instructor')
+        topic.video_url = request.form.get('video_url')
+        topic.description = request.form.get('description')
+        topic.order = request.form.get('order', 0)
+        db.session.commit()
+        
+        return redirect(url_for('admin_dashboard'))
+    
+    trainings = Training.query.all()
+    return render_template('admin_topic_form.html', topic=topic, trainings=trainings)
+
+@app.route('/admin/topics/<int:topic_id>/delete', methods=['POST'])
+def admin_delete_topic(topic_id):
+    topic = Topic.query.get_or_404(topic_id)
+    db.session.delete(topic)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
+# Student Management
+@app.route('/admin/students/add', methods=['GET', 'POST'])
+def admin_add_student():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        
+        student = Student(name=name)
+        db.session.add(student)
+        db.session.commit()
+        
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('admin_student_form.html', student=None)
+
+@app.route('/admin/students/<int:student_id>/edit', methods=['GET', 'POST'])
+def admin_edit_student(student_id):
+    student = Student.query.get_or_404(student_id)
+    
+    if request.method == 'POST':
+        student.name = request.form.get('name')
+        db.session.commit()
+        
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('admin_student_form.html', student=student)
+
+@app.route('/admin/students/<int:student_id>/delete', methods=['POST'])
+def admin_delete_student(student_id):
+    student = Student.query.get_or_404(student_id)
+    db.session.delete(student)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
