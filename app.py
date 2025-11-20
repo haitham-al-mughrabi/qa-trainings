@@ -1,11 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, Training, Topic, Student, Attendance, Progress
 import os
+import re
 
 app = Flask(__name__, static_folder='statics', static_url_path='/statics')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trainings.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+# Add custom Jinja2 filter for regex replacement
+@app.template_filter('regex_replace')
+def regex_replace(s, pattern, replacement):
+    return re.sub(pattern, replacement, s)
 
 @app.route('/')
 def index():
