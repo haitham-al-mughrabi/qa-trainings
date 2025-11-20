@@ -1,83 +1,495 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div style="margin-bottom: 30px;">
-    <a href="{{ url_for('training_detail', training_id=topic.training_id) }}" style="color: var(--accent); text-decoration: none; font-size: 14px;">← Back to Training</a>
+<style>
+    .topic-hero {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .topic-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    .phase-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: white;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+    
+    /* Tab Navigation */
+    .topic-tabs {
+        position: sticky;
+        top: 64px;
+        z-index: 40;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(15, 23, 42, 0.95) 100%);
+        backdrop-filter: blur(12px);
+        border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+        margin: 0 -16px 30px;
+        padding: 0 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .tabs-container {
+        display: flex;
+        gap: 0;
+    }
+    .topic-tab-btn {
+        padding: 18px 28px;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .topic-tab-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), #a855f7);
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+    .topic-tab-btn:hover {
+        color: var(--text);
+        background: rgba(99, 102, 241, 0.08);
+    }
+    .topic-tab-btn:hover::after {
+        width: 100%;
+    }
+    .topic-tab-btn.active {
+        color: var(--accent);
+        background: rgba(99, 102, 241, 0.15);
+    }
+    .topic-tab-btn.active::after {
+        width: 100%;
+    }
+    .tab-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* Tab Content */
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .video-container {
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+    }
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .notes-container {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 14px;
+        padding: 30px;
+        min-height: 400px;
+    }
+    .management-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+    .management-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 14px;
+        padding: 24px;
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+    }
+    .management-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+    }
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+    }
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+    .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        color: var(--text);
+    }
+    .student-item {
+        padding: 14px;
+        background: rgba(148, 163, 184, 0.05);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 10px;
+        margin-bottom: 12px;
+        transition: all 0.2s ease;
+    }
+    .student-item:hover {
+        background: rgba(148, 163, 184, 0.08);
+        border-color: rgba(148, 163, 184, 0.2);
+    }
+    .student-name {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text);
+    }
+    .radio-group {
+        display: flex;
+        gap: 12px;
+        font-size: 13px;
+    }
+    .radio-group label {
+        cursor: pointer;
+        padding: 6px 12px;
+        background: rgba(148, 163, 184, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+    .radio-group label:has(input:checked) {
+        background: rgba(99, 102, 241, 0.2);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+    .radio-group input[type="radio"] {
+        margin-right: 4px;
+    }
+    .form-input {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: white;
+        padding: 10px 14px;
+        border-radius: 8px;
+        width: 100%;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    .form-select {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .form-select:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
+    .scrollable-list {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        padding-right: 8px;
+    }
+    .scrollable-list::-webkit-scrollbar {
+        width: 6px;
+    }
+    .scrollable-list::-webkit-scrollbar-track {
+        background: rgba(148, 163, 184, 0.05);
+        border-radius: 3px;
+    }
+    .scrollable-list::-webkit-scrollbar-thumb {
+        background: rgba(99, 102, 241, 0.3);
+        border-radius: 3px;
+    }
+    .scrollable-list::-webkit-scrollbar-thumb:hover {
+        background: rgba(99, 102, 241, 0.5);
+    }
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+        font-size: 14px;
+        color: var(--muted);
+    }
+    .breadcrumb a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .breadcrumb a:hover {
+        color: #a855f7;
+    }
+</style>
+
+<script>
+function showTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Remove active from all tabs
+    document.querySelectorAll('.topic-tab-btn').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById('tab-' + tabName).classList.add('active');
+    document.getElementById('btn-' + tabName).classList.add('active');
+}
+
+// Show first available tab on load
+window.addEventListener('DOMContentLoaded', function() {
+    {% if topic.video_url %}
+    showTab('video');
+    {% else %}
+    showTab('notes');
+    {% endif %}
+});
+</script>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Home</a>
+    <span>›</span>
+    <a href="{{ url_for('training_detail', training_id=topic.training_id) }}">Training</a>
+    <span>›</span>
+    <span>{{ topic.name }}</span>
 </div>
 
-<div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 30px;">
-    <div style="padding: 30px;">
-        {% if topic.phase %}
-        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 10px;">{{ topic.phase }}</div>
-        {% endif %}
-        <h1 style="font-size: 28px; margin: 0 0 10px 0;">{{ topic.name }}</h1>
-        {% if topic.instructor %}
-        <div style="color: var(--muted); font-size: 14px;">Instructor: {{ topic.instructor }}</div>
-        {% endif %}
-        
-        {% if topic.description %}
-        <p style="color: var(--text-light); margin-top: 20px; line-height: 1.6;">{{ topic.description }}</p>
-        {% endif %}
-    </div>
-
-    {% if topic.video_url %}
-    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-top: 1px solid var(--border);">
-        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-                src="{{ topic.video_url.replace('youtu.be/', 'www.youtube.com/embed/').replace('watch?v=', 'embed/') }}" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-        </iframe>
+<!-- Topic Hero -->
+<div class="topic-hero">
+    {% if topic.phase %}
+    <div class="phase-badge">{{ topic.phase|regex_replace('^\d+\s*-\s*', '') }}</div>
+    {% endif %}
+    <h1 style="font-size: 32px; margin: 0 0 12px 0; position: relative; z-index: 1;">{{ topic.name }}</h1>
+    {% if topic.instructor %}
+    <div style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; position: relative; z-index: 1;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>{{ topic.instructor }}</span>
     </div>
     {% endif %}
 </div>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-    <!-- Attendance Card -->
-    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;">
-        <h2 style="font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Attendance</h2>
+<!-- Tab Navigation -->
+<nav class="topic-tabs">
+    <div class="tabs-container">
+        {% if topic.video_url %}
+        <button id="btn-video" class="topic-tab-btn" onclick="showTab('video')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Video</span>
+        </button>
+        {% endif %}
+        <button id="btn-notes" class="topic-tab-btn" onclick="showTab('notes')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>Notes</span>
+        </button>
+        <button id="btn-attendance" class="topic-tab-btn" onclick="showTab('attendance')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            <span>Attendance</span>
+        </button>
+        <button id="btn-progress" class="topic-tab-btn" onclick="showTab('progress')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Track Progress</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Tab Contents -->
+
+<!-- Video Tab -->
+{% if topic.video_url %}
+<div id="tab-video" class="tab-content">
+    <div class="video-container">
+        <div class="video-wrapper">
+            <iframe 
+                src="{{ topic.video_url.replace('youtu.be/', 'www.youtube.com/embed/').replace('watch?v=', 'embed/') }}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Notes Tab -->
+<div id="tab-notes" class="tab-content">
+    <div class="notes-container">
+        <h2 style="font-size: 22px; margin: 0 0 20px 0; color: var(--text);">Lesson Notes</h2>
+        {% if topic.description %}
+        <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 20px;">{{ topic.description }}</p>
+        {% else %}
+        <p style="color: var(--muted); font-style: italic;">No notes available for this topic yet.</p>
+        {% endif %}
+        <div style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 10px;">
+            <h3 style="font-size: 16px; margin: 0 0 10px 0; color: var(--accent);">Quick Links</h3>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                {% if topic.video_url %}
+                <a href="{{ topic.video_url }}" target="_blank" style="color: var(--text-light); text-decoration: none; font-size: 14px;">📹 Watch on YouTube</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Attendance Tab -->
+<div id="tab-attendance" class="tab-content">
+    <div class="management-card">
+        <div class="card-header">
+            <div class="card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"></path>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+            </div>
+            <h2 class="card-title">Mark Attendance</h2>
+        </div>
+        
         <form method="POST" action="{{ url_for('topic_detail', topic_id=topic.id) }}">
             <input type="hidden" name="action" value="attendance">
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 13px; color: var(--muted);">Date</label>
-                <input type="date" name="date" required style="background: #1e293b; border: 1px solid #334155; color: white; padding: 8px; border-radius: 4px; width: 100%;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 500;">Session Date</label>
+                <input type="date" name="date" required class="form-input">
             </div>
             
-            <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+            <div class="scrollable-list">
                 {% for student in students %}
-                <div style="padding: 10px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
-                    <div style="font-weight: 500; margin-bottom: 5px;">{{ student.name }}</div>
-                    <div style="display: flex; gap: 15px; font-size: 13px;">
-                        <label><input type="radio" name="student_{{ student.id }}" value="Present" required> Present</label>
-                        <label><input type="radio" name="student_{{ student.id }}" value="Absent"> Absent</label>
-                        <label><input type="radio" name="student_{{ student.id }}" value="Excused"> Excused</label>
+                <div class="student-item">
+                    <div class="student-name">{{ student.name }}</div>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="student_{{ student.id }}" value="Present" required> Present
+                        </label>
+                        <label>
+                            <input type="radio" name="student_{{ student.id }}" value="Absent"> Absent
+                        </label>
+                        <label>
+                            <input type="radio" name="student_{{ student.id }}" value="Excused"> Excused
+                        </label>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-            <button type="submit" class="btn-primary" style="width: 100%;">Save Attendance</button>
-        </form>
-    </div>
-
-    <!-- Progress Card -->
-    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;">
-        <h2 style="font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Progress</h2>
-        <form method="POST" action="{{ url_for('topic_detail', topic_id=topic.id) }}">
-            <input type="hidden" name="action" value="progress">
-            <div style="max-height: 365px; overflow-y: auto; margin-bottom: 20px;">
-                {% for student in students %}
-                <div style="padding: 10px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.1); display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-weight: 500;">{{ student.name }}</div>
-                    <select name="student_{{ student.id }}" style="background: #1e293b; border: 1px solid #334155; color: white; padding: 5px; border-radius: 4px; font-size: 13px;">
-                        <option value="Not Started" {% if progress_map.get(student.id) == 'Not Started' %}selected{% endif %}>Not Started</option>
-                        <option value="In Progress" {% if progress_map.get(student.id) == 'In Progress' %}selected{% endif %}>In Progress</option>
-                        <option value="Completed" {% if progress_map.get(student.id) == 'Completed' %}selected{% endif %}>Completed</option>
-                    </select>
-                </div>
-                {% endfor %}
-            </div>
-            <button type="submit" class="btn-primary" style="width: 100%;">Update Progress</button>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Save Attendance</button>
         </form>
     </div>
 </div>
+
+<!-- Progress Tab -->
+<div id="tab-progress" class="tab-content">
+    <div class="management-card">
+        <div class="card-header">
+            <div class="card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <h2 class="card-title">Track Progress</h2>
+        </div>
+        
+        <form method="POST" action="{{ url_for('topic_detail', topic_id=topic.id) }}">
+            <input type="hidden" name="action" value="progress">
+            <div class="scrollable-list">
+                {% for student in students %}
+                <div class="student-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="student-name">{{ student.name }}</div>
+                        <select name="student_{{ student.id }}" class="form-select">
+                            <option value="Not Started" {% if progress_map.get(student.id) == 'Not Started' %}selected{% endif %}>Not Started</option>
+                            <option value="In Progress" {% if progress_map.get(student.id) == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Completed" {% if progress_map.get(student.id) == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Update Progress</button>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
