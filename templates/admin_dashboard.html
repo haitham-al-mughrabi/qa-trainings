@@ -182,6 +182,90 @@
     .btn-delete:hover {
         background: rgba(239, 68, 68, 0.25);
     }
+    
+    /* Training Section Headers */
+    .training-header-btn {
+        width: 100%;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 12px;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 16px;
+    }
+    .training-header-btn:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+    }
+    .training-header-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 0;
+    }
+    .training-header-count {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 400;
+        margin-left: 8px;
+    }
+    .training-collapse-icon {
+        width: 20px;
+        height: 20px;
+        color: var(--muted);
+        transition: transform 0.3s ease;
+    }
+    .training-topics-container {
+        display: none;
+        margin-bottom: 32px;
+    }
+    
+    /* Phase Section Headers */
+    .phase-header-btn {
+        width: 100%;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 12px;
+        margin-left: 20px;
+    }
+    .phase-header-btn:hover {
+        border-color: rgba(99, 102, 241, 0.25);
+        background: rgba(30, 41, 59, 0.7);
+    }
+    .phase-header-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text);
+        margin: 0;
+    }
+    .phase-header-count {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 400;
+        margin-left: 8px;
+    }
+    .phase-collapse-icon {
+        width: 16px;
+        height: 16px;
+        color: var(--muted);
+        transition: transform 0.3s ease;
+    }
+    .phase-topics-container {
+        display: none;
+        margin-left: 20px;
+        margin-bottom: 16px;
+    }
 </style>
 
 <script>
@@ -199,6 +283,32 @@ function showTab(tabName) {
     // Show selected tab
     document.getElementById('tab-' + tabName).classList.add('active');
     document.getElementById('btn-' + tabName).classList.add('active');
+}
+
+function toggleTraining(trainingId) {
+    const content = document.getElementById('training-topics-' + trainingId);
+    const icon = document.getElementById('training-icon-' + trainingId);
+    
+    if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(90deg)';
+    } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function togglePhase(trainingId, phaseIndex) {
+    const content = document.getElementById('phase-topics-' + trainingId + '-' + phaseIndex);
+    const icon = document.getElementById('phase-icon-' + trainingId + '-' + phaseIndex);
+    
+    if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(90deg)';
+    } else {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+    }
 }
 
 // Show first tab on load
@@ -287,22 +397,66 @@ window.addEventListener('DOMContentLoaded', function() {
         <h2 class="section-title">Topics</h2>
         <a href="{{ url_for('admin_add_topic') }}" class="btn-primary">+ Add Topic</a>
     </div>
-    <div class="items-grid">
-        {% for topic in topics %}
-        <div class="item-card">
-            <div class="item-info">
-                <h3>{{ topic.name }}</h3>
-                <p>{{ topic.training.name }} • {{ topic.phase or 'No phase' }}</p>
+    
+    {% for training in trainings %}
+    <div style="margin-bottom: 24px;">
+        <button class="training-header-btn" onclick="toggleTraining({{ training.id }})">
+            <div>
+                <span class="training-header-title">{{ training.name }}</span>
+                <span class="training-header-count">({{ training.topics|length }} topics)</span>
             </div>
-            <div class="item-actions">
-                <a href="{{ url_for('admin_edit_topic', topic_id=topic.id) }}" class="btn-edit">Edit</a>
-                <form method="POST" action="{{ url_for('admin_delete_topic', topic_id=topic.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this topic?');">
-                    <button type="submit" class="btn-delete">Delete</button>
-                </form>
+            <svg id="training-icon-{{ training.id }}" class="training-collapse-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        <div id="training-topics-{{ training.id }}" class="training-topics-container">
+            {% set ns = namespace(phases={}) %}
+            {% for topic in training.topics %}
+                {% set phase_key = topic.phase or 'No Phase' %}
+                {% if phase_key not in ns.phases %}
+                    {% set _ = ns.phases.update({phase_key: []}) %}
+                {% endif %}
+                {% set _ = ns.phases[phase_key].append(topic) %}
+            {% endfor %}
+            
+            {% for phase_name in ns.phases.keys()|sort %}
+            <div style="margin-bottom: 20px;">
+                <button class="phase-header-btn" onclick="togglePhase({{ training.id }}, '{{ loop.index }}')">
+                    <div>
+                        <span class="phase-header-title">{{ phase_name|regex_replace('^\d+\s*-\s*', '') if phase_name != 'No Phase' else phase_name }}</span>
+                        <span class="phase-header-count">({{ ns.phases[phase_name]|length }} topics)</span>
+                    </div>
+                    <svg id="phase-icon-{{ training.id }}-{{ loop.index }}" class="phase-collapse-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <div id="phase-topics-{{ training.id }}-{{ loop.index }}" class="phase-topics-container">
+                    <div class="items-grid">
+                        {% for topic in ns.phases[phase_name]|sort(attribute='order') %}
+                        <div class="item-card">
+                            <div class="item-info">
+                                <h3>{{ topic.name }}</h3>
+                                <p>{% if topic.instructor %}{{ topic.instructor }}{% else %}No instructor{% endif %}</p>
+                            </div>
+                            <div class="item-actions">
+                                <a href="{{ url_for('admin_edit_topic', topic_id=topic.id) }}" class="btn-edit">Edit</a>
+                                <form method="POST" action="{{ url_for('admin_delete_topic', topic_id=topic.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this topic?');">
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+    
+    {% if trainings|length == 0 %}
+    <p style="color: var(--muted); text-align: center; padding: 40px;">No trainings found. Add a training first.</p>
+    {% endif %}
 </div>
 
 <!-- Students Tab -->
