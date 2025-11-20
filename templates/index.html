@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-tag">
+          <span>QA Automation Academy</span>
+          <span>2025 Cohort</span>
+        </div>
+        <h1 class="hero-title">
+          Become a <span>job‑ready QA Automation Engineer</span>.
+        </h1>
+        <p class="hero-sub">
+          Structured live trainings in Python, Robot Framework, Postman, k6, Databases, and Mocking built from real team curricula and hands‑on tasks.
+        </p>
+        <div class="hero-meta">
+          <span>Project‑based learning</span>
+          <span>Mentorship & tasks</span>
+          <span>Evening‑friendly schedule</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#tracks" class="btn-primary">View all tracks →</a>
+          <a href="#apply" class="btn-ghost">Apply for next cohort</a>
+        </div>
+      </div>
+
+      <aside class="hero-showcase" aria-hidden="true">
+        <div class="hero-badge">Live + Recorded • Cohort based</div>
+        <div class="course-pills">
+          <span>Python Fundamentals</span>
+          <span>Robot Framework</span>
+          <span>API & Postman</span>
+          <span>k6 Performance</span>
+          <span>Databases</span>
+          <span>Mocking</span>
+        </div>
+        <div class="hero-mock">
+          <strong>Today’s session</strong><br />
+          Python → Functions, OOP basics & error handling for automation projects.
+        </div>
+        <div class="hero-mock">
+          <strong>Next up</strong><br />
+          Robot Framework browser library & CI integration with real test suites.
+        </div>
+        <div class="hero-footer">
+          <span>Guided by senior QA engineers</span>
+          <span>Built on real‑world scenarios</span>
+        </div>
+      </aside>
+    </section>
+
+    <!-- TRACKS -->
+    <section class="section" id="tracks">
+      <header class="section-header">
+        <div>
+          <h2 class="section-title">Choose your QA track</h2>
+          <p class="section-sub">Start from foundations or jump straight into the tools you use at work.</p>
+        </div>
+      </header>
+
+      <div class="track-grid">
+        {% for training in trainings %}
+        <article class="track">
+          <div class="track-label">Training Module</div>
+          <h3 class="track-title">{{ training.name }}</h3>
+          <p class="section-sub">{{ training.description }}</p>
+          <div class="track-meta">
+             <!-- Placeholder for dynamic instructor if added later -->
+             <span>Detailed Curriculum</span>
+          </div>
+          <a href="{{ url_for('training_detail', training_id=training.id) }}" class="track-cta">View full curriculum →</a>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- INSTRUCTORS -->
+    <section class="section">
+      <header class="section-header">
+        <div>
+          <h2 class="section-title">Learn from practicing QA engineers</h2>
+          <p class="section-sub">Each track is led by an instructor who actively uses these tools in real projects.</p>
+        </div>
+      </header>
+      <div class="instructors">
+        <article class="mentor">
+          <div class="mentor-name">Haitham Al Mughrabi</div>
+          <div class="mentor-role">Senior QA Automation & Performance Engineer</div>
+          <div class="mentor-tags">
+            <span>Python</span>
+            <span>Robot Framework</span>
+            <span>Postman</span>
+            <span>Mocking</span>
+          </div>
+        </article>
+        <article class="mentor">
+          <div class="mentor-name">Basma Hassan</div>
+          <div class="mentor-role">Performance Engineer & k6 Specialist</div>
+          <div class="mentor-tags">
+            <span>k6</span>
+            <span>Performance Strategy</span>
+            <span>GitLab pipelines</span>
+          </div>
+        </article>
+        <article class="mentor">
+          <div class="mentor-name">Lina Osman</div>
+          <div class="mentor-role">Database & SQL for QA</div>
+          <div class="mentor-tags">
+            <span>PostgreSQL</span>
+            <span>Test data design</span>
+            <span>DB verification</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- APPLY CTA -->
+    <section class="cta-band" id="apply">
+      <div class="cta-text">
+        Ready to level up your QA career? <span>Join the next automation cohort and build real projects.</span>
+      </div>
+      <a href="/apply" class="btn-primary">Apply now →</a>
+    </section>
+{% endblock %}

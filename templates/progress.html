@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section">
+    <h2 class="section-title">Progress Tracking</h2>
+    <form method="POST" class="hero-mock">
+        <div style="margin-bottom: 20px;">
+            <label>Topic: 
+                <select name="topic_id" required style="background: #1e293b; border: 1px solid #334155; color: white; padding: 5px; border-radius: 4px;">
+                    {% for training in trainings %}
+                        <optgroup label="{{ training.name }}">
+                            {% for topic in training.topics %}
+                                <option value="{{ topic.id }}">{{ topic.name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        <div class="instructors">
+            {% for student in students %}
+            <div class="mentor">
+                <div class="mentor-name">
+                    {{ student.name }}
+                    <span style="font-size: 11px; color: var(--accent); margin-left: 8px;">
+                        {{ summary[student.id]['percentage'] }}% Completed ({{ summary[student.id]['completed'] }}/{{ summary[student.id]['total'] }})
+                    </span>
+                </div>
+                <div style="margin-top: 10px;">
+                    <select name="student_{{ student.id }}" style="background: #1e293b; border: 1px solid #334155; color: white; padding: 5px; border-radius: 4px;">
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button type="submit" class="btn-primary" style="margin-top: 20px;">Save Progress</button>
+    </form>
+</section>
+{% endblock %}
