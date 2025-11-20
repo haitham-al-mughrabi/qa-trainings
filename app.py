@@ -18,6 +18,12 @@ def index():
     trainings = Training.query.all()
     return render_template('index.html', trainings=trainings)
 
+@app.route('/trainings')
+def trainings():
+    trainings_list = Training.query.all()
+    return render_template('trainings.html', trainings=trainings_list)
+
+
 @app.route('/training/<int:training_id>')
 def training_detail(training_id):
     training = Training.query.get_or_404(training_id)
