@@ -1,44 +1,93 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="section">
-    <h2 class="section-title">Progress Tracking</h2>
-    <form method="POST" class="hero-mock">
-        <div style="margin-bottom: 20px;">
-            <label>Topic: 
-                <select name="topic_id" required style="background: #1e293b; border: 1px solid #334155; color: white; padding: 5px; border-radius: 4px;">
+<div style="margin-bottom: 30px;">
+    <a href="{{ url_for('index') }}" style="color: var(--accent); text-decoration: none; font-size: 14px;">← Back to Home</a>
+</div>
+
+<section style="margin-bottom: 40px;">
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px;">
+        <h1 style="font-size: 32px; margin: 0 0 10px 0;">Progress Tracking</h1>
+        <p style="color: var(--text-light); margin: 0; line-height: 1.6;">Monitor and update student progress across all topics</p>
+    </div>
+</section>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+    <!-- Progress Form -->
+    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px;">
+        <h2 style="font-size: 20px; margin: 0 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Update Progress</h2>
+        
+        <form method="POST">
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 500;">Select Topic</label>
+                <select name="topic_id" required style="background: #1e293b; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; width: 100%; font-size: 14px;">
+                    <option value="">Choose a topic...</option>
                     {% for training in trainings %}
-                        <optgroup label="{{ training.name }}">
-                            {% for topic in training.topics %}
-                                <option value="{{ topic.id }}">{{ topic.name }}</option>
-                            {% endfor %}
-                        </optgroup>
+                    <optgroup label="{{ training.name }}">
+                        {% for topic in training.topics %}
+                        <option value="{{ topic.id }}">{{ topic.name }}</option>
+                        {% endfor %}
+                    </optgroup>
                     {% endfor %}
                 </select>
-            </label>
-        </div>
+            </div>
 
-        <div class="instructors">
-            {% for student in students %}
-            <div class="mentor">
-                <div class="mentor-name">
-                    {{ student.name }}
-                    <span style="font-size: 11px; color: var(--accent); margin-left: 8px;">
-                        {{ summary[student.id]['percentage'] }}% Completed ({{ summary[student.id]['completed'] }}/{{ summary[student.id]['total'] }})
-                    </span>
+            <div style="max-height: 450px; overflow-y: auto; margin-bottom: 25px;">
+                {% for student in students %}
+                <div style="background: rgba(148, 163, 184, 0.05); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 6px; padding: 15px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500; margin-bottom: 4px;">{{ student.name }}</div>
+                            <div style="font-size: 12px; color: var(--muted);">
+                                {{ summary[student.id]['completed'] }}/{{ summary[student.id]['total'] }} topics completed
+                            </div>
+                        </div>
+                        <select name="student_{{ student.id }}" style="background: #1e293b; border: 1px solid #334155; color: white; padding: 8px 12px; border-radius: 6px; font-size: 13px; min-width: 150px;">
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
                 </div>
-                <div style="margin-top: 10px;">
-                    <select name="student_{{ student.id }}" style="background: #1e293b; border: 1px solid #334155; color: white; padding: 5px; border-radius: 4px;">
-                        <option value="Not Started">Not Started</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                    </select>
+                {% endfor %}
+            </div>
+            
+            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Update Progress</button>
+        </form>
+    </div>
+
+    <!-- Summary Stats -->
+    <div>
+        <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px;">
+            <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--accent);">Overall Statistics</h3>
+            <div style="font-size: 13px; color: var(--muted); line-height: 1.8;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Total Students:</span>
+                    <strong style="color: var(--text);">{{ students|length }}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Total Trainings:</span>
+                    <strong style="color: var(--text);">{{ trainings|length }}</strong>
                 </div>
             </div>
-            {% endfor %}
         </div>
-        
-        <button type="submit" class="btn-primary" style="margin-top: 20px;">Save Progress</button>
-    </form>
-</section>
+
+        <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;">
+            <h3 style="font-size: 16px; margin: 0 0 15px 0; color: var(--accent);">Completion Overview</h3>
+            <div style="max-height: 300px; overflow-y: auto;">
+                {% for student in students %}
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
+                    <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px;">{{ student.name }}</div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="flex: 1; background: rgba(148, 163, 184, 0.1); height: 6px; border-radius: 3px; overflow: hidden;">
+                            <div style="background: linear-gradient(90deg, var(--accent), #10b981); height: 100%; width: {{ summary[student.id]['percentage'] }}%;"></div>
+                        </div>
+                        <span style="font-size: 11px; color: var(--muted); min-width: 35px;">{{ summary[student.id]['percentage'] }}%</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

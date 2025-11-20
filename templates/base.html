@@ -6,39 +6,175 @@
     <title>QA Automation Academy</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
-        /* Add specific overrides for the app if needed */
+        /* Navigation Bar */
+        .main-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .nav-logo span {
+            color: var(--accent);
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Footer */
+        .main-footer {
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            margin-top: 80px;
+            padding: 40px 0 20px;
+        }
+        .footer-container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-section h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        .footer-section p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+        
+        /* Page Container */
+        .page-container {
+            min-height: calc(100vh - 64px);
+        }
         .container {
             max-width: 1120px;
             margin: 0 auto;
             padding: 0 16px;
         }
-        /* Simple top-right nav for app features */
-        .app-nav {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-            font-size: 13px;
-            z-index: 100;
-        }
-        .app-nav a {
-            color: var(--muted);
-            text-decoration: none;
-        }
-        .app-nav a:hover {
-            color: var(--accent);
-        }
     </style>
 </head>
 <body>
-    <div class="app-nav">
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('attendance') }}">Attendance</a>
-        <a href="{{ url_for('progress') }}">Progress</a>
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                QA <span>Academy</span>
+            </a>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}#tracks">Trainings</a>
+                <a href="{{ url_for('attendance') }}">Attendance</a>
+                <a href="{{ url_for('progress') }}">Progress</a>
+                <a href="{{ url_for('index') }}#apply" class="btn-primary" style="padding: 8px 16px; font-size: 13px;">Apply Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="page-container">
+        <main class="page">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
     </div>
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>QA Automation Academy</h3>
+                    <p>Empowering the next generation of QA automation engineers through hands-on training and real-world projects.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Trainings</h3>
+                    <ul class="footer-links">
+                        <li><a href="#tracks">Python</a></li>
+                        <li><a href="#tracks">Robot Framework</a></li>
+                        <li><a href="#tracks">Postman</a></li>
+                        <li><a href="#tracks">k6 Performance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('attendance') }}">Attendance</a></li>
+                        <li><a href="{{ url_for('progress') }}">Progress</a></li>
+                        <li><a href="#apply">Apply</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 QA Automation Academy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

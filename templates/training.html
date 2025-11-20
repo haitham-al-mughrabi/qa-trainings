@@ -1,60 +1,313 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div style="margin-bottom: 30px;">
-    <a href="{{ url_for('index') }}" style="color: var(--accent); text-decoration: none; font-size: 14px;">← Back to Home</a>
+<style>
+    .training-header {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 40px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+    .training-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    
+    /* Tabbed Navigation */
+    .phase-tabs {
+        position: sticky;
+        top: 64px;
+        z-index: 40;
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+        margin: 0 -16px 40px;
+        padding: 0 16px;
+    }
+    .tabs-container {
+        display: flex;
+        gap: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .tabs-container::-webkit-scrollbar {
+        display: none;
+    }
+    .tab-btn {
+        padding: 18px 24px;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .tab-btn:hover {
+        color: var(--text);
+        background: rgba(99, 102, 241, 0.05);
+    }
+    .tab-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+        background: rgba(99, 102, 241, 0.1);
+    }
+    .tab-number {
+        width: 24px;
+        height: 24px;
+        background: rgba(148, 163, 184, 0.1);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .tab-btn.active .tab-number {
+        background: var(--accent);
+        color: white;
+    }
+    .tab-count {
+        font-size: 11px;
+        opacity: 0.6;
+        margin-left: 4px;
+    }
+    
+    /* Phase Content */
+    .phase-content {
+        display: none;
+    }
+    .phase-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .phase-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--border);
+    }
+    .phase-number {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 20px;
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+    .phase-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 0;
+    }
+    .topic-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 20px;
+    }
+    .topic-card {
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .topic-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--accent);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+    }
+    .topic-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    .topic-card:hover::before {
+        transform: scaleY(1);
+    }
+    .topic-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+        color: var(--text);
+        line-height: 1.4;
+    }
+    .topic-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+    .topic-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        background: rgba(148, 163, 184, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 6px;
+        font-size: 12px;
+        color: var(--muted);
+    }
+    .topic-badge.video {
+        background: rgba(99, 102, 241, 0.1);
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--accent);
+    }
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        color: var(--muted);
+    }
+    .breadcrumb a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<script>
+function showPhase(phaseIndex) {
+    // Hide all phase contents
+    document.querySelectorAll('.phase-content').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Remove active from all tabs
+    document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Show selected phase
+    document.getElementById('phase-' + phaseIndex).classList.add('active');
+    document.getElementById('tab-' + phaseIndex).classList.add('active');
+}
+
+// Show first phase on load
+window.addEventListener('DOMContentLoaded', function() {
+    showPhase(1);
+});
+</script>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Home</a>
+    <span>›</span>
+    <span>{{ training.name }}</span>
 </div>
 
-<section style="margin-bottom: 40px;">
-    <div style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px;">
-        <h1 style="font-size: 32px; margin: 0 0 10px 0;">{{ training.name }}</h1>
-        {% if training.description %}
-        <p style="color: var(--text-light); margin: 0; line-height: 1.6;">{{ training.description }}</p>
-        {% endif %}
+<!-- Training Header -->
+<div class="training-header">
+    <h1 style="font-size: 36px; margin: 0 0 12px 0; position: relative; z-index: 1;">{{ training.name }}</h1>
+    {% if training.description %}
+    <p style="color: var(--text-light); margin: 0; font-size: 16px; line-height: 1.6; max-width: 800px; position: relative; z-index: 1;">
+        {{ training.description }}
+    </p>
+    {% endif %}
+    <div style="margin-top: 20px; display: flex; gap: 15px; position: relative; z-index: 1;">
+        <div style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
+            <strong style="color: var(--accent);">{{ phases|length }}</strong> <span style="color: var(--muted);">Phases</span>
+        </div>
+        <div style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
+            <strong style="color: var(--accent);">{{ phases.values()|map('length')|sum }}</strong> <span style="color: var(--muted);">Topics</span>
+        </div>
+    </div>
 </div>
-</section>
 
-<!-- Phase Navigation -->
-<nav style="position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--border); margin-bottom: 30px; padding: 15px 0;">
-    <div style="display: flex; gap: 10px; overflow-x: auto; padding: 0 5px;">
+<!-- Tabbed Phase Navigation -->
+<nav class="phase-tabs">
+    <div class="tabs-container">
         {% for phase in phases.keys() %}
-        <a href="#phase-{{ loop.index }}" 
-           style="padding: 8px 16px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 6px; color: var(--text); text-decoration: none; white-space: nowrap; font-size: 13px; transition: all 0.2s ease;"
-           onmouseover="this.style.borderColor='var(--accent)'; this.style.color='var(--accent)';"
-           onmouseout="this.style.borderColor='var(--border)'; this.style.color='var(--text)';">
-            {{ phase }}
-        </a>
+        <button id="tab-{{ loop.index }}" class="tab-btn" onclick="showPhase({{ loop.index }})">
+            <span class="tab-number">{{ loop.index }}</span>
+            <span>{{ phase|replace('1 - ', '')|replace('2 - ', '')|replace('3 - ', '')|replace('4 - ', '')|replace('5 - ', '')|replace('6 - ', '')|replace('7 - ', '')|replace('8 - ', '')|replace('9 - ', '') }}</span>
+            <span class="tab-count">({{ phases[phase]|length }})</span>
+        </button>
         {% endfor %}
     </div>
 </nav>
 
-<section>
-    <h2 style="font-size: 20px; margin-bottom: 20px; color: var(--text);">Topics & Lessons</h2>
-    
-    {% for phase, topics in phases.items() %}
-    <div id="phase-{{ loop.index }}" style="margin-bottom: 40px; scroll-margin-top: 80px;">
-        <h3 style="font-size: 18px; margin-bottom: 15px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-            {{ phase }}
-        </h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
-            {% for topic in topics %}
-            <a href="{{ url_for('topic_detail', topic_id=topic.id) }}" style="text-decoration: none; color: inherit;">
-                <article class="track" style="height: 100%; transition: transform 0.2s ease, border-color 0.2s ease;">
-                    <h3 class="track-title" style="font-size: 18px; margin: 0 0 10px 0;">{{ topic.name }}</h3>
-                    
-                    <div class="track-meta" style="margin-top: auto;">
-                        {% if topic.instructor %}
-                        <span>{{ topic.instructor }}</span>
-                        {% endif %}
-                        {% if topic.video_url %}
-                        <span style="color: var(--accent);">📹 Video</span>
-                        {% endif %}
-                    </div>
-                </article>
-            </a>
-            {% endfor %}
-        </div>
+<!-- Phase Contents -->
+{% for phase, topics in phases.items() %}
+<div id="phase-{{ loop.index }}" class="phase-content">
+    <div class="phase-header">
+        <div class="phase-number">{{ loop.index }}</div>
+        <h2 class="phase-title">{{ phase|replace('1 - ', '')|replace('2 - ', '')|replace('3 - ', '')|replace('4 - ', '')|replace('5 - ', '')|replace('6 - ', '')|replace('7 - ', '')|replace('8 - ', '')|replace('9 - ', '') }}</h2>
+        <span style="margin-left: auto; color: var(--muted); font-size: 14px;">{{ topics|length }} topics</span>
     </div>
-    {% endfor %}
-</section>
+    
+    <div class="topic-grid">
+        {% for topic in topics %}
+        <a href="{{ url_for('topic_detail', topic_id=topic.id) }}" class="topic-card">
+            <h3 class="topic-title">{{ topic.name }}</h3>
+            <div class="topic-meta">
+                {% if topic.instructor %}
+                <span class="topic-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    {{ topic.instructor }}
+                </span>
+                {% endif %}
+                {% if topic.video_url %}
+                <span class="topic-badge video">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Video
+                </span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}
