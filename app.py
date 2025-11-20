@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from models import db, Training, Topic, Student, Attendance, Progress
 import os
 import re
+from datetime import datetime
 
 app = Flask(__name__, static_folder='statics', static_url_path='/statics')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trainings.db'
@@ -12,6 +13,11 @@ db.init_app(app)
 @app.template_filter('regex_replace')
 def regex_replace(s, pattern, replacement):
     return re.sub(pattern, replacement, s)
+
+# Add context processor for current datetime
+@app.context_processor
+def inject_now():
+    return {'now': datetime.now()}
 
 @app.route('/')
 def index():

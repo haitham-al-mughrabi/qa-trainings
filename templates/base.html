@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA Automation Academy</title>
+    <title>Takamol QA Trainings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
         /* Navigation Bar */
@@ -117,7 +117,7 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="{{ url_for('index') }}" class="nav-logo">
-                QA <span>Academy</span>
+                Takamol <span>QA Trainings</span>
             </a>
             <div class="nav-links">
                 <a href="{{ url_for('trainings') }}">Trainings</a>
@@ -142,16 +142,16 @@
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>QA Automation Academy</h3>
+                    <h3>Takamol QA Trainings</h3>
                     <p>Empowering the next generation of QA automation engineers through hands-on training and real-world projects.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Trainings</h3>
                     <ul class="footer-links">
-                        <li><a href="#tracks">Python</a></li>
-                        <li><a href="#tracks">Robot Framework</a></li>
-                        <li><a href="#tracks">Postman</a></li>
-                        <li><a href="#tracks">k6 Performance</a></li>
+                        <li><a href="{{ url_for('trainings') }}">All Trainings</a></li>
+                        <li><a href="{{ url_for('trainings') }}">Python</a></li>
+                        <li><a href="{{ url_for('trainings') }}">Robot Framework</a></li>
+                        <li><a href="{{ url_for('trainings') }}">Postman</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -163,16 +163,19 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Connect</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">GitHub</a></li>
-                        <li><a href="#">LinkedIn</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
+                    <h3>Organization</h3>
+                    <p style="font-size: 13px; line-height: 1.8; margin: 0;">
+                        <strong style="color: var(--text);">Takamol Holding</strong><br>
+                        Integrated Solutions<br>
+                        Quality Assurance Unit
+                    </p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 QA Automation Academy. All rights reserved.</p>
+                <p style="margin-bottom: 8px;">&copy; {{ now.year }} Takamol QA Trainings. All Rights Reserved.</p>
+                <p style="font-size: 11px; color: rgba(148, 163, 184, 0.6);">
+                    Developed by: <strong style="color: var(--accent);">Haitham Al Mughrabi</strong>
+                </p>
             </div>
         </div>
     </footer>
