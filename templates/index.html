@@ -1,125 +1,374 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <!-- HERO -->
-    <section class="hero">
-      <div>
-        <div class="hero-tag">
-          <span>QA Automation Academy</span>
-          <span>2025 Cohort</span>
-        </div>
-        <h1 class="hero-title">
-          Become a <span>job‑ready QA Automation Engineer</span>.
-        </h1>
-        <p class="hero-sub">
-          Structured live trainings in Python, Robot Framework, Postman, k6, Databases, and Mocking built from real team curricula and hands‑on tasks.
-        </p>
-        <div class="hero-meta">
-          <span>Project‑based learning</span>
-          <span>Mentorship & tasks</span>
-          <span>Evening‑friendly schedule</span>
-        </div>
-        <div class="hero-actions">
-          <a href="#tracks" class="btn-primary">View all tracks →</a>
-          <a href="#apply" class="btn-ghost">Apply for next cohort</a>
-        </div>
-      </div>
+<style>
+    .home-hero {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 20px;
+        padding: 80px 60px;
+        margin-bottom: 60px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .home-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        position: relative;
+        z-index: 1;
+    }
+    .hero-title {
+        font-size: 52px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 20px 0;
+        position: relative;
+        z-index: 1;
+    }
+    .hero-title span {
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-subtitle {
+        font-size: 18px;
+        color: var(--text-light);
+        line-height: 1.7;
+        max-width: 700px;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
+    .hero-stats {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 1;
+    }
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 10px;
+        font-size: 14px;
+    }
+    .stat-icon {
+        width: 20px;
+        height: 20px;
+        color: var(--accent);
+    }
+    .hero-actions {
+        display: flex;
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+    }
+    .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .section-title {
+        font-size: 36px;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+    }
+    .section-subtitle {
+        font-size: 16px;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .trainings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 24px;
+        margin-bottom: 80px;
+    }
+    .training-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 16px;
+        padding: 28px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(8px);
+    }
+    .training-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent), #a855f7);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    .training-card:hover {
+        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateY(-6px);
+        box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
+    }
+    .training-card:hover::before {
+        transform: scaleX(1);
+    }
+    .training-label {
+        display: inline-block;
+        padding: 4px 10px;
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--accent);
+        margin-bottom: 16px;
+    }
+    .training-title {
+        font-size: 22px;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+        color: var(--text);
+    }
+    .training-description {
+        color: var(--text-light);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    .training-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--accent);
+        font-size: 14px;
+        font-weight: 500;
+        transition: gap 0.2s ease;
+    }
+    .training-card:hover .training-link {
+        gap: 10px;
+    }
+    .instructors-section {
+        margin-bottom: 80px;
+    }
+    .instructors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+    }
+    .instructor-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 14px;
+        padding: 24px;
+        transition: all 0.3s ease;
+    }
+    .instructor-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+    }
+    .instructor-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text);
+    }
+    .instructor-role {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 16px;
+    }
+    .instructor-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .instructor-tag {
+        padding: 4px 10px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 6px;
+        font-size: 11px;
+        color: var(--text-light);
+    }
+    .cta-section {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 16px;
+        padding: 50px 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    .cta-title {
+        font-size: 32px;
+        font-weight: 600;
+        margin: 0 0 16px 0;
+        position: relative;
+        z-index: 1;
+    }
+    .cta-subtitle {
+        font-size: 16px;
+        color: var(--text-light);
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
+</style>
 
-      <aside class="hero-showcase" aria-hidden="true">
-        <div class="hero-badge">Live + Recorded • Cohort based</div>
-        <div class="course-pills">
-          <span>Python Fundamentals</span>
-          <span>Robot Framework</span>
-          <span>API & Postman</span>
-          <span>k6 Performance</span>
-          <span>Databases</span>
-          <span>Mocking</span>
+<!-- Hero Section -->
+<section class="home-hero">
+    <div class="hero-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        {{ now.year }} Cohort • Live + Recorded
+    </div>
+    <h1 class="hero-title">
+        Become a <span>job-ready QA Automation Engineer</span>
+    </h1>
+    <p class="hero-subtitle">
+        Structured live trainings in Python, Robot Framework, Postman, k6, Databases, and Mocking built from real team curricula and hands-on tasks.
+    </p>
+    <div class="hero-stats">
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <span>Project-based learning</span>
         </div>
-        <div class="hero-mock">
-          <strong>Today’s session</strong><br />
-          Python → Functions, OOP basics & error handling for automation projects.
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Expert mentorship</span>
         </div>
-        <div class="hero-mock">
-          <strong>Next up</strong><br />
-          Robot Framework browser library & CI integration with real test suites.
+        <div class="stat-item">
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Evening-friendly schedule</span>
         </div>
-        <div class="hero-footer">
-          <span>Guided by senior QA engineers</span>
-          <span>Built on real‑world scenarios</span>
-        </div>
-      </aside>
-    </section>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('trainings') }}" class="btn-primary">View all trainings →</a>
+    </div>
+</section>
 
-    <!-- TRACKS -->
-    <section class="section" id="tracks">
-      <header class="section-header">
-        <div>
-          <h2 class="section-title">Choose your QA track</h2>
-          <p class="section-sub">Start from foundations or jump straight into the tools you use at work.</p>
-        </div>
-      </header>
-
-      <div class="track-grid">
+<!-- Featured Trainings -->
+<section id="tracks">
+    <div class="section-header">
+        <h2 class="section-title">Featured Training Programs</h2>
+        <p class="section-subtitle">Start from foundations or jump straight into the tools you use at work</p>
+    </div>
+    
+    <div class="trainings-grid">
         {% for training in trainings %}
-        <article class="track">
-          <div class="track-label">Training Module</div>
-          <h3 class="track-title">{{ training.name }}</h3>
-          <p class="section-sub">{{ training.description }}</p>
-          <div class="track-meta">
-             <!-- Placeholder for dynamic instructor if added later -->
-             <span>Detailed Curriculum</span>
-          </div>
-          <a href="{{ url_for('training_detail', training_id=training.id) }}" class="track-cta">View full curriculum →</a>
-        </article>
+        <a href="{{ url_for('training_detail', training_id=training.id) }}" class="training-card">
+            <div class="training-label">Training Module</div>
+            <h3 class="training-title">{{ training.name }}</h3>
+            <p class="training-description">
+                {% if training.description %}
+                {{ training.description }}
+                {% else %}
+                Comprehensive training program covering essential topics and hands-on practice.
+                {% endif %}
+            </p>
+            <div class="training-link">
+                View full curriculum
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
         {% endfor %}
-      </div>
-    </section>
+    </div>
+</section>
 
-    <!-- INSTRUCTORS -->
-    <section class="section">
-      <header class="section-header">
-        <div>
-          <h2 class="section-title">Learn from practicing QA engineers</h2>
-          <p class="section-sub">Each track is led by an instructor who actively uses these tools in real projects.</p>
+<!-- Instructors -->
+<section class="instructors-section">
+    <div class="section-header">
+        <h2 class="section-title">Learn from Practicing QA Engineers</h2>
+        <p class="section-subtitle">Each track is led by an instructor who actively uses these tools in real projects</p>
+    </div>
+    
+    <div class="instructors-grid">
+        <div class="instructor-card">
+            <div class="instructor-name">Haitham Al Mughrabi</div>
+            <div class="instructor-role">Senior QA Automation & Performance Engineer</div>
+            <div class="instructor-tags">
+                <span class="instructor-tag">Python</span>
+                <span class="instructor-tag">Robot Framework</span>
+                <span class="instructor-tag">Postman</span>
+                <span class="instructor-tag">Mocking</span>
+            </div>
         </div>
-      </header>
-      <div class="instructors">
-        <article class="mentor">
-          <div class="mentor-name">Haitham Al Mughrabi</div>
-          <div class="mentor-role">Senior QA Automation & Performance Engineer</div>
-          <div class="mentor-tags">
-            <span>Python</span>
-            <span>Robot Framework</span>
-            <span>Postman</span>
-            <span>Mocking</span>
-          </div>
-        </article>
-        <article class="mentor">
-          <div class="mentor-name">Basma Hassan</div>
-          <div class="mentor-role">Performance Engineer & k6 Specialist</div>
-          <div class="mentor-tags">
-            <span>k6</span>
-            <span>Performance Strategy</span>
-            <span>GitLab pipelines</span>
-          </div>
-        </article>
-        <article class="mentor">
-          <div class="mentor-name">Lina Osman</div>
-          <div class="mentor-role">Database & SQL for QA</div>
-          <div class="mentor-tags">
-            <span>PostgreSQL</span>
-            <span>Test data design</span>
-            <span>DB verification</span>
-          </div>
-        </article>
-      </div>
-    </section>
+        <div class="instructor-card">
+            <div class="instructor-name">Basma Hassan</div>
+            <div class="instructor-role">Performance Engineer & k6 Specialist</div>
+            <div class="instructor-tags">
+                <span class="instructor-tag">k6</span>
+                <span class="instructor-tag">Performance Strategy</span>
+                <span class="instructor-tag">GitLab pipelines</span>
+            </div>
+        </div>
+        <div class="instructor-card">
+            <div class="instructor-name">Lina Osman</div>
+            <div class="instructor-role">Database & SQL for QA</div>
+            <div class="instructor-tags">
+                <span class="instructor-tag">PostgreSQL</span>
+                <span class="instructor-tag">Test data design</span>
+                <span class="instructor-tag">DB verification</span>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <!-- APPLY CTA -->
-    <section class="cta-band" id="apply">
-      <div class="cta-text">
-        Ready to level up your QA career? <span>Join the next automation cohort and build real projects.</span>
-      </div>
-      <a href="/apply" class="btn-primary">Apply now →</a>
-    </section>
 {% endblock %}
