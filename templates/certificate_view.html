@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Certificate Styles - Reused from Landing Page but enhanced for standalone view */
+    .certificate-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .certificate {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%);
+        border: 2px solid rgba(99, 102, 241, 0.4);
+        border-radius: 20px;
+        padding: 60px 80px;
+        position: relative;
+        box-shadow:
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(99, 102, 241, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+        color: var(--text);
+    }
+
+    .certificate::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 50%),
+            radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15), transparent 50%);
+        pointer-events: none;
+    }
+
+    .certificate::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 12px;
+        pointer-events: none;
+    }
+
+    .certificate-ornament {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border: 2px solid;
+        border-image: linear-gradient(135deg, var(--accent), #a855f7) 1;
+        z-index: 1;
+    }
+
+    .certificate-ornament.top-left {
+        top: 12px;
+        left: 12px;
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .certificate-ornament.top-right {
+        top: 12px;
+        right: 12px;
+        border-left: none;
+        border-bottom: none;
+    }
+
+    .certificate-ornament.bottom-left {
+        bottom: 12px;
+        left: 12px;
+        border-right: none;
+        border-top: none;
+    }
+
+    .certificate-ornament.bottom-right {
+        bottom: 12px;
+        right: 12px;
+        border-left: none;
+        border-top: none;
+    }
+
+    .certificate-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .certificate-logo {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+    }
+
+    .certificate-title {
+        font-size: 56px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent), #a855f7, var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        line-height: 1.2;
+    }
+
+    .certificate-body {
+        text-align: center;
+        margin: 50px 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .certificate-text {
+        font-size: 16px;
+        color: var(--text-light);
+        margin-bottom: 20px;
+        font-style: italic;
+    }
+
+    .certificate-name {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0 0 40px 0;
+        font-family: 'Georgia', serif;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: inline-block;
+        padding-bottom: 16px;
+        border-bottom: 2px solid rgba(99, 102, 241, 0.5);
+    }
+
+    .certificate-course {
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 30px 0;
+        padding: 20px 40px;
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 16px;
+        display: inline-block;
+    }
+
+    .certificate-footer {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(99, 102, 241, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    .signature-line {
+        width: 220px;
+        height: 60px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        border-bottom: 2px solid rgba(99, 102, 241, 0.4);
+    }
+
+    .signature-text {
+        font-family: 'Brush Script MT', cursive;
+        font-size: 32px;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        padding-bottom: 6px;
+    }
+
+    .signature-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+
+    .signature-title {
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    .certificate-seal {
+        position: absolute;
+        bottom: 50px;
+        right: 80px;
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid rgba(99, 102, 241, 0.5);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4), inset 0 0 20px rgba(99, 102, 241, 0.2);
+        z-index: 1;
+    }
+
+    .seal-inner {
+        width: 90px;
+        height: 90px;
+        border: 2px solid rgba(99, 102, 241, 0.6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: rgba(30, 41, 59, 0.8);
+    }
+
+    .seal-text {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+        text-align: center;
+        line-height: 1.3;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: pre-line;
+    }
+
+    .certificate-meta {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 11px;
+        color: var(--muted);
+        font-family: monospace;
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .certificate-container,
+        .certificate-container * {
+            visibility: visible;
+        }
+
+        .certificate-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .certificate {
+            box-shadow: none;
+            border: 2px solid #000;
+        }
+
+        .no-print {
+            display: none !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .certificate {
+            padding: 40px 20px;
+        }
+
+        .certificate-title {
+            font-size: 32px;
+        }
+
+        .certificate-name {
+            font-size: 32px;
+        }
+
+        .certificate-course {
+            font-size: 20px;
+            padding: 15px 20px;
+        }
+
+        .certificate-footer {
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .certificate-seal {
+            position: static;
+            margin: 30px auto 0;
+        }
+    }
+</style>
+
+<div class="certificate-container">
+    {% if preview %}
+    <div class="no-print"
+        style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="{{ url_for('admin_certificates') }}" class="btn-secondary">← Back to Admin</a>
+        <div
+            style="background: rgba(234, 179, 8, 0.1); color: #eab308; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500;">
+            Preview Mode
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="certificate">
+        <!-- Ornaments -->
+        <div class="certificate-ornament top-left"></div>
+        <div class="certificate-ornament top-right"></div>
+        <div class="certificate-ornament bottom-left"></div>
+        <div class="certificate-ornament bottom-right"></div>
+
+        <!-- Header -->
+        <div class="certificate-header">
+            <div class="certificate-logo">TAKAMOL QA TRAININGS</div>
+            <h1 class="certificate-title">{{ certificate.certificate_title }}</h1>
+        </div>
+
+        <!-- Body -->
+        <div class="certificate-body">
+            <p class="certificate-text">This certifies that</p>
+            <div class="certificate-name">{{ certificate.student_name }}</div>
+            <p class="certificate-text">{{ certificate.certificate_text }}</p>
+            <div class="certificate-course">{{ certificate.course_name }}</div>
+            <p class="certificate-text">Completed on {{ certificate.completion_date.strftime('%B %d, %Y') }}</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="certificate-footer">
+            {% if certificate.signature_1_name %}
+            <div class="certificate-signature">
+                <div class="signature-line">
+                    <span class="signature-text">{{ certificate.signature_1_name }}</span>
+                </div>
+                <div class="signature-name">{{ certificate.signature_1_name }}</div>
+                <div class="signature-title">{{ certificate.signature_1_title }}</div>
+            </div>
+            {% endif %}
+
+            {% if certificate.signature_2_name %}
+            <div class="certificate-signature">
+                <div class="signature-line">
+                    <span class="signature-text">{{ certificate.signature_2_name }}</span>
+                </div>
+                <div class="signature-name">{{ certificate.signature_2_name }}</div>
+                <div class="signature-title">{{ certificate.signature_2_title }}</div>
+            </div>
+            {% endif %}
+
+            {% if certificate.signature_3_name %}
+            <div class="certificate-signature">
+                <div class="signature-line">
+                    <span class="signature-text">{{ certificate.signature_3_name }}</span>
+                </div>
+                <div class="signature-name">{{ certificate.signature_3_name }}</div>
+                <div class="signature-title">{{ certificate.signature_3_title }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Seal -->
+        <div class="certificate-seal">
+            <div class="seal-inner">
+                <div class="seal-text">{{ certificate.seal_text }}</div>
+            </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="certificate-meta">
+            Certificate ID: {{ certificate.unique_code }} • Verify at {{ request.host_url }}certificate/{{
+            certificate.unique_code }}
+        </div>
+    </div>
+
+    <div class="no-print" style="text-align: center; margin-top: 30px;">
+        <button onclick="window.print()" class="btn-primary">Download / Print Certificate</button>
+    </div>
+</div>
+{% endblock %}

@@ -421,6 +421,13 @@
             </svg>
             <span>Instructors</span>
         </button>
+        <button id="btn-certificates" class="admin-tab-btn" onclick="showTab('certificates')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Certificates</span>
+        </button>
     </div>
 </nav>
 
@@ -559,6 +566,22 @@
             assignments.</p>
         <a href="{{ url_for('admin_instructors') }}" class="btn-primary">Go to Instructors Management</a>
     </div>
+</div>
+
+<!-- Certificates Tab -->
+<div id="tab-certificates" class="tab-content">
+    <div class="section-header">
+        <h2 class="section-title">Certificates</h2>
+        <a href="{{ url_for('admin_certificates') }}" class="btn-primary">Manage Certificates →</a>
+    </div>
+    <div style="text-align: center; padding: 60px 20px;">
+        <p style="color: var(--text-light); margin-bottom: 20px;">Issue and manage student certificates with custom
+            designs.</p>
+        <a href="{{ url_for('admin_certificates') }}" class="btn-primary">Go to Certificate Management</a>
+    </div>
+</div>
+
+</div>
 </div>
 
 {% endblock %}

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from models import db, Training, Topic, Student, Attendance, Progress, KnowledgeAssessment, KnowledgeSkill, Instructor, training_instructors
+from models import db, Training, Topic, Student, Attendance, Progress, KnowledgeAssessment, KnowledgeSkill, Instructor, Certificate, training_instructors
+import uuid
 import os
 import re
 from datetime import datetime
@@ -920,6 +921,93 @@ def api_get_instructor_trainings(instructor_id):
         'name': t.name,
         'description': t.description
     } for t in trainings])
+
+# Certificate Management
+@app.route('/admin/certificates')
+def admin_certificates():
+    certificates = Certificate.query.order_by(Certificate.issue_date.desc()).all()
+    return render_template('admin_certificates.html', certificates=certificates)
+
+@app.route('/admin/certificates/add', methods=['GET', 'POST'])
+def admin_add_certificate():
+    if request.method == 'POST':
+        student_id = request.form.get('student_id')
+        training_id = request.form.get('training_id')
+        
+        # Get student and training details for defaults if not provided
+        student = Student.query.get(student_id)
+        training = Training.query.get(training_id) if training_id else None
+        
+        certificate = Certificate(
+            student_id=student_id,
+            training_id=training_id if training_id else None,
+            certificate_title=request.form.get('certificate_title', "CERTIFICATE OF COMPLETION"),
+            student_name=request.form.get('student_name') or student.name,
+            course_name=request.form.get('course_name') or (training.name if training else "QA Training"),
+            certificate_text=request.form.get('certificate_text', "has successfully completed the comprehensive training program in"),
+            completion_date=datetime.strptime(request.form.get('completion_date'), '%Y-%m-%d').date(),
+            signature_1_name=request.form.get('signature_1_name'),
+            signature_1_title=request.form.get('signature_1_title'),
+            signature_2_name=request.form.get('signature_2_name'),
+            signature_2_title=request.form.get('signature_2_title'),
+            signature_3_name=request.form.get('signature_3_name'),
+            signature_3_title=request.form.get('signature_3_title'),
+            seal_text=request.form.get('seal_text', "OFFICIAL\nSEAL"),
+            unique_code=str(uuid.uuid4())[:8].upper(),
+            is_issued=True
+        )
+        
+        db.session.add(certificate)
+        db.session.commit()
+        return redirect(url_for('admin_certificates'))
+        
+    students = Student.query.all()
+    trainings = Training.query.all()
+    return render_template('admin_certificate_form.html', students=students, trainings=trainings, today=datetime.now().date())
+
+@app.route('/admin/certificates/<int:id>/edit', methods=['GET', 'POST'])
+def admin_edit_certificate(id):
+    certificate = Certificate.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        certificate.student_id = request.form.get('student_id')
+        certificate.training_id = request.form.get('training_id') if request.form.get('training_id') else None
+        certificate.certificate_title = request.form.get('certificate_title')
+        certificate.student_name = request.form.get('student_name')
+        certificate.course_name = request.form.get('course_name')
+        certificate.certificate_text = request.form.get('certificate_text')
+        certificate.completion_date = datetime.strptime(request.form.get('completion_date'), '%Y-%m-%d').date()
+        certificate.signature_1_name = request.form.get('signature_1_name')
+        certificate.signature_1_title = request.form.get('signature_1_title')
+        certificate.signature_2_name = request.form.get('signature_2_name')
+        certificate.signature_2_title = request.form.get('signature_2_title')
+        certificate.signature_3_name = request.form.get('signature_3_name')
+        certificate.signature_3_title = request.form.get('signature_3_title')
+        certificate.seal_text = request.form.get('seal_text')
+        
+        db.session.commit()
+        return redirect(url_for('admin_certificates'))
+        
+    students = Student.query.all()
+    trainings = Training.query.all()
+    return render_template('admin_certificate_form.html', certificate=certificate, students=students, trainings=trainings)
+
+@app.route('/admin/certificates/<int:id>/delete', methods=['POST'])
+def admin_delete_certificate(id):
+    certificate = Certificate.query.get_or_404(id)
+    db.session.delete(certificate)
+    db.session.commit()
+    return redirect(url_for('admin_certificates'))
+
+@app.route('/admin/certificates/<int:id>/preview')
+def admin_preview_certificate(id):
+    certificate = Certificate.query.get_or_404(id)
+    return render_template('certificate_view.html', certificate=certificate, preview=True)
+
+@app.route('/certificate/<unique_code>')
+def view_certificate(unique_code):
+    certificate = Certificate.query.filter_by(unique_code=unique_code).first_or_404()
+    return render_template('certificate_view.html', certificate=certificate)
 
 if __name__ == '__main__':
     with app.app_context():

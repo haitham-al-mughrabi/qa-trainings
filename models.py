@@ -75,3 +75,41 @@ class KnowledgeSkill(db.Model):
     
     # Ensure unique combination of category and topic
     __table_args__ = (db.UniqueConstraint('category', 'topic', name='unique_category_topic'),)
+
+class Certificate(db.Model):
+    """Certificates issued to students upon training completion"""
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # Relationships
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    training_id = db.Column(db.Integer, db.ForeignKey('training.id'), nullable=True)
+    
+    # Customizable Certificate Fields
+    certificate_title = db.Column(db.String(200), default="CERTIFICATE OF COMPLETION")
+    student_name = db.Column(db.String(200), nullable=False)  # Can override student.name
+    course_name = db.Column(db.String(300), nullable=False)
+    certificate_text = db.Column(db.Text, default="has successfully completed the comprehensive training program in")
+    
+    # Dates
+    completion_date = db.Column(db.Date, nullable=False)
+    issue_date = db.Column(db.DateTime, default=db.func.now())
+    
+    # Signatures (up to 3)
+    signature_1_name = db.Column(db.String(100))
+    signature_1_title = db.Column(db.String(200))
+    signature_2_name = db.Column(db.String(100))
+    signature_2_title = db.Column(db.String(200))
+    signature_3_name = db.Column(db.String(100))
+    signature_3_title = db.Column(db.String(200))
+    
+    # Seal
+    seal_text = db.Column(db.String(100), default="OFFICIAL\\nSEAL")
+    
+    # Verification
+    unique_code = db.Column(db.String(50), unique=True, nullable=False)
+    is_issued = db.Column(db.Boolean, default=False)
+    
+    # Relationships
+    student = db.relationship('Student', backref='certificates', lazy=True)
+    training = db.relationship('Training', backref='certificates', lazy=True)
+
