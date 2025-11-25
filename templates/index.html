@@ -13,6 +13,7 @@
         overflow: hidden;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
+
     .home-hero::before {
         content: '';
         position: absolute;
@@ -23,6 +24,7 @@
         background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
         border-radius: 50%;
     }
+
     .hero-badge {
         display: inline-flex;
         align-items: center;
@@ -38,6 +40,7 @@
         position: relative;
         z-index: 1;
     }
+
     .hero-title {
         font-size: 48px;
         font-weight: 700;
@@ -46,12 +49,14 @@
         position: relative;
         z-index: 1;
     }
+
     .hero-title span {
         background: linear-gradient(135deg, var(--accent), #a855f7);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
+
     .hero-subtitle {
         font-size: 17px;
         color: var(--text-light);
@@ -61,6 +66,7 @@
         position: relative;
         z-index: 1;
     }
+
     .hero-stats {
         display: flex;
         gap: 25px;
@@ -69,6 +75,7 @@
         z-index: 1;
         flex-wrap: wrap;
     }
+
     .stat-item {
         display: flex;
         align-items: center;
@@ -79,11 +86,13 @@
         border-radius: 10px;
         font-size: 14px;
     }
+
     .stat-icon {
         width: 20px;
         height: 20px;
         color: var(--accent);
     }
+
     .hero-actions {
         display: flex;
         gap: 16px;
@@ -92,20 +101,87 @@
     }
 
     /* Section Headers */
+    /* Section Headers - Premium Reconstruction */
     .section-header {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 70px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
+
+    .header-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--accent);
+        margin-bottom: 20px;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    }
+
     .section-title {
-        font-size: 32px;
-        font-weight: 600;
-        margin: 0 0 12px 0;
+        font-size: 48px;
+        font-weight: 800;
+        margin: 0 0 20px 0;
+        background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
     }
+
+    .header-line {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, var(--accent), #a855f7, transparent);
+        border-radius: 2px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .header-line::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--accent);
+    }
+
     .section-subtitle {
-        font-size: 16px;
+        font-size: 18px;
         color: var(--text-light);
         max-width: 600px;
         margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .section-header {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 32px;
+        }
+
+        .header-badge {
+            font-size: 11px;
+            padding: 4px 12px;
+        }
     }
 
     /* Featured Trainings */
@@ -115,6 +191,7 @@
         gap: 24px;
         margin-bottom: 50px;
     }
+
     .training-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -127,6 +204,7 @@
         overflow: hidden;
         backdrop-filter: blur(8px);
     }
+
     .training-card::before {
         content: '';
         position: absolute;
@@ -138,14 +216,17 @@
         transform: scaleX(0);
         transition: transform 0.3s ease;
     }
+
     .training-card:hover {
         border-color: rgba(99, 102, 241, 0.4);
         transform: translateY(-6px);
         box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
     }
+
     .training-card:hover::before {
         transform: scaleX(1);
     }
+
     .training-label {
         display: inline-block;
         padding: 4px 10px;
@@ -159,18 +240,21 @@
         color: var(--accent);
         margin-bottom: 16px;
     }
+
     .training-title {
         font-size: 20px;
         font-weight: 600;
         margin: 0 0 12px 0;
         color: var(--text);
     }
+
     .training-description {
         color: var(--text-light);
         font-size: 14px;
         line-height: 1.6;
         margin-bottom: 20px;
     }
+
     .training-link {
         display: inline-flex;
         align-items: center;
@@ -180,6 +264,7 @@
         font-weight: 500;
         transition: gap 0.2s ease;
     }
+
     .training-card:hover .training-link {
         gap: 10px;
     }
@@ -196,15 +281,18 @@
         padding: 0 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
     .tabs-container {
         display: flex;
         gap: 0;
         overflow-x: auto;
         scrollbar-width: none;
     }
+
     .tabs-container::-webkit-scrollbar {
         display: none;
     }
+
     .tab-btn {
         padding: 18px 28px;
         background: transparent;
@@ -218,6 +306,7 @@
         position: relative;
         white-space: nowrap;
     }
+
     .tab-btn::after {
         content: '';
         position: absolute;
@@ -229,17 +318,21 @@
         transform: translateX(-50%);
         transition: width 0.3s ease;
     }
+
     .tab-btn:hover {
         color: var(--text);
         background: rgba(99, 102, 241, 0.08);
     }
+
     .tab-btn:hover::after {
         width: 100%;
     }
+
     .tab-btn.active {
         color: var(--accent);
         background: rgba(99, 102, 241, 0.15);
     }
+
     .tab-btn.active::after {
         width: 100%;
     }
@@ -249,12 +342,21 @@
         display: none;
         animation: fadeIn 0.4s ease;
     }
+
     .tab-content.active {
         display: block;
     }
+
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Stats Grid */
@@ -264,6 +366,7 @@
         gap: 24px;
         margin-bottom: 50px;
     }
+
     .stat-card {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
         border: 1px solid rgba(99, 102, 241, 0.3);
@@ -272,10 +375,12 @@
         text-align: center;
         transition: all 0.3s ease;
     }
+
     .stat-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 12px 32px rgba(99, 102, 241, 0.25);
     }
+
     .stat-number {
         font-size: 40px;
         font-weight: 700;
@@ -285,6 +390,7 @@
         background-clip: text;
         margin-bottom: 8px;
     }
+
     .stat-label {
         font-size: 14px;
         color: var(--text-light);
@@ -297,6 +403,7 @@
         gap: 24px;
         margin-bottom: 50px;
     }
+
     .benefit-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -304,11 +411,13 @@
         padding: 28px 24px;
         transition: all 0.3s ease;
     }
+
     .benefit-card:hover {
         border-color: rgba(99, 102, 241, 0.4);
         transform: translateY(-6px);
         box-shadow: 0 16px 40px rgba(99, 102, 241, 0.25);
     }
+
     .benefit-icon {
         width: 48px;
         height: 48px;
@@ -319,16 +428,19 @@
         justify-content: center;
         margin-bottom: 20px;
     }
+
     .benefit-icon svg {
         width: 24px;
         height: 24px;
         color: white;
     }
+
     .benefit-title {
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 10px;
     }
+
     .benefit-description {
         font-size: 14px;
         color: var(--text-light);
@@ -342,6 +454,7 @@
         gap: 20px;
         margin-bottom: 40px;
     }
+
     .path-step {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -349,10 +462,12 @@
         padding: 24px 20px;
         transition: all 0.3s ease;
     }
+
     .path-step:hover {
         border-color: rgba(99, 102, 241, 0.3);
         transform: scale(1.02);
     }
+
     .step-number {
         width: 36px;
         height: 36px;
@@ -365,11 +480,13 @@
         font-size: 16px;
         margin-bottom: 16px;
     }
+
     .step-title {
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 8px;
     }
+
     .step-description {
         font-size: 13px;
         color: var(--text-light);
@@ -664,201 +781,238 @@
         }
 
 
-    /* Testimonials */
-    .testimonials-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 24px;
-        margin-bottom: 40px;
-    }
-    .testimonial-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
-        transition: all 0.3s ease;
-    }
-    .testimonial-card:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-        box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
-    }
-    .testimonial-quote {
-        font-size: 14px;
-        line-height: 1.7;
-        color: var(--text-light);
-        margin-bottom: 20px;
-        font-style: italic;
-    }
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    .author-avatar {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 14px;
-    }
-    .author-name {
-        font-size: 14px;
-        font-weight: 600;
-    }
-    .author-role {
-        font-size: 12px;
-        color: var(--muted);
-    }
-
-    /* Instructors */
-    .instructors-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 24px;
-        margin-bottom: 40px;
-    }
-    .instructor-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
-        transition: all 0.3s ease;
-    }
-    .instructor-card:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
-    }
-    .instructor-name {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 6px;
-    }
-    .instructor-role {
-        font-size: 13px;
-        color: var(--muted);
-        margin-bottom: 16px;
-    }
-    .instructor-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    .instructor-tag {
-        padding: 4px 10px;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 6px;
-        font-size: 11px;
-        color: var(--text-light);
-    }
-
-    /* FAQ */
-    .faq-list {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    .faq-item {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 12px;
-        margin-bottom: 16px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-    .faq-item:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-    }
-    .faq-question {
-        padding: 18px 24px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-    }
-    .faq-question:hover {
-        color: var(--accent);
-    }
-    .faq-icon {
-        width: 20px;
-        height: 20px;
-        color: var(--accent);
-        flex-shrink: 0;
-        transition: transform 0.3s ease;
-    }
-    .faq-item.open .faq-icon {
-        transform: rotate(180deg);
-    }
-    .faq-answer {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        padding: 0 24px;
-        font-size: 14px;
-        color: var(--text-light);
-        line-height: 1.7;
-    }
-    .faq-item.open .faq-answer {
-        max-height: 500px;
-        padding: 0 24px 20px 24px;
-    }
-
-    /* CTA Section */
-    .cta-section {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 16px;
-        padding: 50px 40px;
-        text-align: center;
-        margin-top: 60px;
-    }
-    .cta-title {
-        font-size: 32px;
-        font-weight: 600;
-        margin: 0 0 16px 0;
-    }
-    .cta-subtitle {
-        font-size: 16px;
-        color: var(--text-light);
-        margin-bottom: 30px;
-    }
-
-    @media (max-width: 768px) {
-        .hero-title { font-size: 36px; }
-        .section-title { font-size: 28px; }
-        .hero-stats { flex-direction: column; gap: 12px; }
-        .trainings-grid, .benefits-grid, .path-steps, .testimonials-grid, .instructors-grid {
-            grid-template-columns: 1fr;
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
-    }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
+        }
+
+        .testimonial-quote {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .author-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .author-role {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Instructors */
+        .instructors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .instructor-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .instructor-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+        }
+
+        .instructor-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .instructor-role {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .instructor-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .instructor-tag {
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* FAQ */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .faq-question {
+            padding: 18px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 24px;
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding: 0 24px 20px 24px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 50px 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .cta-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+        }
+
+        .cta-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .trainings-grid,
+            .benefits-grid,
+            .path-steps,
+            .testimonials-grid,
+            .instructors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 </style>
 
 <script>
-function showTab(tabName) {
-    // Hide all tabs
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    
-    // Show selected tab
-    document.getElementById('tab-' + tabName).classList.add('active');
-    document.getElementById('btn-' + tabName).classList.add('active');
-}
+    function showTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-function toggleFAQ(index) {
-    const item = document.getElementById('faq-' + index);
-    item.classList.toggle('open');
-}
+        // Show selected tab
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.getElementById('btn-' + tabName).classList.add('active');
+    }
 
-// Show first tab on load
-window.addEventListener('DOMContentLoaded', function() {
-    showTab('why-us');
-});
+    function toggleFAQ(index) {
+        const item = document.getElementById('faq-' + index);
+        item.classList.toggle('open');
+    }
+
+    // Show first tab on load
+    window.addEventListener('DOMContentLoaded', function () {
+        showTab('why-us');
+    });
 </script>
 
 <!-- Hero Section -->
@@ -910,7 +1064,9 @@ window.addEventListener('DOMContentLoaded', function() {
 <!-- Featured Trainings -->
 <section id="tracks">
     <div class="section-header">
+        <div class="header-badge">OUR PROGRAMS</div>
         <h2 class="section-title">Featured Training Programs</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">From manual testing fundamentals to advanced automation and performance testing</p>
     </div>
 
@@ -936,7 +1092,7 @@ window.addEventListener('DOMContentLoaded', function() {
         </a>
         {% endfor %}
     </div>
-    
+
     {% if trainings|length > 4 %}
     <div style="text-align: center; margin-top: 30px;">
         <a href="{{ url_for('trainings') }}" class="btn-ghost">View All {{ trainings|length }} Training Programs →</a>
@@ -958,7 +1114,9 @@ window.addEventListener('DOMContentLoaded', function() {
 <div id="tab-why-us" class="tab-content">
     <!-- Stats -->
     <div class="section-header">
+        <div class="header-badge">WHY CHOOSE US</div>
         <h2 class="section-title">Our Impact in Numbers</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">Real results from our training programs</p>
     </div>
     <div class="stats-grid">
@@ -982,7 +1140,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
     <!-- Benefits -->
     <div class="section-header" style="margin-top: 60px;">
+        <div class="header-badge">KEY BENEFITS</div>
         <h2 class="section-title">Why Choose Our QA Training Programs</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">Comprehensive QA education designed for real-world testing challenges</p>
     </div>
     <div class="benefits-grid">
@@ -995,7 +1155,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <h3 class="benefit-title">Hands-On Projects</h3>
-            <p class="benefit-description">Learn by doing with real-world testing scenarios, test case design, automation frameworks, API testing, and performance testing projects.</p>
+            <p class="benefit-description">Learn by doing with real-world testing scenarios, test case design,
+                automation frameworks, API testing, and performance testing projects.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-icon">
@@ -1007,7 +1168,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <h3 class="benefit-title">Expert Mentorship</h3>
-            <p class="benefit-description">Get personalized guidance from experienced QA professionals who understand both manual and automated testing best practices.</p>
+            <p class="benefit-description">Get personalized guidance from experienced QA professionals who understand
+                both manual and automated testing best practices.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-icon">
@@ -1017,7 +1179,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <h3 class="benefit-title">Flexible Schedule</h3>
-            <p class="benefit-description">Evening sessions and recorded content allow you to learn at your own pace while balancing work and personal commitments.</p>
+            <p class="benefit-description">Evening sessions and recorded content allow you to learn at your own pace
+                while balancing work and personal commitments.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-icon">
@@ -1026,18 +1189,22 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <h3 class="benefit-title">Career-Ready Skills</h3>
-            <p class="benefit-description">Master essential QA skills from test planning and execution to automation frameworks, API testing, performance testing, and databases.</p>
+            <p class="benefit-description">Master essential QA skills from test planning and execution to automation
+                frameworks, API testing, performance testing, and databases.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                     <line x1="12" y1="22.08" x2="12" y2="12"></line>
                 </svg>
             </div>
             <h3 class="benefit-title">Industry Tools</h3>
-            <p class="benefit-description">Work with industry-standard tools like Python, Robot Framework, Postman, k6, and more used by leading tech companies.</p>
+            <p class="benefit-description">Work with industry-standard tools like Python, Robot Framework, Postman, k6,
+                and more used by leading tech companies.</p>
         </div>
         <div class="benefit-card">
             <div class="benefit-icon">
@@ -1047,7 +1214,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <h3 class="benefit-title">Certification</h3>
-            <p class="benefit-description">Earn a professional certificate upon completion to showcase your QA expertise to employers and advance your career.</p>
+            <p class="benefit-description">Earn a professional certificate upon completion to showcase your QA expertise
+                to employers and advance your career.</p>
         </div>
     </div>
 </div>
@@ -1055,107 +1223,117 @@ window.addEventListener('DOMContentLoaded', function() {
 <!-- Tab 2: How It Works -->
 <div id="tab-how-it-works" class="tab-content">
     <div class="section-header">
+        <div class="header-badge">HOW IT WORKS</div>
         <h2 class="section-title">Your Learning Journey</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">A structured path from beginner to job-ready QA professional</p>
     </div>
     <div class="path-steps">
         <div class="path-step">
             <div class="step-number">1</div>
             <h3 class="step-title">Enroll & Assess</h3>
-            <p class="step-description">Choose your training track and complete an initial skills assessment to personalize your learning path.</p>
+            <p class="step-description">Choose your training track and complete an initial skills assessment to
+                personalize your learning path.</p>
         </div>
         <div class="path-step">
             <div class="step-number">2</div>
             <h3 class="step-title">Learn & Practice</h3>
-            <p class="step-description">Attend live sessions, watch recordings, and work on hands-on projects with real-world testing scenarios.</p>
+            <p class="step-description">Attend live sessions, watch recordings, and work on hands-on projects with
+                real-world testing scenarios.</p>
         </div>
         <div class="path-step">
             <div class="step-number">3</div>
             <h3 class="step-title">Build Portfolio</h3>
-            <p class="step-description">Create a professional portfolio showcasing your automation frameworks, test cases, and testing projects.</p>
+            <p class="step-description">Create a professional portfolio showcasing your automation frameworks, test
+                cases, and testing projects.</p>
         </div>
         <div class="path-step">
             <div class="step-number">4</div>
             <h3 class="step-title">Get Certified</h3>
-            <p class="step-description">Complete final assessments and receive your professional QA certification to advance your career.</p>
+            <p class="step-description">Complete final assessments and receive your professional QA certification to
+                advance your career.</p>
         </div>
     </div>
 
     <!-- Certificate Showcase Section -->
-<section class="certificate-section">
-    <div class="section-header">
-        <h2 class="section-title">Earn Your Professional Certificate</h2>
-        <p class="section-subtitle">Showcase your achievement with an industry-recognized certificate of completion</p>
-    </div>
+    <section class="certificate-section">
+        <div class="section-header">
+            <div class="header-badge">CERTIFICATION</div>
+            <h2 class="section-title">Earn Your Professional Certificate</h2>
+            <div class="header-line"></div>
+            <p class="section-subtitle">Showcase your achievement with an industry-recognized certificate of completion
+            </p>
+        </div>
 
-    <div class="certificate-container">
-        <div class="certificate-wrapper">
-            <div class="certificate">
-                <!-- Ornamental Corners -->
-                <div class="certificate-ornament top-left"></div>
-                <div class="certificate-ornament top-right"></div>
-                <div class="certificate-ornament bottom-left"></div>
-                <div class="certificate-ornament bottom-right"></div>
+        <div class="certificate-container">
+            <div class="certificate-wrapper">
+                <div class="certificate">
+                    <!-- Ornamental Corners -->
+                    <div class="certificate-ornament top-left"></div>
+                    <div class="certificate-ornament top-right"></div>
+                    <div class="certificate-ornament bottom-left"></div>
+                    <div class="certificate-ornament bottom-right"></div>
 
-                <!-- Header -->
-                <div class="certificate-header">
-                    <div class="certificate-logo">QA Training Academy</div>
-                    <h1 class="certificate-title">Certificate of Completion</h1>
-                    <p class="certificate-subtitle">This certifies that</p>
-                </div>
-
-                <!-- Body -->
-                <div class="certificate-body">
-                    <div class="certificate-label">This is to certify that</div>
-                    <h2 class="certificate-name">Your Name Here</h2>
-
-                    <p class="certificate-text">
-                        has successfully completed the comprehensive training program and demonstrated proficiency in
-                    </p>
-
-                    <div class="certificate-course">Quality Assurance & Testing Fundamentals</div>
-
-                    <p class="certificate-text">
-                        Meeting all requirements and assessments with dedication and excellence
-                    </p>
-                </div>
-
-                <!-- Footer with Signatures -->
-                <div class="certificate-footer">
-                    <div class="certificate-signature">
-                        <div class="signature-line">
-                            <span class="signature-text">Haitham Al Mughrabi</span>
-                        </div>
-                        <div class="signature-name">Haitham Al Mughrabi</div>
-                        <div class="signature-title">Lead Instructor</div>
+                    <!-- Header -->
+                    <div class="certificate-header">
+                        <div class="certificate-logo">QA Training Academy</div>
+                        <h1 class="certificate-title">Certificate of Completion</h1>
+                        <p class="certificate-subtitle">This certifies that</p>
                     </div>
 
-                    <div class="certificate-signature">
-                        <div class="signature-line">
-                            <span class="signature-text">Training Director</span>
-                        </div>
-                        <div class="signature-name">Training Director</div>
-                        <div class="signature-title">QA Training Academy</div>
+                    <!-- Body -->
+                    <div class="certificate-body">
+                        <div class="certificate-label">This is to certify that</div>
+                        <h2 class="certificate-name">Your Name Here</h2>
+
+                        <p class="certificate-text">
+                            has successfully completed the comprehensive training program and demonstrated proficiency
+                            in
+                        </p>
+
+                        <div class="certificate-course">Quality Assurance & Testing Fundamentals</div>
+
+                        <p class="certificate-text">
+                            Meeting all requirements and assessments with dedication and excellence
+                        </p>
                     </div>
-                </div>
 
-                <!-- Date -->
-                <div class="certificate-date">
-                    Date of Completion: {{ now.strftime('%B %d, %Y') }}
-                </div>
+                    <!-- Footer with Signatures -->
+                    <div class="certificate-footer">
+                        <div class="certificate-signature">
+                            <div class="signature-line">
+                                <span class="signature-text">Haitham Al Mughrabi</span>
+                            </div>
+                            <div class="signature-name">Haitham Al Mughrabi</div>
+                            <div class="signature-title">Lead Instructor</div>
+                        </div>
 
-                <!-- Seal -->
-                <div class="certificate-seal">
-                    <div class="seal-inner">
-                        <div class="seal-text">
-                            Certified<br>QA<br>Professional
+                        <div class="certificate-signature">
+                            <div class="signature-line">
+                                <span class="signature-text">Training Director</span>
+                            </div>
+                            <div class="signature-name">Training Director</div>
+                            <div class="signature-title">QA Training Academy</div>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="certificate-date">
+                        Date of Completion: {{ now.strftime('%B %d, %Y') }}
+                    </div>
+
+                    <!-- Seal -->
+                    <div class="certificate-seal">
+                        <div class="seal-inner">
+                            <div class="seal-text">
+                                Certified<br>QA<br>Professional
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
 </div>
@@ -1165,12 +1343,15 @@ window.addEventListener('DOMContentLoaded', function() {
 <div id="tab-success-stories" class="tab-content">
     <!-- Testimonials -->
     <div class="section-header">
+        <div class="header-badge">SUCCESS STORIES</div>
         <h2 class="section-title">What Our Students Say</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">Real feedback from QA professionals who transformed their careers</p>
     </div>
     <div class="testimonials-grid">
         <div class="testimonial-card">
-            <p class="testimonial-quote">"The hands-on approach and real-world projects helped me land my first QA automation role. The instructors were incredibly supportive and knowledgeable."</p>
+            <p class="testimonial-quote">"The hands-on approach and real-world projects helped me land my first QA
+                automation role. The instructors were incredibly supportive and knowledgeable."</p>
             <div class="testimonial-author">
                 <div class="author-avatar">SA</div>
                 <div>
@@ -1180,7 +1361,8 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
         <div class="testimonial-card">
-            <p class="testimonial-quote">"Best investment in my career. I went from manual testing to building complete automation frameworks. The performance testing module was exceptional."</p>
+            <p class="testimonial-quote">"Best investment in my career. I went from manual testing to building complete
+                automation frameworks. The performance testing module was exceptional."</p>
             <div class="testimonial-author">
                 <div class="author-avatar">MK</div>
                 <div>
@@ -1190,7 +1372,8 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
         <div class="testimonial-card">
-            <p class="testimonial-quote">"The flexible schedule and recorded sessions made it possible to learn while working full-time. I'm now confident in API testing and automation."</p>
+            <p class="testimonial-quote">"The flexible schedule and recorded sessions made it possible to learn while
+                working full-time. I'm now confident in API testing and automation."</p>
             <div class="testimonial-author">
                 <div class="author-avatar">LH</div>
                 <div>
@@ -1203,34 +1386,36 @@ window.addEventListener('DOMContentLoaded', function() {
 
     <!-- Instructors -->
     <div class="section-header" style="margin-top: 60px;">
+        <div class="header-badge">INSTRUCTORS</div>
         <h2 class="section-title">Learn from Industry Experts</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">Experienced QA professionals who bring real-world expertise</p>
     </div>
     <div class="instructors-grid">
         {% if instructors %}
-            {% for instructor in instructors %}
-            <div class="instructor-card">
-                <div class="instructor-name">{{ instructor.name }}</div>
-                <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
-                <div class="instructor-tags">
-                    {% if instructor.expertise %}
-                        {% for tag in instructor.expertise.split(',')[:4] %}
-                        <span class="instructor-tag">{{ tag.strip() }}</span>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+        {% for instructor in instructors %}
+        <div class="instructor-card">
+            <div class="instructor-name">{{ instructor.name }}</div>
+            <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
+            <div class="instructor-tags">
+                {% if instructor.expertise %}
+                {% for tag in instructor.expertise.split(',')[:4] %}
+                <span class="instructor-tag">{{ tag.strip() }}</span>
+                {% endfor %}
+                {% endif %}
             </div>
-            {% endfor %}
+        </div>
+        {% endfor %}
         {% else %}
-            <div class="instructor-card">
-                <div class="instructor-name">Haitham Al Mughrabi</div>
-                <div class="instructor-role">Senior QA Engineer</div>
-                <div class="instructor-tags">
-                    <span class="instructor-tag">Python</span>
-                    <span class="instructor-tag">Robot Framework</span>
-                    <span class="instructor-tag">API Testing</span>
-                </div>
+        <div class="instructor-card">
+            <div class="instructor-name">Haitham Al Mughrabi</div>
+            <div class="instructor-role">Senior QA Engineer</div>
+            <div class="instructor-tags">
+                <span class="instructor-tag">Python</span>
+                <span class="instructor-tag">Robot Framework</span>
+                <span class="instructor-tag">API Testing</span>
             </div>
+        </div>
         {% endif %}
     </div>
     {% if instructors and instructors|length > 0 %}
@@ -1243,7 +1428,9 @@ window.addEventListener('DOMContentLoaded', function() {
 <!-- Tab 4: FAQ -->
 <div id="tab-faq" class="tab-content">
     <div class="section-header">
+        <div class="header-badge">FAQ</div>
         <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="header-line"></div>
         <p class="section-subtitle">Everything you need to know about our training programs</p>
     </div>
     <div class="faq-list">
@@ -1255,7 +1442,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <div class="faq-answer">
-                No prior testing experience required! We start from the basics and progressively build your skills. Basic computer literacy and enthusiasm to learn are all you need.
+                No prior testing experience required! We start from the basics and progressively build your skills.
+                Basic computer literacy and enthusiasm to learn are all you need.
             </div>
         </div>
         <div class="faq-item" id="faq-2">
@@ -1266,7 +1454,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <div class="faq-answer">
-                Training duration varies by program, typically ranging from 8-12 weeks. All sessions are recorded, so you can learn at your own pace.
+                Training duration varies by program, typically ranging from 8-12 weeks. All sessions are recorded, so
+                you can learn at your own pace.
             </div>
         </div>
         <div class="faq-item" id="faq-3">
@@ -1277,7 +1466,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <div class="faq-answer">
-                We offer both! Live evening sessions for real-time interaction and Q&A, plus all sessions are recorded for flexible learning.
+                We offer both! Live evening sessions for real-time interaction and Q&A, plus all sessions are recorded
+                for flexible learning.
             </div>
         </div>
         <div class="faq-item" id="faq-4">
@@ -1288,7 +1478,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <div class="faq-answer">
-                Yes! Upon successful completion of the training and final assessment, you'll receive a professional certificate that you can showcase to employers.
+                Yes! Upon successful completion of the training and final assessment, you'll receive a professional
+                certificate that you can showcase to employers.
             </div>
         </div>
         <div class="faq-item" id="faq-5">
@@ -1299,7 +1490,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <div class="faq-answer">
-                You'll master industry-standard tools including Python, Robot Framework, Postman, k6, SQL databases, Git, and CI/CD pipelines.
+                You'll master industry-standard tools including Python, Robot Framework, Postman, k6, SQL databases,
+                Git, and CI/CD pipelines.
             </div>
         </div>
         <div class="faq-item" id="faq-6">
@@ -1310,7 +1502,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
             <div class="faq-answer">
-                While we don't guarantee job placement, we help you build a strong portfolio, provide resume guidance, and prepare you for technical interviews.
+                While we don't guarantee job placement, we help you build a strong portfolio, provide resume guidance,
+                and prepare you for technical interviews.
             </div>
         </div>
     </div>
@@ -1319,7 +1512,8 @@ window.addEventListener('DOMContentLoaded', function() {
 <!-- Final CTA -->
 <section class="cta-section">
     <h2 class="cta-title">Ready to Start Your QA Journey?</h2>
-    <p class="cta-subtitle">Join hundreds of successful QA professionals who transformed their careers with our training programs</p>
+    <p class="cta-subtitle">Join hundreds of successful QA professionals who transformed their careers with our training
+        programs</p>
     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
         <a href="{{ url_for('trainings') }}" class="btn-primary">Browse Training Programs</a>
         <a href="{{ url_for('students_list') }}" class="btn-ghost">View Student Profiles</a>
