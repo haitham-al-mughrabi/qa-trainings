@@ -2,12 +2,20 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# Association table for many-to-many relationship between Training and Instructor
+training_instructors = db.Table('training_instructors',
+    db.Column('training_id', db.Integer, db.ForeignKey('training.id'), primary_key=True),
+    db.Column('instructor_id', db.Integer, db.ForeignKey('instructor.id'), primary_key=True),
+    db.Column('is_primary', db.Boolean, default=False)
+)
+
 class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     slug = db.Column(db.String(200), nullable=True)  # Made nullable
     description = db.Column(db.Text, nullable=True)
     topics = db.relationship('Topic', backref='training', lazy=True, cascade='all, delete-orphan')
+    instructors = db.relationship('Instructor', secondary=training_instructors, backref=db.backref('trainings', lazy='dynamic'))
 
 class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +30,17 @@ class Topic(db.Model):
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+
+class Instructor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(200))  # e.g., "Senior QA Engineer"
+    bio = db.Column(db.Text)
+    expertise = db.Column(db.Text)  # Comma-separated tags or JSON
+    email = db.Column(db.String(100))
+    photo_url = db.Column(db.String(500))
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=db.func.now())
 
 class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)

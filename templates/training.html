@@ -12,6 +12,7 @@
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
+
     .training-header::before {
         content: '';
         position: absolute;
@@ -22,7 +23,7 @@
         background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
         border-radius: 50%;
     }
-    
+
     /* Tabbed Navigation */
     .phase-tabs {
         position: sticky;
@@ -35,15 +36,18 @@
         padding: 0 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
     .tabs-container {
         display: flex;
         gap: 0;
         overflow-x: auto;
         scrollbar-width: none;
     }
+
     .tabs-container::-webkit-scrollbar {
         display: none;
     }
+
     .tab-btn {
         padding: 18px 24px;
         background: transparent;
@@ -61,6 +65,7 @@
         align-items: center;
         gap: 10px;
     }
+
     .tab-btn::after {
         content: '';
         position: absolute;
@@ -72,20 +77,25 @@
         transform: translateX(-50%);
         transition: width 0.3s ease;
     }
+
     .tab-btn:hover {
         color: var(--text);
         background: rgba(99, 102, 241, 0.08);
     }
+
     .tab-btn:hover::after {
         width: 100%;
     }
+
     .tab-btn.active {
         color: var(--accent);
         background: rgba(99, 102, 241, 0.15);
     }
+
     .tab-btn.active::after {
         width: 100%;
     }
+
     .tab-number {
         width: 26px;
         height: 26px;
@@ -99,31 +109,42 @@
         font-weight: 700;
         transition: all 0.3s ease;
     }
+
     .tab-btn.active .tab-number {
         background: linear-gradient(135deg, var(--accent), #a855f7);
         border-color: transparent;
         color: white;
         box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
     }
+
     .tab-count {
         font-size: 11px;
         opacity: 0.6;
         margin-left: 4px;
     }
-    
+
     /* Phase Content */
     .phase-content {
         display: none;
     }
+
     .phase-content.active {
         display: block;
         animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    
+
     .phase-header {
         display: flex;
         align-items: center;
@@ -134,6 +155,7 @@
         border: 1px solid rgba(99, 102, 241, 0.15);
         border-radius: 12px;
     }
+
     .phase-number {
         width: 52px;
         height: 52px;
@@ -147,17 +169,20 @@
         color: white;
         box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
     }
+
     .phase-title {
         font-size: 24px;
         font-weight: 600;
         color: var(--text);
         margin: 0;
     }
+
     .topic-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
         gap: 20px;
     }
+
     .topic-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -170,6 +195,7 @@
         overflow: hidden;
         backdrop-filter: blur(8px);
     }
+
     .topic-card::before {
         content: '';
         position: absolute;
@@ -181,6 +207,7 @@
         transform: scaleY(0);
         transition: transform 0.3s ease;
     }
+
     .topic-card::after {
         content: '';
         position: absolute;
@@ -193,18 +220,22 @@
         opacity: 0;
         transition: opacity 0.3s ease;
     }
+
     .topic-card:hover {
         border-color: rgba(99, 102, 241, 0.4);
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.8) 100%);
         transform: translateY(-6px);
         box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2), 0 0 0 1px rgba(99, 102, 241, 0.1);
     }
+
     .topic-card:hover::before {
         transform: scaleY(1);
     }
+
     .topic-card:hover::after {
         opacity: 1;
     }
+
     .topic-title {
         font-size: 16px;
         font-weight: 600;
@@ -214,6 +245,7 @@
         position: relative;
         z-index: 1;
     }
+
     .topic-meta {
         display: flex;
         flex-wrap: wrap;
@@ -222,6 +254,7 @@
         position: relative;
         z-index: 1;
     }
+
     .topic-badge {
         display: inline-flex;
         align-items: center;
@@ -234,19 +267,23 @@
         color: var(--muted);
         transition: all 0.2s ease;
     }
+
     .topic-badge:hover {
         background: rgba(148, 163, 184, 0.18);
         border-color: rgba(148, 163, 184, 0.35);
     }
+
     .topic-badge.video {
         background: rgba(99, 102, 241, 0.15);
         border-color: rgba(99, 102, 241, 0.35);
         color: var(--accent);
     }
+
     .topic-badge.video:hover {
         background: rgba(99, 102, 241, 0.25);
         border-color: rgba(99, 102, 241, 0.5);
     }
+
     .breadcrumb {
         display: flex;
         align-items: center;
@@ -255,36 +292,38 @@
         font-size: 14px;
         color: var(--muted);
     }
+
     .breadcrumb a {
         color: var(--accent);
         text-decoration: none;
     }
+
     .breadcrumb a:hover {
         text-decoration: underline;
     }
 </style>
 
 <script>
-function showPhase(phaseIndex) {
-    // Hide all phase contents
-    document.querySelectorAll('.phase-content').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Remove active from all tabs
-    document.querySelectorAll('.tab-btn').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Show selected phase
-    document.getElementById('phase-' + phaseIndex).classList.add('active');
-    document.getElementById('tab-' + phaseIndex).classList.add('active');
-}
+    function showPhase(phaseIndex) {
+        // Hide all phase contents
+        document.querySelectorAll('.phase-content').forEach(el => {
+            el.classList.remove('active');
+        });
 
-// Show first phase on load
-window.addEventListener('DOMContentLoaded', function() {
-    showPhase(1);
-});
+        // Remove active from all tabs
+        document.querySelectorAll('.tab-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show selected phase
+        document.getElementById('phase-' + phaseIndex).classList.add('active');
+        document.getElementById('tab-' + phaseIndex).classList.add('active');
+    }
+
+    // Show first phase on load
+    window.addEventListener('DOMContentLoaded', function () {
+        showPhase(1);
+    });
 </script>
 
 <!-- Breadcrumb -->
@@ -298,19 +337,60 @@ window.addEventListener('DOMContentLoaded', function() {
 <div class="training-header">
     <h1 style="font-size: 36px; margin: 0 0 12px 0; position: relative; z-index: 1;">{{ training.name }}</h1>
     {% if training.description %}
-    <p style="color: var(--text-light); margin: 0; font-size: 16px; line-height: 1.6; max-width: 800px; position: relative; z-index: 1;">
+    <p
+        style="color: var(--text-light); margin: 0; font-size: 16px; line-height: 1.6; max-width: 800px; position: relative; z-index: 1;">
         {{ training.description }}
     </p>
     {% endif %}
     <div style="margin-top: 20px; display: flex; gap: 15px; position: relative; z-index: 1;">
-        <div style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
-            <strong style="color: var(--accent);">{{ phases|length }}</strong> <span style="color: var(--muted);">Phases</span>
+        <div
+            style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
+            <strong style="color: var(--accent);">{{ phases|length }}</strong> <span
+                style="color: var(--muted);">Phases</span>
         </div>
-        <div style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
-            <strong style="color: var(--accent);">{{ phases.values()|map('length')|sum }}</strong> <span style="color: var(--muted);">Topics</span>
+        <div
+            style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
+            <strong style="color: var(--accent);">{{ phases.values()|map('length')|sum }}</strong> <span
+                style="color: var(--muted);">Topics</span>
         </div>
     </div>
 </div>
+
+<!-- Instructors Section -->
+{% if training.instructors %}
+<div style="margin-bottom: 30px;">
+    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: var(--text);">Instructors</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+        {% for instructor in training.instructors %}
+        <a href="{{ url_for('instructor_profile', instructor_id=instructor.id) }}" style="
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            display: block;
+        " onmouseover="this.style.borderColor='rgba(99, 102, 241, 0.4)'; this.style.transform='translateY(-4px)'"
+            onmouseout="this.style.borderColor='rgba(99, 102, 241, 0.15)'; this.style.transform='translateY(0)'">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--text);">{{ instructor.name
+                }}</div>
+            <div style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">{{ instructor.role or 'QA
+                Instructor' }}</div>
+            {% if instructor.expertise %}
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                {% for tag in instructor.expertise.split(',')[:3] %}
+                <span
+                    style="padding: 3px 8px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 6px; font-size: 11px; color: var(--text-light);">{{
+                    tag.strip() }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 <!-- Tabbed Phase Navigation -->
 <nav class="phase-tabs">
@@ -333,7 +413,7 @@ window.addEventListener('DOMContentLoaded', function() {
         <h2 class="phase-title">{{ phase|regex_replace('^\d+\s*-\s*', '') }}</h2>
         <span style="margin-left: auto; color: var(--muted); font-size: 14px;">{{ topics|length }} topics</span>
     </div>
-    
+
     <div class="topic-grid">
         {% for topic in topics %}
         <a href="{{ url_for('topic_detail', topic_id=topic.id) }}" class="topic-card">

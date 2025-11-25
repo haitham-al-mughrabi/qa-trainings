@@ -10,12 +10,14 @@
         margin-bottom: 30px;
         text-align: center;
     }
+
     .admin-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
         margin-bottom: 40px;
     }
+
     .stat-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -23,17 +25,19 @@
         padding: 24px;
         text-align: center;
     }
+
     .stat-number {
         font-size: 36px;
         font-weight: 700;
         color: var(--accent);
         margin-bottom: 8px;
     }
+
     .stat-label {
         font-size: 14px;
         color: var(--muted);
     }
-    
+
     /* Tab Navigation */
     .admin-tabs {
         position: sticky;
@@ -46,10 +50,12 @@
         padding: 0 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
     .tabs-container {
         display: flex;
         gap: 0;
     }
+
     .admin-tab-btn {
         padding: 18px 28px;
         background: transparent;
@@ -65,6 +71,7 @@
         align-items: center;
         gap: 10px;
     }
+
     .admin-tab-btn::after {
         content: '';
         position: absolute;
@@ -76,52 +83,69 @@
         transform: translateX(-50%);
         transition: width 0.3s ease;
     }
+
     .admin-tab-btn:hover {
         color: var(--text);
         background: rgba(99, 102, 241, 0.08);
     }
+
     .admin-tab-btn:hover::after {
         width: 100%;
     }
+
     .admin-tab-btn.active {
         color: var(--accent);
         background: rgba(99, 102, 241, 0.15);
     }
+
     .admin-tab-btn.active::after {
         width: 100%;
     }
+
     .tab-icon {
         width: 18px;
         height: 18px;
     }
-    
+
     /* Tab Content */
     .tab-content {
         display: none;
     }
+
     .tab-content.active {
         display: block;
         animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    
+
     .section-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 24px;
     }
+
     .section-title {
         font-size: 24px;
         font-weight: 600;
     }
+
     .items-grid {
         display: grid;
         gap: 16px;
     }
+
     .item-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -132,32 +156,40 @@
         align-items: center;
         transition: all 0.2s ease;
     }
+
     .item-card:hover {
         border-color: rgba(99, 102, 241, 0.3);
     }
+
     .item-info h3 {
         font-size: 16px;
         font-weight: 600;
         margin: 0 0 6px 0;
     }
+
     .item-info h3 a {
         color: var(--text);
         text-decoration: none;
         transition: color 0.2s;
     }
+
     .item-info h3 a:hover {
         color: var(--accent);
     }
+
     .item-info p {
         font-size: 13px;
         color: var(--muted);
         margin: 0;
     }
+
     .item-actions {
         display: flex;
         gap: 10px;
     }
-    .btn-edit, .btn-delete {
+
+    .btn-edit,
+    .btn-delete {
         padding: 6px 14px;
         border-radius: 6px;
         font-size: 13px;
@@ -166,23 +198,27 @@
         border: none;
         cursor: pointer;
     }
+
     .btn-edit {
         background: rgba(99, 102, 241, 0.15);
         color: var(--accent);
         border: 1px solid rgba(99, 102, 241, 0.3);
     }
+
     .btn-edit:hover {
         background: rgba(99, 102, 241, 0.25);
     }
+
     .btn-delete {
         background: rgba(239, 68, 68, 0.15);
         color: #ef4444;
         border: 1px solid rgba(239, 68, 68, 0.3);
     }
+
     .btn-delete:hover {
         background: rgba(239, 68, 68, 0.25);
     }
-    
+
     /* Training Section Headers */
     .training-header-btn {
         width: 100%;
@@ -197,33 +233,38 @@
         transition: all 0.2s ease;
         margin-bottom: 16px;
     }
+
     .training-header-btn:hover {
         border-color: rgba(99, 102, 241, 0.3);
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
     }
+
     .training-header-title {
         font-size: 18px;
         font-weight: 600;
         color: var(--text);
         margin: 0;
     }
+
     .training-header-count {
         color: var(--muted);
         font-size: 14px;
         font-weight: 400;
         margin-left: 8px;
     }
+
     .training-collapse-icon {
         width: 20px;
         height: 20px;
         color: var(--muted);
         transition: transform 0.3s ease;
     }
+
     .training-topics-container {
         display: none;
         margin-bottom: 32px;
     }
-    
+
     /* Phase Section Headers */
     .phase-header-btn {
         width: 100%;
@@ -239,28 +280,33 @@
         margin-bottom: 12px;
         margin-left: 20px;
     }
+
     .phase-header-btn:hover {
         border-color: rgba(99, 102, 241, 0.25);
         background: rgba(30, 41, 59, 0.7);
     }
+
     .phase-header-title {
         font-size: 15px;
         font-weight: 500;
         color: var(--text);
         margin: 0;
     }
+
     .phase-header-count {
         color: var(--muted);
         font-size: 13px;
         font-weight: 400;
         margin-left: 8px;
     }
+
     .phase-collapse-icon {
         width: 16px;
         height: 16px;
         color: var(--muted);
         transition: transform 0.3s ease;
     }
+
     .phase-topics-container {
         display: none;
         margin-left: 20px;
@@ -269,52 +315,52 @@
 </style>
 
 <script>
-function showTab(tabName) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Remove active from all tabs
-    document.querySelectorAll('.admin-tab-btn').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Show selected tab
-    document.getElementById('tab-' + tabName).classList.add('active');
-    document.getElementById('btn-' + tabName).classList.add('active');
-}
+    function showTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.remove('active');
+        });
 
-function toggleTraining(trainingId) {
-    const content = document.getElementById('training-topics-' + trainingId);
-    const icon = document.getElementById('training-icon-' + trainingId);
-    
-    if (content.style.display === 'none' || content.style.display === '') {
-        content.style.display = 'block';
-        icon.style.transform = 'rotate(90deg)';
-    } else {
-        content.style.display = 'none';
-        icon.style.transform = 'rotate(0deg)';
+        // Remove active from all tabs
+        document.querySelectorAll('.admin-tab-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show selected tab
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.getElementById('btn-' + tabName).classList.add('active');
     }
-}
 
-function togglePhase(trainingId, phaseIndex) {
-    const content = document.getElementById('phase-topics-' + trainingId + '-' + phaseIndex);
-    const icon = document.getElementById('phase-icon-' + trainingId + '-' + phaseIndex);
-    
-    if (content.style.display === 'none' || content.style.display === '') {
-        content.style.display = 'block';
-        icon.style.transform = 'rotate(90deg)';
-    } else {
-        content.style.display = 'none';
-        icon.style.transform = 'rotate(0deg)';
+    function toggleTraining(trainingId) {
+        const content = document.getElementById('training-topics-' + trainingId);
+        const icon = document.getElementById('training-icon-' + trainingId);
+
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+            icon.style.transform = 'rotate(90deg)';
+        } else {
+            content.style.display = 'none';
+            icon.style.transform = 'rotate(0deg)';
+        }
     }
-}
 
-// Show first tab on load
-window.addEventListener('DOMContentLoaded', function() {
-    showTab('trainings');
-});
+    function togglePhase(trainingId, phaseIndex) {
+        const content = document.getElementById('phase-topics-' + trainingId + '-' + phaseIndex);
+        const icon = document.getElementById('phase-icon-' + trainingId + '-' + phaseIndex);
+
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+            icon.style.transform = 'rotate(90deg)';
+        } else {
+            content.style.display = 'none';
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    // Show first tab on load
+    window.addEventListener('DOMContentLoaded', function () {
+        showTab('trainings');
+    });
 </script>
 
 <div class="admin-header">
@@ -335,6 +381,10 @@ window.addEventListener('DOMContentLoaded', function() {
     <div class="stat-card">
         <div class="stat-number">{{ students|length }}</div>
         <div class="stat-label">Students</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ instructors_count }}</div>
+        <div class="stat-label">Instructors</div>
     </div>
 </div>
 
@@ -364,6 +414,13 @@ window.addEventListener('DOMContentLoaded', function() {
             </svg>
             <span>Students</span>
         </button>
+        <button id="btn-instructors" class="admin-tab-btn" onclick="showTab('instructors')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Instructors</span>
+        </button>
     </div>
 </nav>
 
@@ -382,7 +439,9 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="item-actions">
                 <a href="{{ url_for('admin_edit_training', training_id=training.id) }}" class="btn-edit">Edit</a>
-                <form method="POST" action="{{ url_for('admin_delete_training', training_id=training.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this training?');">
+                <form method="POST" action="{{ url_for('admin_delete_training', training_id=training.id) }}"
+                    style="display: inline;"
+                    onsubmit="return confirm('Are you sure you want to delete this training?');">
                     <button type="submit" class="btn-delete">Delete</button>
                 </form>
             </div>
@@ -397,7 +456,7 @@ window.addEventListener('DOMContentLoaded', function() {
         <h2 class="section-title">Topics</h2>
         <a href="{{ url_for('admin_add_topic') }}" class="btn-primary">+ Add Topic</a>
     </div>
-    
+
     {% for training in trainings %}
     <div style="margin-bottom: 24px;">
         <button class="training-header-btn" onclick="toggleTraining({{ training.id }})">
@@ -405,28 +464,31 @@ window.addEventListener('DOMContentLoaded', function() {
                 <span class="training-header-title">{{ training.name }}</span>
                 <span class="training-header-count">({{ training.topics|length }} topics)</span>
             </div>
-            <svg id="training-icon-{{ training.id }}" class="training-collapse-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg id="training-icon-{{ training.id }}" class="training-collapse-icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
                 <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
         </button>
         <div id="training-topics-{{ training.id }}" class="training-topics-container">
             {% set ns = namespace(phases={}) %}
             {% for topic in training.topics %}
-                {% set phase_key = topic.phase or 'No Phase' %}
-                {% if phase_key not in ns.phases %}
-                    {% set _ = ns.phases.update({phase_key: []}) %}
-                {% endif %}
-                {% set _ = ns.phases[phase_key].append(topic) %}
+            {% set phase_key = topic.phase or 'No Phase' %}
+            {% if phase_key not in ns.phases %}
+            {% set _ = ns.phases.update({phase_key: []}) %}
+            {% endif %}
+            {% set _ = ns.phases[phase_key].append(topic) %}
             {% endfor %}
-            
+
             {% for phase_name in ns.phases.keys()|sort %}
             <div style="margin-bottom: 20px;">
                 <button class="phase-header-btn" onclick="togglePhase({{ training.id }}, '{{ loop.index }}')">
                     <div>
-                        <span class="phase-header-title">{{ phase_name|regex_replace('^\d+\s*-\s*', '') if phase_name != 'No Phase' else phase_name }}</span>
+                        <span class="phase-header-title">{{ phase_name|regex_replace('^\d+\s*-\s*', '') if phase_name !=
+                            'No Phase' else phase_name }}</span>
                         <span class="phase-header-count">({{ ns.phases[phase_name]|length }} topics)</span>
                     </div>
-                    <svg id="phase-icon-{{ training.id }}-{{ loop.index }}" class="phase-collapse-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg id="phase-icon-{{ training.id }}-{{ loop.index }}" class="phase-collapse-icon"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 </button>
@@ -440,7 +502,9 @@ window.addEventListener('DOMContentLoaded', function() {
                             </div>
                             <div class="item-actions">
                                 <a href="{{ url_for('admin_edit_topic', topic_id=topic.id) }}" class="btn-edit">Edit</a>
-                                <form method="POST" action="{{ url_for('admin_delete_topic', topic_id=topic.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this topic?');">
+                                <form method="POST" action="{{ url_for('admin_delete_topic', topic_id=topic.id) }}"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this topic?');">
                                     <button type="submit" class="btn-delete">Delete</button>
                                 </form>
                             </div>
@@ -453,7 +517,7 @@ window.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
     {% endfor %}
-    
+
     {% if trainings|length == 0 %}
     <p style="color: var(--muted); text-align: center; padding: 40px;">No trainings found. Add a training first.</p>
     {% endif %}
@@ -473,12 +537,27 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="item-actions">
                 <a href="{{ url_for('admin_edit_student', student_id=student.id) }}" class="btn-edit">Edit</a>
-                <form method="POST" action="{{ url_for('admin_delete_student', student_id=student.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                <form method="POST" action="{{ url_for('admin_delete_student', student_id=student.id) }}"
+                    style="display: inline;"
+                    onsubmit="return confirm('Are you sure you want to delete this student?');">
                     <button type="submit" class="btn-delete">Delete</button>
                 </form>
             </div>
         </div>
         {% endfor %}
+    </div>
+</div>
+
+<!-- Instructors Tab -->
+<div id="tab-instructors" class="tab-content">
+    <div class="section-header">
+        <h2 class="section-title">Instructors</h2>
+        <a href="{{ url_for('admin_instructors') }}" class="btn-primary">Manage Instructors →</a>
+    </div>
+    <div style="text-align: center; padding: 60px 20px;">
+        <p style="color: var(--text-light); margin-bottom: 20px;">Manage instructor profiles, expertise, and training
+            assignments.</p>
+        <a href="{{ url_for('admin_instructors') }}" class="btn-primary">Go to Instructors Management</a>
     </div>
 </div>
 

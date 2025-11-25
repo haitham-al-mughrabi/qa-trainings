@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 20px;
+        padding: 50px 40px;
+        margin: 40px 0;
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .profile-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: 700;
+        color: white;
+        border: 4px solid rgba(99, 102, 241, 0.3);
+        flex-shrink: 0;
+    }
+
+    .profile-photo img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .profile-info {
+        flex: 1;
+    }
+
+    .profile-name {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .profile-role {
+        font-size: 18px;
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .profile-bio {
+        font-size: 15px;
+        color: var(--text-light);
+        line-height: 1.7;
+        margin-bottom: 20px;
+    }
+
+    .profile-expertise {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .expertise-tag {
+        padding: 6px 14px;
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 8px;
+        font-size: 12px;
+        color: var(--text);
+    }
+
+    .profile-contact {
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--text-light);
+    }
+
+    .profile-contact a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 50px 0 30px;
+    }
+
+    .trainings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 24px;
+        margin-bottom: 60px;
+    }
+
+    .training-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 14px;
+        padding: 24px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .training-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+    }
+
+    .training-name {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text);
+    }
+
+    .training-description {
+        font-size: 14px;
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="profile-header">
+    <div class="profile-photo">
+        {% if instructor.photo_url %}
+        <img src="{{ instructor.photo_url }}" alt="{{ instructor.name }}">
+        {% else %}
+        {{ instructor.name.split()[0][0] }}{{ instructor.name.split()[-1][0] if instructor.name.split()|length > 1 else
+        '' }}
+        {% endif %}
+    </div>
+    <div class="profile-info">
+        <h1 class="profile-name">{{ instructor.name }}</h1>
+        <div class="profile-role">{{ instructor.role or 'QA Instructor' }}</div>
+
+        {% if instructor.bio %}
+        <p class="profile-bio">{{ instructor.bio }}</p>
+        {% endif %}
+
+        {% if instructor.expertise %}
+        <div class="profile-expertise">
+            {% for tag in instructor.expertise.split(',') %}
+            <span class="expertise-tag">{{ tag.strip() }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if instructor.email %}
+        <div class="profile-contact">
+            <strong>Contact:</strong> <a href="mailto:{{ instructor.email }}">{{ instructor.email }}</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<h2 class="section-title">Training Programs</h2>
+
+{% if trainings %}
+<div class="trainings-grid">
+    {% for training in trainings %}
+    <a href="{{ url_for('training_detail', training_id=training.id) }}" class="training-card">
+        <h3 class="training-name">{{ training.name }}</h3>
+        {% if training.description %}
+        <p class="training-description">{{ training.description }}</p>
+        {% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 40px 20px; color: var(--muted);">
+    <p>This instructor is not currently assigned to any training programs.</p>
+</div>
+{% endif %}
+
+{% endblock %}

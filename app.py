@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from models import db, Training, Topic, Student, Attendance, Progress, KnowledgeAssessment, KnowledgeSkill
+from models import db, Training, Topic, Student, Attendance, Progress, KnowledgeAssessment, KnowledgeSkill, Instructor, training_instructors
 import os
 import re
 from datetime import datetime
@@ -22,7 +22,8 @@ def inject_now():
 @app.route('/')
 def index():
     trainings = Training.query.all()
-    return render_template('index.html', trainings=trainings)
+    instructors = Instructor.query.filter_by(is_active=True).limit(3).all()
+    return render_template('index.html', trainings=trainings, instructors=instructors)
 
 @app.route('/trainings')
 def trainings():
@@ -571,10 +572,12 @@ def admin_dashboard():
     trainings = Training.query.all()
     topics = Topic.query.all()
     students = Student.query.all()
+    instructors_count = Instructor.query.filter_by(is_active=True).count()
     return render_template('admin_dashboard.html', 
                          trainings=trainings, 
                          topics=topics, 
-                         students=students)
+                         students=students,
+                         instructors_count=instructors_count)
 
 # Training Management
 @app.route('/admin/trainings/add', methods=['GET', 'POST'])
@@ -712,7 +715,213 @@ def admin_delete_student(student_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
+# ============================================
+# INSTRUCTOR ROUTES
+# ============================================
+
+# Public Routes
+@app.route('/instructors')
+def instructors_list():
+    instructors = Instructor.query.filter_by(is_active=True).order_by(Instructor.name).all()
+    return render_template('instructors.html', instructors=instructors)
+
+@app.route('/instructor/<int:instructor_id>')
+def instructor_profile(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    # Get trainings for this instructor
+    trainings = instructor.trainings.all()
+    return render_template('instructor_profile.html', instructor=instructor, trainings=trainings)
+
+# Admin Routes
+@app.route('/admin/instructors')
+def admin_instructors():
+    instructors = Instructor.query.order_by(Instructor.is_active.desc(), Instructor.name).all()
+    return render_template('admin_instructors.html', instructors=instructors)
+
+@app.route('/admin/instructors/add', methods=['GET', 'POST'])
+def admin_add_instructor():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        role = request.form.get('role')
+        bio = request.form.get('bio')
+        expertise = request.form.get('expertise')
+        email = request.form.get('email')
+        photo_url = request.form.get('photo_url')
+        
+        instructor = Instructor(
+            name=name,
+            role=role,
+            bio=bio,
+            expertise=expertise,
+            email=email,
+            photo_url=photo_url
+        )
+        db.session.add(instructor)
+        db.session.commit()
+        
+        # Handle training linkages
+        training_ids = request.form.getlist('training_ids')
+        primary_training_id = request.form.get('primary_training_id')
+        
+        for training_id in training_ids:
+            training = Training.query.get(int(training_id))
+            if training:
+                instructor.trainings.append(training)
+                
+                # Set primary flag if this is the primary training
+                if primary_training_id and int(training_id) == int(primary_training_id):
+                    # Update the association table to set is_primary
+                    db.session.execute(
+                        training_instructors.update().where(
+                            (training_instructors.c.training_id == int(training_id)) &
+                            (training_instructors.c.instructor_id == instructor.id)
+                        ).values(is_primary=True)
+                    )
+        
+        db.session.commit()
+        
+        return redirect(url_for('admin_instructors'))
+    
+    trainings = Training.query.all()
+    return render_template('admin_instructor_form.html', instructor=None, trainings=trainings)
+
+@app.route('/admin/instructors/<int:instructor_id>/edit', methods=['GET', 'POST'])
+def admin_edit_instructor(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    
+    if request.method == 'POST':
+        instructor.name = request.form.get('name')
+        instructor.role = request.form.get('role')
+        instructor.bio = request.form.get('bio')
+        instructor.expertise = request.form.get('expertise')
+        instructor.email = request.form.get('email')
+        instructor.photo_url = request.form.get('photo_url')
+        
+        # Clear existing training linkages
+        instructor.trainings = []
+        db.session.commit()
+        
+        # Handle training linkages
+        training_ids = request.form.getlist('training_ids')
+        primary_training_id = request.form.get('primary_training_id')
+        
+        for training_id in training_ids:
+            training = Training.query.get(int(training_id))
+            if training:
+                instructor.trainings.append(training)
+        
+        db.session.commit()
+        
+        # Update primary flags
+        if primary_training_id:
+            # First, clear all primary flags for this instructor
+            db.session.execute(
+                training_instructors.update().where(
+                    training_instructors.c.instructor_id == instructor.id
+                ).values(is_primary=False)
+            )
+            
+            # Then set the primary flag for the selected training
+            db.session.execute(
+                training_instructors.update().where(
+                    (training_instructors.c.training_id == int(primary_training_id)) &
+                    (training_instructors.c.instructor_id == instructor.id)
+                ).values(is_primary=True)
+            )
+            
+            db.session.commit()
+        
+        return redirect(url_for('admin_instructors'))
+    
+    trainings = Training.query.all()
+    # Get current training IDs for this instructor
+    current_training_ids = [t.id for t in instructor.trainings.all()]
+    
+    # Get primary training ID
+    primary_training_id = None
+    result = db.session.execute(
+        db.select(training_instructors.c.training_id).where(
+            (training_instructors.c.instructor_id == instructor.id) &
+            (training_instructors.c.is_primary == True)
+        )
+    ).first()
+    if result:
+        primary_training_id = result[0]
+    
+    return render_template('admin_instructor_form.html', 
+                         instructor=instructor, 
+                         trainings=trainings,
+                         current_training_ids=current_training_ids,
+                         primary_training_id=primary_training_id)
+
+@app.route('/admin/instructors/<int:instructor_id>/delete', methods=['POST'])
+def admin_delete_instructor(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    # Soft delete
+    instructor.is_active = False
+    db.session.commit()
+    return redirect(url_for('admin_instructors'))
+
+@app.route('/admin/instructors/<int:instructor_id>/activate', methods=['POST'])
+def admin_activate_instructor(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    instructor.is_active = True
+    db.session.commit()
+    return redirect(url_for('admin_instructors'))
+
+# API Routes for Training Linkage
+@app.route('/api/instructors/<int:instructor_id>/link-training', methods=['POST'])
+def api_link_instructor_training(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    data = request.json
+    training_id = data.get('training_id')
+    is_primary = data.get('is_primary', False)
+    
+    training = Training.query.get_or_404(training_id)
+    
+    # Check if already linked
+    if training not in instructor.trainings.all():
+        instructor.trainings.append(training)
+        db.session.commit()
+    
+    # Update primary flag if needed
+    if is_primary:
+        db.session.execute(
+            training_instructors.update().where(
+                (training_instructors.c.training_id == training_id) &
+                (training_instructors.c.instructor_id == instructor_id)
+            ).values(is_primary=True)
+        )
+        db.session.commit()
+    
+    return jsonify({'success': True})
+
+@app.route('/api/instructors/<int:instructor_id>/unlink-training', methods=['POST'])
+def api_unlink_instructor_training(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    data = request.json
+    training_id = data.get('training_id')
+    
+    training = Training.query.get_or_404(training_id)
+    
+    if training in instructor.trainings.all():
+        instructor.trainings.remove(training)
+        db.session.commit()
+    
+    return jsonify({'success': True})
+
+@app.route('/api/instructors/<int:instructor_id>/trainings')
+def api_get_instructor_trainings(instructor_id):
+    instructor = Instructor.query.get_or_404(instructor_id)
+    trainings = instructor.trainings.all()
+    
+    return jsonify([{
+        'id': t.id,
+        'name': t.name,
+        'description': t.description
+    } for t in trainings])
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(port=6500,debug=True)

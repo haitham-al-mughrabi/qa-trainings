@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 40px 0 30px;
+    }
+
+    .admin-title {
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        color: var(--text);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+    }
+
+    .btn-danger:hover {
+        background: rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-success {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #22c55e;
+    }
+
+    .btn-success:hover {
+        background: rgba(34, 197, 94, 0.2);
+    }
+
+    .instructors-table {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: rgba(99, 102, 241, 0.1);
+        padding: 16px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text);
+        border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    td {
+        padding: 16px;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        font-size: 14px;
+        color: var(--text-light);
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    tr:hover {
+        background: rgba(99, 102, 241, 0.05);
+    }
+
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-active {
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-inactive {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .instructor-name {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .expertise-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .expertise-tag {
+        padding: 2px 8px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 4px;
+        font-size: 10px;
+        color: var(--text-light);
+    }
+</style>
+
+<div class="admin-header">
+    <h1 class="admin-title">Manage Instructors</h1>
+    <a href="{{ url_for('admin_add_instructor') }}" class="btn btn-primary">+ Add Instructor</a>
+</div>
+
+<div class="instructors-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Expertise</th>
+                <th>Trainings</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instructor in instructors %}
+            <tr>
+                <td>
+                    <div class="instructor-name">{{ instructor.name }}</div>
+                    {% if instructor.email %}
+                    <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">{{ instructor.email }}</div>
+                    {% endif %}
+                </td>
+                <td>{{ instructor.role or '-' }}</td>
+                <td>
+                    {% if instructor.expertise %}
+                    <div class="expertise-tags">
+                        {% for tag in instructor.expertise.split(',')[:3] %}
+                        <span class="expertise-tag">{{ tag.strip() }}</span>
+                        {% endfor %}
+                        {% if instructor.expertise.split(',')|length > 3 %}
+                        <span class="expertise-tag">+{{ instructor.expertise.split(',')|length - 3 }}</span>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>{{ instructor.trainings.count() }}</td>
+                <td>
+                    {% if instructor.is_active %}
+                    <span class="status-badge status-active">Active</span>
+                    {% else %}
+                    <span class="status-badge status-inactive">Inactive</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{{ url_for('admin_edit_instructor', instructor_id=instructor.id) }}"
+                            class="btn btn-secondary btn-sm">Edit</a>
+                        {% if instructor.is_active %}
+                        <form action="{{ url_for('admin_delete_instructor', instructor_id=instructor.id) }}"
+                            method="POST" style="display: inline;"
+                            onsubmit="return confirm('Are you sure you want to deactivate this instructor?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Deactivate</button>
+                        </form>
+                        {% else %}
+                        <form action="{{ url_for('admin_activate_instructor', instructor_id=instructor.id) }}"
+                            method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-success btn-sm">Activate</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if not instructors %}
+<div style="text-align: center; padding: 60px 20px; color: var(--muted);">
+    <p>No instructors found. Click "Add Instructor" to create one.</p>
+</div>
+{% endif %}
+
+<div style="margin-top: 30px;">
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Back to Admin Dashboard</a>
+</div>
+
+{% endblock %}
