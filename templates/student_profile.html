@@ -2,14 +2,68 @@
 
 {% block content %}
 <style>
+    @keyframes gradient-shift {
+
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
     .profile-header {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        padding: 40px;
-        margin-bottom: 30px;
+        background: linear-gradient(135deg,
+                rgba(99, 102, 241, 0.25) 0%,
+                rgba(168, 85, 247, 0.25) 50%,
+                rgba(236, 72, 153, 0.25) 100%);
+        background-size: 200% 200%;
+        animation: gradient-shift 15s ease infinite;
+        border: 1px solid rgba(99, 102, 241, 0.4);
+        border-radius: 24px;
+        padding: 60px;
+        margin-bottom: 50px;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
     }
 
     .profile-header::before {
@@ -17,148 +71,430 @@
         position: absolute;
         top: -50%;
         right: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: pulse 8s ease-in-out infinite;
+    }
+
+    .profile-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
         width: 400px;
         height: 400px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
         border-radius: 50%;
+        animation: pulse 10s ease-in-out infinite reverse;
     }
 
     .student-name {
-        font-size: 32px;
-        font-weight: 700;
-        margin: 0 0 20px 0;
+        font-size: 48px;
+        font-weight: 900;
+        margin: 0 0 40px 0;
         position: relative;
         z-index: 1;
+        background: linear-gradient(135deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.9) 50%,
+                rgba(236, 72, 153, 0.9) 100%);
+        background-size: 200% 200%;
+        animation: gradient-shift 8s ease infinite;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        letter-spacing: -1px;
     }
 
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
+        gap: 24px;
         position: relative;
         z-index: 1;
     }
 
     .stat-card {
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 10px;
-        padding: 16px;
+        background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.08) 100%);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        padding: 32px 24px;
         text-align: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.8) 50%,
+                rgba(236, 72, 153, 0.8) 100%);
+        background-size: 200% 100%;
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .stat-card::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);
+        border-color: rgba(99, 102, 241, 0.6);
+    }
+
+    .stat-card:hover::before {
+        transform: scaleX(1);
+        animation: shimmer 2s infinite;
+    }
+
+    .stat-card:hover::after {
+        width: 300px;
+        height: 300px;
+    }
+
+    .stat-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+        display: block;
+        animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.3));
     }
 
     .stat-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--accent);
-        margin-bottom: 4px;
+        font-size: 42px;
+        font-weight: 900;
+        background: linear-gradient(135deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.9) 50%,
+                rgba(236, 72, 153, 0.9) 100%);
+        background-size: 200% 200%;
+        animation: gradient-shift 6s ease infinite;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
     }
 
     .stat-label {
-        font-size: 13px;
-        color: var(--muted);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        position: relative;
+        z-index: 1;
     }
 
     .section-title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 20px;
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 32px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+    }
+
+    .section-title::before {
+        content: '';
+        width: 8px;
+        height: 40px;
+        background: linear-gradient(180deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.8) 50%,
+                rgba(236, 72, 153, 0.8) 100%);
+        border-radius: 4px;
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .section-title::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg,
+                rgba(99, 102, 241, 0.5) 0%,
+                transparent 100%);
     }
 
     .training-section {
-        margin-bottom: 40px;
+        margin-bottom: 60px;
     }
 
     .training-header {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 16px;
+        background: linear-gradient(135deg,
+                rgba(30, 41, 59, 0.95) 0%,
+                rgba(30, 41, 59, 0.85) 100%);
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 20px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .training-header::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: linear-gradient(180deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.8) 50%,
+                rgba(236, 72, 153, 0.8) 100%);
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    }
+
+    .training-header:hover {
+        transform: translateX(4px);
+        border-color: rgba(99, 102, 241, 0.5);
+        box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3);
     }
 
     .training-name {
-        font-size: 20px;
-        font-weight: 600;
+        font-size: 24px;
+        font-weight: 800;
         margin: 0;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .training-name::before {
+        content: '🎓';
+        font-size: 28px;
+        filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.4));
     }
 
     .topics-list {
         display: grid;
-        gap: 12px;
+        gap: 20px;
     }
 
     .topic-item {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 10px;
-        padding: 16px;
+        background: linear-gradient(135deg,
+                rgba(30, 41, 59, 0.95) 0%,
+                rgba(30, 41, 59, 0.85) 100%);
+        border: 2px solid rgba(99, 102, 241, 0.2);
+        border-radius: 18px;
+        padding: 24px 28px;
         display: grid;
         grid-template-columns: 1fr auto auto;
-        gap: 16px;
+        gap: 24px;
         align-items: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .topic-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg,
+                rgba(99, 102, 241, 0.6),
+                rgba(168, 85, 247, 0.6));
+        transform: scaleY(0);
+        transition: transform 0.4s ease;
+    }
+
+    .topic-item::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg,
+                rgba(99, 102, 241, 0.05) 0%,
+                transparent 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .topic-item:hover {
+        border-color: rgba(99, 102, 241, 0.5);
+        transform: translateX(8px) scale(1.01);
+        box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25);
+    }
+
+    .topic-item:hover::before {
+        transform: scaleY(1);
+    }
+
+    .topic-item:hover::after {
+        opacity: 1;
     }
 
     .topic-name {
-        font-size: 15px;
-        font-weight: 500;
+        font-size: 17px;
+        font-weight: 700;
         color: var(--text);
+        position: relative;
+        z-index: 1;
     }
 
     .topic-phase {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--muted);
-        margin-top: 4px;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .topic-phase::before {
+        content: '📅';
+        font-size: 14px;
+        filter: grayscale(0.3);
     }
 
     .status-badge {
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
         white-space: nowrap;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        position: relative;
+        z-index: 1;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-badge:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
     .status-present {
-        background: rgba(34, 197, 94, 0.15);
+        background: linear-gradient(135deg,
+                rgba(34, 197, 94, 0.3) 0%,
+                rgba(34, 197, 94, 0.2) 100%);
         color: #22c55e;
-        border: 1px solid rgba(34, 197, 94, 0.3);
+        border: 2px solid rgba(34, 197, 94, 0.5);
+    }
+
+    .status-present::before {
+        content: '✓ ';
     }
 
     .status-absent {
-        background: rgba(239, 68, 68, 0.15);
+        background: linear-gradient(135deg,
+                rgba(239, 68, 68, 0.3) 0%,
+                rgba(239, 68, 68, 0.2) 100%);
         color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
+        border: 2px solid rgba(239, 68, 68, 0.5);
+    }
+
+    .status-absent::before {
+        content: '✗ ';
     }
 
     .status-excused {
-        background: rgba(251, 191, 36, 0.15);
+        background: linear-gradient(135deg,
+                rgba(251, 191, 36, 0.3) 0%,
+                rgba(251, 191, 36, 0.2) 100%);
         color: #fbbf24;
-        border: 1px solid rgba(251, 191, 36, 0.3);
+        border: 2px solid rgba(251, 191, 36, 0.5);
+    }
+
+    .status-excused::before {
+        content: '⊘ ';
     }
 
     .status-completed {
-        background: rgba(99, 102, 241, 0.15);
+        background: linear-gradient(135deg,
+                rgba(99, 102, 241, 0.3) 0%,
+                rgba(99, 102, 241, 0.2) 100%);
         color: var(--accent);
-        border: 1px solid rgba(99, 102, 241, 0.3);
+        border: 2px solid rgba(99, 102, 241, 0.5);
+    }
+
+    .status-completed::before {
+        content: '✓ ';
     }
 
     .status-in-progress {
-        background: rgba(251, 191, 36, 0.15);
+        background: linear-gradient(135deg,
+                rgba(251, 191, 36, 0.3) 0%,
+                rgba(251, 191, 36, 0.2) 100%);
         color: #fbbf24;
-        border: 1px solid rgba(251, 191, 36, 0.3);
+        border: 2px solid rgba(251, 191, 36, 0.5);
+    }
+
+    .status-in-progress::before {
+        content: '◐ ';
     }
 
     .status-not-started {
-        background: rgba(148, 163, 184, 0.15);
+        background: linear-gradient(135deg,
+                rgba(148, 163, 184, 0.3) 0%,
+                rgba(148, 163, 184, 0.2) 100%);
         color: var(--muted);
-        border: 1px solid rgba(148, 163, 184, 0.3);
+        border: 2px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .status-not-started::before {
+        content: '○ ';
     }
 
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
+        padding: 100px 40px;
         color: var(--muted);
+        background: linear-gradient(135deg,
+                rgba(30, 41, 59, 0.6) 0%,
+                rgba(30, 41, 59, 0.4) 100%);
+        border: 2px dashed rgba(99, 102, 241, 0.3);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .empty-state::before {
+        content: '📚';
+        font-size: 80px;
+        display: block;
+        margin-bottom: 24px;
+        opacity: 0.6;
+        animation: float 4s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.3));
     }
 </style>
 
@@ -167,22 +503,27 @@
     <h1 class="student-name">{{ student.name }}</h1>
     <div class="stats-grid">
         <div class="stat-card">
+            <span class="stat-icon">📚</span>
             <div class="stat-value">{{ stats.total_trainings }}</div>
             <div class="stat-label">Enrolled Trainings</div>
         </div>
         <div class="stat-card">
+            <span class="stat-icon">📝</span>
             <div class="stat-value">{{ stats.total_topics }}</div>
             <div class="stat-label">Total Topics</div>
         </div>
         <div class="stat-card">
+            <span class="stat-icon">✅</span>
             <div class="stat-value">{{ stats.attendance_rate }}%</div>
             <div class="stat-label">Attendance Rate</div>
         </div>
         <div class="stat-card">
+            <span class="stat-icon">🎯</span>
             <div class="stat-value">{{ stats.completion_rate }}%</div>
             <div class="stat-label">Completion Rate</div>
         </div>
         <div class="stat-card">
+            <span class="stat-icon">⭐</span>
             <div class="stat-value">{{ stats.total_skills }}</div>
             <div class="stat-label">Assessed Skills</div>
         </div>
