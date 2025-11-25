@@ -123,7 +123,7 @@ def attendance():
     students = Student.query.all()
     trainings = Training.query.all()
     
-    # Calculate attendance summary
+    # Calculate basic attendance summary for the form
     summary = {}
     for student in students:
         total = Attendance.query.filter_by(student_id=student.id).count()
@@ -133,8 +133,92 @@ def attendance():
             'present': present,
             'percentage': int((present / total) * 100) if total > 0 else 0
         }
+    
+    # Build hierarchical attendance data structure for analytics
+    attendance_data = {}
+    
+    for training in trainings:
+        training_stats = {
+            'name': training.name,
+            'id': training.id,
+            'phases': {},
+            'total_topics': len(training.topics),
+            'students': {}
+        }
         
-    return render_template('attendance.html', students=students, trainings=trainings, summary=summary)
+        # Group topics by phase
+        for topic in training.topics:
+            phase_key = topic.phase or 'No Phase'
+            if phase_key not in training_stats['phases']:
+                training_stats['phases'][phase_key] = {
+                    'topics': [],
+                    'students': {}
+                }
+            
+            # Get attendance for this topic (most recent record per student)
+            topic_attendance = {}
+            for student in students:
+                # Get the most recent attendance record for this student and topic
+                attendance_record = Attendance.query.filter_by(
+                    student_id=student.id, 
+                    topic_id=topic.id
+                ).order_by(Attendance.date.desc()).first()
+                
+                status = attendance_record.status if attendance_record else None
+                topic_attendance[student.id] = status
+                
+                # Aggregate to phase level
+                if student.id not in training_stats['phases'][phase_key]['students']:
+                    training_stats['phases'][phase_key]['students'][student.id] = {
+                        'present': 0, 'absent': 0, 'excused': 0, 'total': 0, 'percentage': 0
+                    }
+                
+                training_stats['phases'][phase_key]['students'][student.id]['total'] += 1
+                if status == 'Present':
+                    training_stats['phases'][phase_key]['students'][student.id]['present'] += 1
+                elif status == 'Absent':
+                    training_stats['phases'][phase_key]['students'][student.id]['absent'] += 1
+                elif status == 'Excused':
+                    training_stats['phases'][phase_key]['students'][student.id]['excused'] += 1
+                
+                # Calculate percentage for phase
+                phase_stats = training_stats['phases'][phase_key]['students'][student.id]
+                if phase_stats['total'] > 0:
+                    phase_stats['percentage'] = int((phase_stats['present'] / phase_stats['total']) * 100)
+                
+                # Aggregate to training level
+                if student.id not in training_stats['students']:
+                    training_stats['students'][student.id] = {
+                        'present': 0, 'absent': 0, 'excused': 0, 'total': 0, 'percentage': 0
+                    }
+                
+                training_stats['students'][student.id]['total'] += 1
+                if status == 'Present':
+                    training_stats['students'][student.id]['present'] += 1
+                elif status == 'Absent':
+                    training_stats['students'][student.id]['absent'] += 1
+                elif status == 'Excused':
+                    training_stats['students'][student.id]['excused'] += 1
+                
+                # Calculate percentage for training
+                training_student_stats = training_stats['students'][student.id]
+                if training_student_stats['total'] > 0:
+                    training_student_stats['percentage'] = int((training_student_stats['present'] / training_student_stats['total']) * 100)
+            
+            training_stats['phases'][phase_key]['topics'].append({
+                'id': topic.id,
+                'name': topic.name,
+                'attendance': topic_attendance
+            })
+        
+        attendance_data[training.id] = training_stats
+    
+    return render_template('attendance.html', 
+                         students=students, 
+                         trainings=trainings, 
+                         summary=summary,
+                         attendance_data=attendance_data,
+                         students_json=[{'id': s.id, 'name': s.name} for s in students])
 
 @app.route('/progress')
 def progress():
