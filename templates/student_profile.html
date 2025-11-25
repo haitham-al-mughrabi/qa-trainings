@@ -496,6 +496,132 @@
         animation: float 4s ease-in-out infinite;
         filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.3));
     }
+
+    /* Tab Navigation */
+    .tabs-container {
+        margin-bottom: 40px;
+    }
+
+    .tabs-nav {
+        display: flex;
+        gap: 8px;
+        border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+        margin-bottom: 32px;
+        overflow-x: auto;
+    }
+
+    .tab-button {
+        padding: 16px 32px;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tab-button::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.8) 50%,
+                rgba(236, 72, 153, 0.8) 100%);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .tab-button:hover {
+        color: var(--text);
+        background: rgba(99, 102, 241, 0.05);
+    }
+
+    .tab-button.active {
+        color: var(--accent);
+    }
+
+    .tab-button.active::before {
+        transform: scaleX(1);
+    }
+
+    .tab-icon {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .overview-grid {
+        display: grid;
+        gap: 24px;
+    }
+
+    .info-card {
+        background: linear-gradient(135deg,
+                rgba(30, 41, 59, 0.95) 0%,
+                rgba(30, 41, 59, 0.85) 100%);
+        border: 2px solid rgba(99, 102, 241, 0.2);
+        border-radius: 18px;
+        padding: 28px 32px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: linear-gradient(180deg,
+                var(--accent) 0%,
+                rgba(168, 85, 247, 0.8) 50%,
+                rgba(236, 72, 153, 0.8) 100%);
+    }
+
+    .info-card-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-card-content {
+        color: var(--text);
+        line-height: 1.8;
+    }
 </style>
 
 <!-- Profile Header -->
@@ -530,110 +656,196 @@
     </div>
 </div>
 
-<!-- Knowledge Skills Section -->
-{% if assessments_by_category %}
-<div class="training-section">
-    <h2 class="section-title">Knowledge & Skills</h2>
-
-    {% for category, assessments in assessments_by_category.items() %}
-    <div class="training-header">
-        <h3 class="training-name">{{ category }}</h3>
+<!-- Tabs Container -->
+<div class="tabs-container">
+    <!-- Tab Navigation -->
+    <div class="tabs-nav">
+        <button class="tab-button active" onclick="switchTab('overview')">
+            <span class="tab-icon">📊</span>
+            Overview
+        </button>
+        <button class="tab-button" onclick="switchTab('trainings')">
+            <span class="tab-icon">🎓</span>
+            Trainings & Topics
+        </button>
+        <button class="tab-button" onclick="switchTab('skills')">
+            <span class="tab-icon">⭐</span>
+            Knowledge & Skills
+        </button>
     </div>
 
-    <div class="topics-list">
-        {% for assessment in assessments %}
-        <div class="topic-item" style="grid-template-columns: 1fr auto;">
-            <div>
-                <div class="topic-name">{{ assessment.topic }}</div>
-                <div class="topic-phase">Last updated: {{ assessment.last_updated.strftime('%Y-%m-%d') if
-                    assessment.last_updated else 'N/A' }}</div>
+    <!-- Overview Tab -->
+    <div id="overview-tab" class="tab-content active">
+        <div class="overview-grid">
+            <div class="info-card">
+                <div class="info-card-title">
+                    <span>📈</span>
+                    Performance Summary
+                </div>
+                <div class="info-card-content">
+                    <p><strong>{{ student.name }}</strong> is enrolled in <strong>{{ stats.total_trainings }}</strong>
+                        training program(s) with a total of <strong>{{ stats.total_topics }}</strong> topics.</p>
+                    <p style="margin-top: 12px;">Attendance Rate: <strong style="color: var(--accent);">{{
+                            stats.attendance_rate }}%</strong></p>
+                    <p>Completion Rate: <strong style="color: var(--accent);">{{ stats.completion_rate }}%</strong></p>
+                    <p>Assessed Skills: <strong style="color: var(--accent);">{{ stats.total_skills }}</strong></p>
+                </div>
             </div>
 
-            <div>
-                {% if assessment.proficiency_level == 'Beginner' %}
-                <span class="status-badge"
-                    style="background: rgba(148, 163, 184, 0.15); color: var(--muted); border: 1px solid rgba(148, 163, 184, 0.3);">
-                    Beginner
-                </span>
-                {% elif assessment.proficiency_level == 'Intermediate' %}
-                <span class="status-badge"
-                    style="background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3);">
-                    Intermediate
-                </span>
-                {% elif assessment.proficiency_level == 'Advance' %}
-                <span class="status-badge"
-                    style="background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);">
-                    Advance
-                </span>
-                {% elif assessment.proficiency_level == 'Expert' %}
-                <span class="status-badge"
-                    style="background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3);">
-                    Expert
-                </span>
-                {% endif %}
+            {% if assessments_by_category %}
+            <div class="info-card">
+                <div class="info-card-title">
+                    <span>🎯</span>
+                    Skills Breakdown
+                </div>
+                <div class="info-card-content">
+                    {% for category, assessments in assessments_by_category.items() %}
+                    <p><strong>{{ category }}:</strong> {{ assessments|length }} skill(s) assessed</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Trainings & Topics Tab -->
+    <div id="trainings-tab" class="tab-content">
+        {% if trainings %}
+        {% for training in trainings %}
+        <div class="training-section">
+            <div class="training-header">
+                <h2 class="training-name">{{ training.name }}</h2>
+            </div>
+
+            <div class="topics-list">
+                {% for topic in topics if topic.training_id == training.id %}
+                <div class="topic-item">
+                    <div>
+                        <div class="topic-name">{{ topic.name }}</div>
+                        {% if topic.phase %}
+                        <div class="topic-phase">{{ topic.phase|regex_replace('^\\d+\\s*-\\s*', '') }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% if attendance_map.get(topic.id) %}
+                        {% if attendance_map[topic.id].status == 'Present' %}
+                        <span class="status-badge status-present">Present</span>
+                        {% elif attendance_map[topic.id].status == 'Absent' %}
+                        <span class="status-badge status-absent">Absent</span>
+                        {% elif attendance_map[topic.id].status == 'Excused' %}
+                        <span class="status-badge status-excused">Excused</span>
+                        {% endif %}
+                        {% else %}
+                        <span class="status-badge status-not-started">No Record</span>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% if progress_map.get(topic.id) %}
+                        {% if progress_map[topic.id].status == 'Completed' %}
+                        <span class="status-badge status-completed">Completed</span>
+                        {% elif progress_map[topic.id].status == 'In Progress' %}
+                        <span class="status-badge status-in-progress">In Progress</span>
+                        {% elif progress_map[topic.id].status == 'Not Started' %}
+                        <span class="status-badge status-not-started">Not Started</span>
+                        {% endif %}
+                        {% else %}
+                        <span class="status-badge status-not-started">Not Started</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
         {% endfor %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<!-- Trainings and Topics -->
-{% if trainings %}
-{% for training in trainings %}
-<div class="training-section">
-    <div class="training-header">
-        <h2 class="training-name">{{ training.name }}</h2>
+        {% else %}
+        <div class="empty-state">
+            <p style="font-size: 16px;">No training records found for this student.</p>
+            <p style="font-size: 14px; margin-top: 8px;">Attendance and progress records will appear here once added.
+            </p>
+        </div>
+        {% endif %}
     </div>
 
-    <div class="topics-list">
-        {% for topic in topics if topic.training_id == training.id %}
-        <div class="topic-item">
-            <div>
-                <div class="topic-name">{{ topic.name }}</div>
-                {% if topic.phase %}
-                <div class="topic-phase">{{ topic.phase|regex_replace('^\d+\s*-\s*', '') }}</div>
-                {% endif %}
+    <!-- Knowledge & Skills Tab -->
+    <div id="skills-tab" class="tab-content">
+        {% if assessments_by_category %}
+        {% for category, assessments in assessments_by_category.items() %}
+        <div class="training-section">
+            <div class="training-header">
+                <h3 class="training-name">{{ category }}</h3>
             </div>
 
-            <div>
-                {% if attendance_map.get(topic.id) %}
-                {% if attendance_map[topic.id].status == 'Present' %}
-                <span class="status-badge status-present">✓ Present</span>
-                {% elif attendance_map[topic.id].status == 'Absent' %}
-                <span class="status-badge status-absent">✗ Absent</span>
-                {% elif attendance_map[topic.id].status == 'Excused' %}
-                <span class="status-badge status-excused">⊘ Excused</span>
-                {% endif %}
-                {% else %}
-                <span class="status-badge status-not-started">No Record</span>
-                {% endif %}
-            </div>
+            <div class="topics-list">
+                {% for assessment in assessments %}
+                <div class="topic-item" style="grid-template-columns: 1fr auto;">
+                    <div>
+                        <div class="topic-name">{{ assessment.topic }}</div>
+                        <div class="topic-phase">Last updated: {{ assessment.last_updated.strftime('%Y-%m-%d') if
+                            assessment.last_updated else 'N/A' }}</div>
+                    </div>
 
-            <div>
-                {% if progress_map.get(topic.id) %}
-                {% if progress_map[topic.id].status == 'Completed' %}
-                <span class="status-badge status-completed">✓ Completed</span>
-                {% elif progress_map[topic.id].status == 'In Progress' %}
-                <span class="status-badge status-in-progress">◐ In Progress</span>
-                {% elif progress_map[topic.id].status == 'Not Started' %}
-                <span class="status-badge status-not-started">○ Not Started</span>
-                {% endif %}
-                {% else %}
-                <span class="status-badge status-not-started">○ Not Started</span>
-                {% endif %}
+                    <div>
+                        {% if assessment.proficiency_level == 'Beginner' %}
+                        <span class="status-badge"
+                            style="background: linear-gradient(135deg, rgba(148, 163, 184, 0.3), rgba(148, 163, 184, 0.2)); color: var(--muted); border: 2px solid rgba(148, 163, 184, 0.5);">
+                            Beginner
+                        </span>
+                        {% elif assessment.proficiency_level == 'Intermediate' %}
+                        <span class="status-badge"
+                            style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2)); color: #3b82f6; border: 2px solid rgba(59, 130, 246, 0.5);">
+                            Intermediate
+                        </span>
+                        {% elif assessment.proficiency_level == 'Advance' %}
+                        <span class="status-badge"
+                            style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.2)); color: #fbbf24; border: 2px solid rgba(251, 191, 36, 0.5);">
+                            Advance
+                        </span>
+                        {% elif assessment.proficiency_level == 'Expert' %}
+                        <span class="status-badge"
+                            style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.2)); color: #22c55e; border: 2px solid rgba(34, 197, 94, 0.5);">
+                            Expert
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
         {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <p style="font-size: 16px;">No skill assessments found for this student.</p>
+            <p style="font-size: 14px; margin-top: 8px;">Knowledge assessments will appear here once added.</p>
+        </div>
+        {% endif %}
     </div>
 </div>
-{% endfor %}
-{% else %}
-<div class="empty-state">
-    <p style="font-size: 16px;">No training records found for this student.</p>
-    <p style="font-size: 14px; margin-top: 8px;">Attendance and progress records will appear here once added.</p>
-</div>
-{% endif %}
+
+<script>
+    function switchTab(tabName) {
+        // Hide all tab contents
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // Remove active class from all buttons
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+
+        // Show selected tab content
+        const selectedTab = document.getElementById(tabName + '-tab');
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+        }
+
+        // Add active class to clicked button
+        event.target.closest('.tab-button').classList.add('active');
+    }
+</script>
 
 {% endblock %}
