@@ -2,17 +2,17 @@
 
 {% block content %}
 <style>
+    /* Hero Section */
     .home-hero {
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
         border: 1px solid rgba(99, 102, 241, 0.2);
         border-radius: 20px;
-        padding: 80px 60px;
-        margin-bottom: 60px;
+        padding: 60px 50px;
+        margin-bottom: 50px;
         position: relative;
         overflow: hidden;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-
     .home-hero::before {
         content: '';
         position: absolute;
@@ -23,7 +23,6 @@
         background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
         border-radius: 50%;
     }
-
     .hero-badge {
         display: inline-flex;
         align-items: center;
@@ -39,25 +38,22 @@
         position: relative;
         z-index: 1;
     }
-
     .hero-title {
-        font-size: 52px;
+        font-size: 48px;
         font-weight: 700;
         line-height: 1.2;
         margin: 0 0 20px 0;
         position: relative;
         z-index: 1;
     }
-
     .hero-title span {
         background: linear-gradient(135deg, var(--accent), #a855f7);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
-
     .hero-subtitle {
-        font-size: 18px;
+        font-size: 17px;
         color: var(--text-light);
         line-height: 1.7;
         max-width: 700px;
@@ -65,32 +61,29 @@
         position: relative;
         z-index: 1;
     }
-
     .hero-stats {
         display: flex;
-        gap: 30px;
-        margin-bottom: 40px;
+        gap: 25px;
+        margin-bottom: 35px;
         position: relative;
         z-index: 1;
+        flex-wrap: wrap;
     }
-
     .stat-item {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 12px 20px;
+        padding: 10px 18px;
         background: rgba(99, 102, 241, 0.1);
         border: 1px solid rgba(99, 102, 241, 0.2);
         border-radius: 10px;
         font-size: 14px;
     }
-
     .stat-icon {
         width: 20px;
         height: 20px;
         color: var(--accent);
     }
-
     .hero-actions {
         display: flex;
         gap: 16px;
@@ -98,17 +91,16 @@
         z-index: 1;
     }
 
+    /* Section Headers */
     .section-header {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
     }
-
     .section-title {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: 600;
         margin: 0 0 12px 0;
     }
-
     .section-subtitle {
         font-size: 16px;
         color: var(--text-light);
@@ -116,13 +108,13 @@
         margin: 0 auto;
     }
 
+    /* Featured Trainings */
     .trainings-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
         gap: 24px;
-        margin-bottom: 80px;
+        margin-bottom: 50px;
     }
-
     .training-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -135,7 +127,6 @@
         overflow: hidden;
         backdrop-filter: blur(8px);
     }
-
     .training-card::before {
         content: '';
         position: absolute;
@@ -147,17 +138,14 @@
         transform: scaleX(0);
         transition: transform 0.3s ease;
     }
-
     .training-card:hover {
         border-color: rgba(99, 102, 241, 0.4);
         transform: translateY(-6px);
         box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
     }
-
     .training-card:hover::before {
         transform: scaleX(1);
     }
-
     .training-label {
         display: inline-block;
         padding: 4px 10px;
@@ -171,21 +159,18 @@
         color: var(--accent);
         margin-bottom: 16px;
     }
-
     .training-title {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 600;
         margin: 0 0 12px 0;
         color: var(--text);
     }
-
     .training-description {
         color: var(--text-light);
         font-size: 14px;
         line-height: 1.6;
         margin-bottom: 20px;
     }
-
     .training-link {
         display: inline-flex;
         align-items: center;
@@ -195,140 +180,135 @@
         font-weight: 500;
         transition: gap 0.2s ease;
     }
-
     .training-card:hover .training-link {
         gap: 10px;
     }
 
-    .instructors-section {
-        margin-bottom: 80px;
+    /* Tabbed Content Navigation */
+    .content-tabs {
+        position: sticky;
+        top: 64px;
+        z-index: 50;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(15, 23, 42, 0.95) 100%);
+        backdrop-filter: blur(12px);
+        border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+        margin: 50px -16px 40px;
+        padding: 0 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
-
-    .instructors-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 24px;
-    }
-
-    .instructor-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
-        transition: all 0.3s ease;
-    }
-
-    .instructor-card:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
-    }
-
-    .instructor-name {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 6px;
-        color: var(--text);
-    }
-
-    .instructor-role {
-        font-size: 13px;
-        color: var(--muted);
-        margin-bottom: 16px;
-    }
-
-    .instructor-tags {
+    .tabs-container {
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+        gap: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
     }
-
-    .instructor-tag {
-        padding: 4px 10px;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 6px;
-        font-size: 11px;
-        color: var(--text-light);
+    .tabs-container::-webkit-scrollbar {
+        display: none;
     }
-
-    .cta-section {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 16px;
-        padding: 50px 40px;
-        text-align: center;
+    .tab-btn {
+        padding: 18px 28px;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
         position: relative;
-        overflow: hidden;
+        white-space: nowrap;
     }
-
-    .cta-section::before {
+    .tab-btn::after {
         content: '';
         position: absolute;
-        top: -50%;
+        bottom: 0;
         left: 50%;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), #a855f7);
         transform: translateX(-50%);
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
-        border-radius: 50%;
+        transition: width 0.3s ease;
+    }
+    .tab-btn:hover {
+        color: var(--text);
+        background: rgba(99, 102, 241, 0.08);
+    }
+    .tab-btn:hover::after {
+        width: 100%;
+    }
+    .tab-btn.active {
+        color: var(--accent);
+        background: rgba(99, 102, 241, 0.15);
+    }
+    .tab-btn.active::after {
+        width: 100%;
     }
 
-    .cta-title {
-        font-size: 32px;
-        font-weight: 600;
-        margin: 0 0 16px 0;
-        position: relative;
-        z-index: 1;
+    /* Tab Content */
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.4s ease;
+    }
+    .tab-content.active {
+        display: block;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .cta-subtitle {
-        font-size: 16px;
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin-bottom: 50px;
+    }
+    .stat-card {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 14px;
+        padding: 32px 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(99, 102, 241, 0.25);
+    }
+    .stat-number {
+        font-size: 40px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+    }
+    .stat-label {
+        font-size: 14px;
         color: var(--text-light);
-        margin-bottom: 30px;
-        position: relative;
-        z-index: 1;
     }
 
-    /* Why Choose Us Section */
+    /* Benefits Grid */
     .benefits-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 24px;
-        margin-bottom: 80px;
+        margin-bottom: 50px;
     }
-
     .benefit-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
         border-radius: 16px;
-        padding: 32px 24px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
+        padding: 28px 24px;
+        transition: all 0.3s ease;
     }
-
-    .benefit-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
     .benefit-card:hover {
         border-color: rgba(99, 102, 241, 0.4);
-        transform: translateY(-8px);
+        transform: translateY(-6px);
         box-shadow: 0 16px 40px rgba(99, 102, 241, 0.25);
     }
-
-    .benefit-card:hover::before {
-        opacity: 1;
-    }
-
     .benefit-icon {
         width: 48px;
         height: 48px;
@@ -338,58 +318,41 @@
         align-items: center;
         justify-content: center;
         margin-bottom: 20px;
-        position: relative;
-        z-index: 1;
     }
-
     .benefit-icon svg {
         width: 24px;
         height: 24px;
         color: white;
     }
-
     .benefit-title {
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
     }
-
     .benefit-description {
         font-size: 14px;
         color: var(--text-light);
         line-height: 1.6;
-        position: relative;
-        z-index: 1;
     }
 
-    /* Learning Path Section */
-    .learning-path {
-        margin-bottom: 80px;
-    }
-
+    /* Learning Path */
     .path-steps {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 20px;
-        position: relative;
+        margin-bottom: 40px;
     }
-
     .path-step {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
         border-radius: 14px;
-        padding: 28px 20px;
-        position: relative;
+        padding: 24px 20px;
         transition: all 0.3s ease;
     }
-
     .path-step:hover {
         border-color: rgba(99, 102, 241, 0.3);
         transform: scale(1.02);
     }
-
     .step-number {
         width: 36px;
         height: 36px;
@@ -402,44 +365,69 @@
         font-size: 16px;
         margin-bottom: 16px;
     }
-
     .step-title {
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 8px;
     }
-
     .step-description {
         font-size: 13px;
         color: var(--text-light);
         line-height: 1.5;
     }
 
-    /* Testimonials Section */
-    .testimonials-section {
-        margin-bottom: 80px;
+    /* Certificate Preview */
+    .certificate-preview {
+        max-width: 700px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%);
+        border: 2px solid rgba(99, 102, 241, 0.4);
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .cert-title {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+        letter-spacing: 2px;
+    }
+    .cert-name {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 20px 0;
+        font-family: 'Georgia', serif;
+    }
+    .cert-course {
+        font-size: 18px;
+        color: var(--text-light);
+        margin: 15px 0;
     }
 
+    /* Testimonials */
     .testimonials-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 24px;
+        margin-bottom: 40px;
     }
-
     .testimonial-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
         border-radius: 14px;
-        padding: 28px;
-        position: relative;
+        padding: 24px;
         transition: all 0.3s ease;
     }
-
     .testimonial-card:hover {
         border-color: rgba(99, 102, 241, 0.3);
         box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
     }
-
     .testimonial-quote {
         font-size: 14px;
         line-height: 1.7;
@@ -447,50 +435,78 @@
         margin-bottom: 20px;
         font-style: italic;
     }
-
     .testimonial-author {
         display: flex;
         align-items: center;
         gap: 12px;
     }
-
     .author-avatar {
-        width: 44px;
-        height: 44px;
+        width: 40px;
+        height: 40px;
         background: linear-gradient(135deg, var(--accent), #a855f7);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 600;
-        font-size: 16px;
+        font-size: 14px;
     }
-
-    .author-info {
-        flex: 1;
-    }
-
     .author-name {
         font-size: 14px;
         font-weight: 600;
-        margin-bottom: 2px;
     }
-
     .author-role {
         font-size: 12px;
         color: var(--muted);
     }
 
-    /* FAQ Section */
-    .faq-section {
-        margin-bottom: 80px;
+    /* Instructors */
+    .instructors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+    .instructor-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 14px;
+        padding: 24px;
+        transition: all 0.3s ease;
+    }
+    .instructor-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+    }
+    .instructor-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+    .instructor-role {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 16px;
+    }
+    .instructor-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .instructor-tag {
+        padding: 4px 10px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 6px;
+        font-size: 11px;
+        color: var(--text-light);
     }
 
+    /* FAQ */
     .faq-list {
         max-width: 800px;
         margin: 0 auto;
     }
-
     .faq-item {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -499,14 +515,12 @@
         overflow: hidden;
         transition: all 0.3s ease;
     }
-
     .faq-item:hover {
         border-color: rgba(99, 102, 241, 0.3);
     }
-
     .faq-question {
-        padding: 20px 24px;
-        font-size: 16px;
+        padding: 18px 24px;
+        font-size: 15px;
         font-weight: 600;
         cursor: pointer;
         display: flex;
@@ -514,378 +528,84 @@
         align-items: center;
         gap: 16px;
     }
-
     .faq-question:hover {
         color: var(--accent);
     }
-
     .faq-icon {
         width: 20px;
         height: 20px;
         color: var(--accent);
         flex-shrink: 0;
+        transition: transform 0.3s ease;
     }
-
+    .faq-item.open .faq-icon {
+        transform: rotate(180deg);
+    }
     .faq-answer {
-        padding: 0 24px 20px 24px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        padding: 0 24px;
         font-size: 14px;
         color: var(--text-light);
         line-height: 1.7;
     }
-
-    /* Stats Section */
-    .stats-section {
-        margin-bottom: 80px;
+    .faq-item.open .faq-answer {
+        max-height: 500px;
+        padding: 0 24px 20px 24px;
     }
 
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 24px;
-    }
-
-    .stat-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
         border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 14px;
-        padding: 32px 24px;
+        border-radius: 16px;
+        padding: 50px 40px;
         text-align: center;
-        transition: all 0.3s ease;
+        margin-top: 60px;
     }
-
-    .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(99, 102, 241, 0.25);
+    .cta-title {
+        font-size: 32px;
+        font-weight: 600;
+        margin: 0 0 16px 0;
     }
-
-    .stat-number {
-        font-size: 40px;
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 8px;
-    }
-
-    .stat-label {
-        font-size: 14px;
+    .cta-subtitle {
+        font-size: 16px;
         color: var(--text-light);
-    }
-
-    /* Certificate Showcase Section */
-    .certificate-section {
-        margin-bottom: 80px;
-    }
-
-    .certificate-container {
-        max-width: 900px;
-        margin: 0 auto;
-        perspective: 1500px;
-    }
-
-    .certificate-wrapper {
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.6s ease;
-    }
-
-    .certificate-wrapper:hover {
-        transform: translateY(-8px) rotateX(2deg);
-    }
-
-    .certificate {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%);
-        border: 2px solid rgba(99, 102, 241, 0.4);
-        border-radius: 20px;
-        padding: 60px 80px;
-        position: relative;
-        backdrop-filter: blur(12px);
-        box-shadow:
-            0 20px 60px rgba(0, 0, 0, 0.5),
-            0 0 0 1px rgba(99, 102, 241, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        overflow: hidden;
-    }
-
-    .certificate::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 50%),
-            radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15), transparent 50%);
-        pointer-events: none;
-    }
-
-    .certificate::after {
-        content: '';
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 12px;
-        pointer-events: none;
-    }
-
-    .certificate-ornament {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        border: 2px solid;
-        border-image: linear-gradient(135deg, var(--accent), #a855f7) 1;
-        z-index: 1;
-    }
-
-    .certificate-ornament.top-left {
-        top: 12px;
-        left: 12px;
-        border-right: none;
-        border-bottom: none;
-    }
-
-    .certificate-ornament.top-right {
-        top: 12px;
-        right: 12px;
-        border-left: none;
-        border-bottom: none;
-    }
-
-    .certificate-ornament.bottom-left {
-        bottom: 12px;
-        left: 12px;
-        border-right: none;
-        border-top: none;
-    }
-
-    .certificate-ornament.bottom-right {
-        bottom: 12px;
-        right: 12px;
-        border-left: none;
-        border-top: none;
-    }
-
-    .certificate-header {
-        text-align: center;
         margin-bottom: 30px;
-        position: relative;
-        z-index: 1;
-    }
-
-    .certificate-logo {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--accent);
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        margin-bottom: 12px;
-    }
-
-    .certificate-title {
-        font-size: 48px;
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--accent), #a855f7, var(--accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin: 0;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-    }
-
-    .certificate-subtitle {
-        font-size: 15px;
-        color: var(--text-light);
-        margin-top: 10px;
-        font-style: italic;
-    }
-
-    .certificate-body {
-        text-align: center;
-        margin: 40px 0;
-        position: relative;
-        z-index: 1;
-    }
-
-    .certificate-label {
-        font-size: 13px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        margin-bottom: 16px;
-    }
-
-    .certificate-name {
-        font-size: 40px;
-        font-weight: 700;
-        color: var(--text);
-        margin: 0 0 30px 0;
-        font-family: 'Georgia', serif;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        display: inline-block;
-        padding-bottom: 12px;
-        border-bottom: 2px solid rgba(99, 102, 241, 0.5);
-    }
-
-    .certificate-text {
-        font-size: 15px;
-        color: var(--text-light);
-        line-height: 1.8;
-        max-width: 600px;
-        margin: 0 auto 30px;
-    }
-
-    .certificate-course {
-        font-size: 24px;
-        font-weight: 600;
-        color: var(--text);
-        margin: 20px 0;
-        padding: 16px 24px;
-        background: rgba(99, 102, 241, 0.15);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 12px;
-        display: inline-block;
-    }
-
-    .certificate-footer {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-end;
-        margin-top: 50px;
-        padding-top: 30px;
-        border-top: 1px solid rgba(99, 102, 241, 0.3);
-        position: relative;
-        z-index: 1;
-    }
-
-    .certificate-signature {
-        text-align: center;
-    }
-
-    .signature-line {
-        width: 200px;
-        height: 50px;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        border-bottom: 2px solid rgba(99, 102, 241, 0.4);
-    }
-
-    .signature-text {
-        font-family: 'Brush Script MT', cursive;
-        font-size: 28px;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        padding-bottom: 4px;
-    }
-
-    .signature-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 4px;
-        margin-top: 8px;
-    }
-
-    .signature-title {
-        font-size: 11px;
-        color: var(--muted);
-    }
-
-    .certificate-seal {
-        position: absolute;
-        bottom: 40px;
-        right: 60px;
-        width: 100px;
-        height: 100px;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 3px solid rgba(99, 102, 241, 0.5);
-        box-shadow:
-            0 8px 24px rgba(99, 102, 241, 0.4),
-            inset 0 0 20px rgba(99, 102, 241, 0.2);
-        z-index: 1;
-    }
-
-    .seal-inner {
-        width: 75px;
-        height: 75px;
-        border: 2px solid rgba(99, 102, 241, 0.6);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background: rgba(30, 41, 59, 0.8);
-    }
-
-    .seal-text {
-        font-size: 10px;
-        font-weight: 700;
-        color: var(--accent);
-        text-align: center;
-        line-height: 1.3;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .certificate-date {
-        position: absolute;
-        bottom: 40px;
-        left: 60px;
-        font-size: 12px;
-        color: var(--muted);
-        z-index: 1;
     }
 
     @media (max-width: 768px) {
-        .certificate {
-            padding: 40px 30px;
-        }
-
-        .certificate-title {
-            font-size: 32px;
-        }
-
-        .certificate-name {
-            font-size: 28px;
-        }
-
-        .certificate-course {
-            font-size: 18px;
-            padding: 12px 20px;
-        }
-
-        .certificate-footer {
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .certificate-seal {
-            position: static;
-            margin: 20px auto 0;
-        }
-
-        .certificate-date {
-            position: static;
-            text-align: center;
-            margin-top: 20px;
+        .hero-title { font-size: 36px; }
+        .section-title { font-size: 28px; }
+        .hero-stats { flex-direction: column; gap: 12px; }
+        .trainings-grid, .benefits-grid, .path-steps, .testimonials-grid, .instructors-grid {
+            grid-template-columns: 1fr;
         }
     }
 </style>
+
+<script>
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    
+    // Show selected tab
+    document.getElementById('tab-' + tabName).classList.add('active');
+    document.getElementById('btn-' + tabName).classList.add('active');
+}
+
+function toggleFAQ(index) {
+    const item = document.getElementById('faq-' + index);
+    item.classList.toggle('open');
+}
+
+// Show first tab on load
+window.addEventListener('DOMContentLoaded', function() {
+    showTab('why-us');
+});
+</script>
 
 <!-- Hero Section -->
 <section class="home-hero">
@@ -941,13 +661,13 @@
     </div>
 
     <div class="trainings-grid">
-        {% for training in trainings %}
+        {% for training in trainings[:4] %}
         <a href="{{ url_for('training_detail', training_id=training.id) }}" class="training-card">
             <div class="training-label">Training Module</div>
             <h3 class="training-title">{{ training.name }}</h3>
             <p class="training-description">
                 {% if training.description %}
-                {{ training.description }}
+                {{ training.description[:120] }}...
                 {% else %}
                 Comprehensive training program covering essential topics and hands-on practice.
                 {% endif %}
@@ -962,58 +682,31 @@
         </a>
         {% endfor %}
     </div>
-</section>
-
-<!-- Instructors -->
-<section class="instructors-section">
-    <div class="section-header">
-        <h2 class="section-title">Learn from Experienced QA Professionals</h2>
-        <p class="section-subtitle">Industry experts who bring real-world testing experience to every lesson</p>
-    </div>
-
-    <div class="instructors-grid">
-        {% if instructors %}
-        {% for instructor in instructors %}
-        <div class="instructor-card">
-            <div class="instructor-name">{{ instructor.name }}</div>
-            <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
-            <div class="instructor-tags">
-                {% if instructor.expertise %}
-                {% for tag in instructor.expertise.split(',')[:4] %}
-                <span class="instructor-tag">{{ tag.strip() }}</span>
-                {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="instructor-card">
-            <div class="instructor-name">Haitham Al Mughrabi</div>
-            <div class="instructor-role">Senior QA Engineer & Testing Specialist</div>
-            <div class="instructor-tags">
-                <span class="instructor-tag">Python</span>
-                <span class="instructor-tag">Robot Framework</span>
-                <span class="instructor-tag">Postman</span>
-                <span class="instructor-tag">Mocking</span>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-
-    {% if instructors and instructors|length > 0 %}
-    <div style="text-align: center; margin-top: 40px;">
-        <a href="{{ url_for('instructors_list') }}" class="btn-ghost">View All Instructors →</a>
+    
+    {% if trainings|length > 4 %}
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('trainings') }}" class="btn-ghost">View All {{ trainings|length }} Training Programs →</a>
     </div>
     {% endif %}
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- Tabbed Content Navigation -->
+<nav class="content-tabs">
+    <div class="tabs-container">
+        <button id="btn-why-us" class="tab-btn" onclick="showTab('why-us')">Why Us</button>
+        <button id="btn-how-it-works" class="tab-btn" onclick="showTab('how-it-works')">How It Works</button>
+        <button id="btn-success-stories" class="tab-btn" onclick="showTab('success-stories')">Success Stories</button>
+        <button id="btn-faq" class="tab-btn" onclick="showTab('faq')">FAQ</button>
+    </div>
+</nav>
+
+<!-- Tab 1: Why Us -->
+<div id="tab-why-us" class="tab-content">
+    <!-- Stats -->
     <div class="section-header">
         <h2 class="section-title">Our Impact in Numbers</h2>
         <p class="section-subtitle">Real results from our training programs</p>
     </div>
-
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-number">500+</div>
@@ -1032,15 +725,12 @@
             <div class="stat-label">Career Advancement</div>
         </div>
     </div>
-</section>
 
-<!-- Why Choose Us Section -->
-<section id="benefits">
-    <div class="section-header">
+    <!-- Benefits -->
+    <div class="section-header" style="margin-top: 60px;">
         <h2 class="section-title">Why Choose Our QA Training Programs</h2>
         <p class="section-subtitle">Comprehensive QA education designed for real-world testing challenges</p>
     </div>
-
     <div class="benefits-grid">
         <div class="benefit-card">
             <div class="benefit-icon">
@@ -1051,10 +741,8 @@
                 </svg>
             </div>
             <h3 class="benefit-title">Hands-On Projects</h3>
-            <p class="benefit-description">Learn by doing with real-world testing scenarios, test case design,
-                automation frameworks, API testing, and performance testing projects.</p>
+            <p class="benefit-description">Learn by doing with real-world testing scenarios, test case design, automation frameworks, API testing, and performance testing projects.</p>
         </div>
-
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1065,10 +753,8 @@
                 </svg>
             </div>
             <h3 class="benefit-title">Expert Mentorship</h3>
-            <p class="benefit-description">Get personalized guidance from experienced QA professionals who understand
-                both manual and automated testing best practices.</p>
+            <p class="benefit-description">Get personalized guidance from experienced QA professionals who understand both manual and automated testing best practices.</p>
         </div>
-
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1077,10 +763,8 @@
                 </svg>
             </div>
             <h3 class="benefit-title">Flexible Schedule</h3>
-            <p class="benefit-description">Evening sessions and recorded content allow you to learn at your own pace
-                while balancing work and personal commitments.</p>
+            <p class="benefit-description">Evening sessions and recorded content allow you to learn at your own pace while balancing work and personal commitments.</p>
         </div>
-
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1088,25 +772,19 @@
                 </svg>
             </div>
             <h3 class="benefit-title">Career-Ready Skills</h3>
-            <p class="benefit-description">Master essential QA skills from test planning and execution to automation
-                frameworks, API testing, performance testing, and databases.</p>
+            <p class="benefit-description">Master essential QA skills from test planning and execution to automation frameworks, API testing, performance testing, and databases.</p>
         </div>
-
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path
-                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                    </path>
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                     <line x1="12" y1="22.08" x2="12" y2="12"></line>
                 </svg>
             </div>
-            <h3 class="benefit-title">Comprehensive Curriculum</h3>
-            <p class="benefit-description">From testing fundamentals to advanced automation and performance testing, our
-                curriculum covers all aspects of modern QA.</p>
+            <h3 class="benefit-title">Industry Tools</h3>
+            <p class="benefit-description">Work with industry-standard tools like Python, Robot Framework, Postman, k6, and more used by leading tech companies.</p>
         </div>
-
         <div class="benefit-card">
             <div class="benefit-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1114,273 +792,218 @@
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
             </div>
-            <h3 class="benefit-title">Lifetime Access</h3>
-            <p class="benefit-description">Keep learning with permanent access to all course materials, recordings, and
-                future updates to stay current with industry trends.</p>
+            <h3 class="benefit-title">Certification</h3>
+            <p class="benefit-description">Earn a professional certificate upon completion to showcase your QA expertise to employers and advance your career.</p>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Learning Path Section -->
-<section class="learning-path">
+<!-- Tab 2: How It Works -->
+<div id="tab-how-it-works" class="tab-content">
     <div class="section-header">
         <h2 class="section-title">Your Learning Journey</h2>
         <p class="section-subtitle">A structured path from beginner to job-ready QA professional</p>
     </div>
-
     <div class="path-steps">
         <div class="path-step">
             <div class="step-number">1</div>
-            <h3 class="step-title">Enroll & Setup</h3>
-            <p class="step-description">Choose your track, get access to the learning platform, and set up your
-                development environment with our guided tutorials.</p>
+            <h3 class="step-title">Enroll & Assess</h3>
+            <p class="step-description">Choose your training track and complete an initial skills assessment to personalize your learning path.</p>
         </div>
-
         <div class="path-step">
             <div class="step-number">2</div>
-            <h3 class="step-title">Learn Fundamentals</h3>
-            <p class="step-description">Master the basics through interactive lessons, video tutorials, and hands-on
-                exercises covering core concepts and tools.</p>
+            <h3 class="step-title">Learn & Practice</h3>
+            <p class="step-description">Attend live sessions, watch recordings, and work on hands-on projects with real-world testing scenarios.</p>
         </div>
-
         <div class="path-step">
             <div class="step-number">3</div>
-            <h3 class="step-title">Build Projects</h3>
-            <p class="step-description">Apply your knowledge to real-world scenarios with guided projects that simulate
-                actual workplace challenges.</p>
+            <h3 class="step-title">Build Portfolio</h3>
+            <p class="step-description">Create a professional portfolio showcasing your automation frameworks, test cases, and testing projects.</p>
         </div>
-
         <div class="path-step">
             <div class="step-number">4</div>
             <h3 class="step-title">Get Certified</h3>
-            <p class="step-description">Complete assessments, showcase your portfolio, and receive a certificate
-                demonstrating your expertise to employers.</p>
+            <p class="step-description">Complete final assessments and receive your professional QA certification to advance your career.</p>
         </div>
     </div>
-</section>
 
-<!-- Success Stories Section -->
-<section class="testimonials-section">
-    <div class="section-header">
-        <h2 class="section-title">Success Stories</h2>
-        <p class="section-subtitle">Hear from students who transformed their careers</p>
+    <!-- Certificate Preview -->
+    <div class="section-header" style="margin-top: 60px;">
+        <h2 class="section-title">Professional Certification</h2>
+        <p class="section-subtitle">Earn a certificate that validates your QA expertise</p>
     </div>
+    <div class="certificate-preview">
+        <div class="cert-title">CERTIFICATE OF COMPLETION</div>
+        <p style="font-size: 13px; color: var(--muted); margin: 15px 0;">This certifies that</p>
+        <div class="cert-name">Your Name</div>
+        <p style="font-size: 13px; color: var(--muted); margin: 15px 0;">has successfully completed</p>
+        <div class="cert-course">QA Professional Training Program</div>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 30px;">Takamol QA Trainings • {{ now.strftime('%B %Y') }}</p>
+    </div>
+</div>
 
+<!-- Tab 3: Success Stories -->
+<div id="tab-success-stories" class="tab-content">
+    <!-- Testimonials -->
+    <div class="section-header">
+        <h2 class="section-title">What Our Students Say</h2>
+        <p class="section-subtitle">Real feedback from QA professionals who transformed their careers</p>
+    </div>
     <div class="testimonials-grid">
         <div class="testimonial-card">
-            <p class="testimonial-quote">"The comprehensive curriculum and hands-on approach made all the difference. I
-                went from manual testing to automation in just 6 months. The instructors were incredibly supportive and
-                knowledgeable."</p>
+            <p class="testimonial-quote">"The hands-on approach and real-world projects helped me land my first QA automation role. The instructors were incredibly supportive and knowledgeable."</p>
             <div class="testimonial-author">
-                <div class="author-avatar">AK</div>
-                <div class="author-info">
-                    <div class="author-name">Ahmed Khalil</div>
+                <div class="author-avatar">SA</div>
+                <div>
+                    <div class="author-name">Sarah Ahmed</div>
                     <div class="author-role">QA Automation Engineer</div>
                 </div>
             </div>
         </div>
-
         <div class="testimonial-card">
-            <p class="testimonial-quote">"I was skeptical about online training, but this program exceeded my
-                expectations. The evening schedule worked perfectly with my job, and the recorded sessions meant I could
-                review complex topics at my own pace."</p>
+            <p class="testimonial-quote">"Best investment in my career. I went from manual testing to building complete automation frameworks. The performance testing module was exceptional."</p>
             <div class="testimonial-author">
-                <div class="author-avatar">SM</div>
-                <div class="author-info">
-                    <div class="author-name">Sara Mahmoud</div>
-                    <div class="author-role">Performance Test Engineer</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="testimonial-card">
-            <p class="testimonial-quote">"The Robot Framework training was exactly what I needed. The instructor's
-                industry experience showed in every lesson. I'm now leading automation efforts at my company and
-                mentoring junior testers."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">MH</div>
-                <div class="author-info">
-                    <div class="author-name">Mohammed Hassan</div>
+                <div class="author-avatar">MK</div>
+                <div>
+                    <div class="author-name">Mohammed Khalil</div>
                     <div class="author-role">Senior QA Engineer</div>
                 </div>
             </div>
         </div>
+        <div class="testimonial-card">
+            <p class="testimonial-quote">"The flexible schedule and recorded sessions made it possible to learn while working full-time. I'm now confident in API testing and automation."</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">LH</div>
+                <div>
+                    <div class="author-name">Layla Hassan</div>
+                    <div class="author-role">QA Specialist</div>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
 
-<!-- FAQ Section -->
-<section class="faq-section">
+    <!-- Instructors -->
+    <div class="section-header" style="margin-top: 60px;">
+        <h2 class="section-title">Learn from Industry Experts</h2>
+        <p class="section-subtitle">Experienced QA professionals who bring real-world expertise</p>
+    </div>
+    <div class="instructors-grid">
+        {% if instructors %}
+            {% for instructor in instructors %}
+            <div class="instructor-card">
+                <div class="instructor-name">{{ instructor.name }}</div>
+                <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
+                <div class="instructor-tags">
+                    {% if instructor.expertise %}
+                        {% for tag in instructor.expertise.split(',')[:4] %}
+                        <span class="instructor-tag">{{ tag.strip() }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="instructor-card">
+                <div class="instructor-name">Haitham Al Mughrabi</div>
+                <div class="instructor-role">Senior QA Engineer</div>
+                <div class="instructor-tags">
+                    <span class="instructor-tag">Python</span>
+                    <span class="instructor-tag">Robot Framework</span>
+                    <span class="instructor-tag">API Testing</span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% if instructors and instructors|length > 0 %}
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('instructors_list') }}" class="btn-ghost">View All Instructors →</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Tab 4: FAQ -->
+<div id="tab-faq" class="tab-content">
     <div class="section-header">
         <h2 class="section-title">Frequently Asked Questions</h2>
         <p class="section-subtitle">Everything you need to know about our training programs</p>
     </div>
-
     <div class="faq-list">
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Do I need prior programming experience?</span>
+        <div class="faq-item" id="faq-1">
+            <div class="faq-question" onclick="toggleFAQ(1)">
+                <span>What are the prerequisites for joining?</span>
                 <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="faq-answer">
-                For our Python Fundamentals track, no prior experience is needed. For advanced tracks like Robot
-                Framework or k6, basic programming knowledge is recommended but not required. We provide resources to
-                help you catch up.
+                No prior testing experience required! We start from the basics and progressively build your skills. Basic computer literacy and enthusiasm to learn are all you need.
             </div>
         </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>What is the time commitment required?</span>
+        <div class="faq-item" id="faq-2">
+            <div class="faq-question" onclick="toggleFAQ(2)">
+                <span>How long does the training take?</span>
                 <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="faq-answer">
-                Live sessions are typically 2-3 hours per week in the evening. We recommend dedicating an additional 3-5
-                hours for practice and projects. All sessions are recorded, so you can learn at your own pace.
+                Training duration varies by program, typically ranging from 8-12 weeks. All sessions are recorded, so you can learn at your own pace.
             </div>
         </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Will I receive a certificate upon completion?</span>
+        <div class="faq-item" id="faq-3">
+            <div class="faq-question" onclick="toggleFAQ(3)">
+                <span>Are sessions live or recorded?</span>
                 <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="faq-answer">
-                Yes! Upon successfully completing the training and assessments, you'll receive a certificate of
-                completion that you can add to your LinkedIn profile and resume.
+                We offer both! Live evening sessions for real-time interaction and Q&A, plus all sessions are recorded for flexible learning.
             </div>
         </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Can I access course materials after completion?</span>
+        <div class="faq-item" id="faq-4">
+            <div class="faq-question" onclick="toggleFAQ(4)">
+                <span>Will I get a certificate?</span>
                 <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="faq-answer">
-                Absolutely! You get lifetime access to all course materials, including video recordings, code examples,
-                and project templates. You'll also receive updates when we refresh the content.
+                Yes! Upon successful completion of the training and final assessment, you'll receive a professional certificate that you can showcase to employers.
             </div>
         </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>What tools and software do I need?</span>
+        <div class="faq-item" id="faq-5">
+            <div class="faq-question" onclick="toggleFAQ(5)">
+                <span>What tools and technologies will I learn?</span>
                 <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="faq-answer">
-                All required tools are free and open-source. You'll need a computer (Windows, Mac, or Linux) and we'll
-                guide you through installing Python, IDE, and other necessary tools in the first session.
+                You'll master industry-standard tools including Python, Robot Framework, Postman, k6, SQL databases, Git, and CI/CD pipelines.
             </div>
         </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Is there job placement assistance?</span>
+        <div class="faq-item" id="faq-6">
+            <div class="faq-question" onclick="toggleFAQ(6)">
+                <span>Do you provide job placement assistance?</span>
                 <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="faq-answer">
-                While we don't guarantee job placement, we provide career guidance, resume reviews, and interview
-                preparation. Many of our graduates have successfully transitioned to automation roles.
+                While we don't guarantee job placement, we help you build a strong portfolio, provide resume guidance, and prepare you for technical interviews.
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Certificate Showcase Section -->
-<section class="certificate-section">
-    <div class="section-header">
-        <h2 class="section-title">Earn Your Professional Certificate</h2>
-        <p class="section-subtitle">Showcase your achievement with an industry-recognized certificate of completion</p>
-    </div>
-
-    <div class="certificate-container">
-        <div class="certificate-wrapper">
-            <div class="certificate">
-                <!-- Ornamental Corners -->
-                <div class="certificate-ornament top-left"></div>
-                <div class="certificate-ornament top-right"></div>
-                <div class="certificate-ornament bottom-left"></div>
-                <div class="certificate-ornament bottom-right"></div>
-
-                <!-- Header -->
-                <div class="certificate-header">
-                    <div class="certificate-logo">QA Training Academy</div>
-                    <h1 class="certificate-title">Certificate of Completion</h1>
-                    <p class="certificate-subtitle">This certifies that</p>
-                </div>
-
-                <!-- Body -->
-                <div class="certificate-body">
-                    <div class="certificate-label">This is to certify that</div>
-                    <h2 class="certificate-name">Your Name Here</h2>
-
-                    <p class="certificate-text">
-                        has successfully completed the comprehensive training program and demonstrated proficiency in
-                    </p>
-
-                    <div class="certificate-course">Quality Assurance & Testing Fundamentals</div>
-
-                    <p class="certificate-text">
-                        Meeting all requirements and assessments with dedication and excellence
-                    </p>
-                </div>
-
-                <!-- Footer with Signatures -->
-                <div class="certificate-footer">
-                    <div class="certificate-signature">
-                        <div class="signature-line">
-                            <span class="signature-text">Haitham Al Mughrabi</span>
-                        </div>
-                        <div class="signature-name">Haitham Al Mughrabi</div>
-                        <div class="signature-title">Lead Instructor</div>
-                    </div>
-
-                    <div class="certificate-signature">
-                        <div class="signature-line">
-                            <span class="signature-text">Training Director</span>
-                        </div>
-                        <div class="signature-name">Training Director</div>
-                        <div class="signature-title">QA Training Academy</div>
-                    </div>
-                </div>
-
-                <!-- Date -->
-                <div class="certificate-date">
-                    Date of Completion: {{ now.strftime('%B %d, %Y') }}
-                </div>
-
-                <!-- Seal -->
-                <div class="certificate-seal">
-                    <div class="seal-inner">
-                        <div class="seal-text">
-                            Certified<br>QA<br>Professional
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Enhanced CTA Section -->
+<!-- Final CTA -->
 <section class="cta-section">
-    <h2 class="cta-title">Ready to Start Your QA Career Journey?</h2>
-    <p class="cta-subtitle">Join hundreds of students who have transformed their careers with our comprehensive QA
-        training programs</p>
-    <div class="hero-actions" style="justify-content: center;">
-        <a href="{{ url_for('trainings') }}" class="btn-primary">Browse All Trainings →</a>
-        <a href="#benefits" class="btn-ghost">Learn More</a>
+    <h2 class="cta-title">Ready to Start Your QA Journey?</h2>
+    <p class="cta-subtitle">Join hundreds of successful QA professionals who transformed their careers with our training programs</p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('trainings') }}" class="btn-primary">Browse Training Programs</a>
+        <a href="{{ url_for('students_list') }}" class="btn-ghost">View Student Profiles</a>
     </div>
 </section>
 
