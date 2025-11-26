@@ -472,19 +472,25 @@ def update_skill(skill_id):
     skill.category = new_category
     skill.topic = new_topic
     
-    # Update all related assessments
-    assessments = KnowledgeAssessment.query.filter_by(
-        category=old_category,
-        topic=old_topic
-    ).all()
-    
-    for assessment in assessments:
-        assessment.category = new_category
-        assessment.topic = new_topic
+    # Update all related assessments using bulk update to avoid session issues
+    if old_category != new_category or old_topic != new_topic:
+        KnowledgeAssessment.query.filter_by(
+            category=old_category,
+            topic=old_topic
+        ).update({
+            'category': new_category,
+            'topic': new_topic
+        }, synchronize_session='fetch')
     
     db.session.commit()
     
-    return jsonify({'success': True, 'updated_assessments': len(assessments)})
+    # Count updated assessments
+    updated_count = KnowledgeAssessment.query.filter_by(
+        category=new_category,
+        topic=new_topic
+    ).count()
+    
+    return jsonify({'success': True, 'updated_assessments': updated_count})
 
 # Delete skill (soft delete)
 @app.route('/api/skills/<int:skill_id>', methods=['DELETE'])
@@ -679,6 +685,11 @@ def admin_edit_topic(topic_id):
 @app.route('/admin/topics/<int:topic_id>/delete', methods=['POST'])
 def admin_delete_topic(topic_id):
     topic = Topic.query.get_or_404(topic_id)
+    
+    # Delete related records to avoid foreign key constraint errors
+    Attendance.query.filter_by(topic_id=topic_id).delete()
+    Progress.query.filter_by(topic_id=topic_id).delete()
+    
     db.session.delete(topic)
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
@@ -712,6 +723,13 @@ def admin_edit_student(student_id):
 @app.route('/admin/students/<int:student_id>/delete', methods=['POST'])
 def admin_delete_student(student_id):
     student = Student.query.get_or_404(student_id)
+    
+    # Delete related records to avoid foreign key constraint errors
+    KnowledgeAssessment.query.filter_by(student_id=student_id).delete()
+    Attendance.query.filter_by(student_id=student_id).delete()
+    Progress.query.filter_by(student_id=student_id).delete()
+    Certificate.query.filter_by(student_id=student_id).delete()
+    
     db.session.delete(student)
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
