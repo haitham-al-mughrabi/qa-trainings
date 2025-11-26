@@ -1105,8 +1105,7 @@
     <div class="tabs-container">
         <button id="btn-why-us" class="tab-btn" onclick="showTab('why-us')">Why Us</button>
         <button id="btn-how-it-works" class="tab-btn" onclick="showTab('how-it-works')">How It Works</button>
-        <button id="btn-success-stories" class="tab-btn" onclick="showTab('success-stories')">Success Stories</button>
-        <button id="btn-faq" class="tab-btn" onclick="showTab('faq')">FAQ</button>
+        <button id="btn-certificate" class="tab-btn" onclick="showTab('certificate')">Certificate</button>
     </div>
 </nav>
 
@@ -1121,11 +1120,11 @@
     </div>
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-number">500+</div>
+            <div class="stat-number">14</div>
             <div class="stat-label">Students Trained</div>
         </div>
         <div class="stat-card">
-            <div class="stat-number">95%</div>
+            <div class="stat-number">96%</div>
             <div class="stat-label">Completion Rate</div>
         </div>
         <div class="stat-card">
@@ -1254,7 +1253,10 @@
                 advance your career.</p>
         </div>
     </div>
+</div>
 
+<!-- Tab 3: Certificate -->
+<div id="tab-certificate" class="tab-content">
     <!-- Certificate Showcase Section -->
     <section class="certificate-section">
         <div class="section-header">
@@ -1334,179 +1336,6 @@
             </div>
         </div>
     </section>
-
-
-</div>
-</div>
-
-<!-- Tab 3: Success Stories -->
-<div id="tab-success-stories" class="tab-content">
-    <!-- Testimonials -->
-    <div class="section-header">
-        <div class="header-badge">SUCCESS STORIES</div>
-        <h2 class="section-title">What Our Students Say</h2>
-        <div class="header-line"></div>
-        <p class="section-subtitle">Real feedback from QA professionals who transformed their careers</p>
-    </div>
-    <div class="testimonials-grid">
-        <div class="testimonial-card">
-            <p class="testimonial-quote">"The hands-on approach and real-world projects helped me land my first QA
-                automation role. The instructors were incredibly supportive and knowledgeable."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">SA</div>
-                <div>
-                    <div class="author-name">Sarah Ahmed</div>
-                    <div class="author-role">QA Automation Engineer</div>
-                </div>
-            </div>
-        </div>
-        <div class="testimonial-card">
-            <p class="testimonial-quote">"Best investment in my career. I went from manual testing to building complete
-                automation frameworks. The performance testing module was exceptional."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">MK</div>
-                <div>
-                    <div class="author-name">Mohammed Khalil</div>
-                    <div class="author-role">Senior QA Engineer</div>
-                </div>
-            </div>
-        </div>
-        <div class="testimonial-card">
-            <p class="testimonial-quote">"The flexible schedule and recorded sessions made it possible to learn while
-                working full-time. I'm now confident in API testing and automation."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">LH</div>
-                <div>
-                    <div class="author-name">Layla Hassan</div>
-                    <div class="author-role">QA Specialist</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Instructors -->
-    <div class="section-header" style="margin-top: 60px;">
-        <div class="header-badge">INSTRUCTORS</div>
-        <h2 class="section-title">Learn from Industry Experts</h2>
-        <div class="header-line"></div>
-        <p class="section-subtitle">Experienced QA professionals who bring real-world expertise</p>
-    </div>
-    <div class="instructors-grid">
-        {% if instructors %}
-        {% for instructor in instructors %}
-        <div class="instructor-card">
-            <div class="instructor-name">{{ instructor.name }}</div>
-            <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
-            <div class="instructor-tags">
-                {% if instructor.expertise %}
-                {% for tag in instructor.expertise.split(',')[:4] %}
-                <span class="instructor-tag">{{ tag.strip() }}</span>
-                {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="instructor-card">
-            <div class="instructor-name">Haitham Al Mughrabi</div>
-            <div class="instructor-role">Senior QA Engineer</div>
-            <div class="instructor-tags">
-                <span class="instructor-tag">Python</span>
-                <span class="instructor-tag">Robot Framework</span>
-                <span class="instructor-tag">API Testing</span>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-    {% if instructors and instructors|length > 0 %}
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="{{ url_for('instructors_list') }}" class="btn-ghost">View All Instructors →</a>
-    </div>
-    {% endif %}
-</div>
-
-<!-- Tab 4: FAQ -->
-<div id="tab-faq" class="tab-content">
-    <div class="section-header">
-        <div class="header-badge">FAQ</div>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <div class="header-line"></div>
-        <p class="section-subtitle">Everything you need to know about our training programs</p>
-    </div>
-    <div class="faq-list">
-        <div class="faq-item" id="faq-1">
-            <div class="faq-question" onclick="toggleFAQ(1)">
-                <span>What are the prerequisites for joining?</span>
-                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="faq-answer">
-                No prior testing experience required! We start from the basics and progressively build your skills.
-                Basic computer literacy and enthusiasm to learn are all you need.
-            </div>
-        </div>
-        <div class="faq-item" id="faq-2">
-            <div class="faq-question" onclick="toggleFAQ(2)">
-                <span>How long does the training take?</span>
-                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="faq-answer">
-                Training duration varies by program, typically ranging from 8-12 weeks. All sessions are recorded, so
-                you can learn at your own pace.
-            </div>
-        </div>
-        <div class="faq-item" id="faq-3">
-            <div class="faq-question" onclick="toggleFAQ(3)">
-                <span>Are sessions live or recorded?</span>
-                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="faq-answer">
-                We offer both! Live evening sessions for real-time interaction and Q&A, plus all sessions are recorded
-                for flexible learning.
-            </div>
-        </div>
-        <div class="faq-item" id="faq-4">
-            <div class="faq-question" onclick="toggleFAQ(4)">
-                <span>Will I get a certificate?</span>
-                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="faq-answer">
-                Yes! Upon successful completion of the training and final assessment, you'll receive a professional
-                certificate that you can showcase to employers.
-            </div>
-        </div>
-        <div class="faq-item" id="faq-5">
-            <div class="faq-question" onclick="toggleFAQ(5)">
-                <span>What tools and technologies will I learn?</span>
-                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="faq-answer">
-                You'll master industry-standard tools including Python, Robot Framework, Postman, k6, SQL databases,
-                Git, and CI/CD pipelines.
-            </div>
-        </div>
-        <div class="faq-item" id="faq-6">
-            <div class="faq-question" onclick="toggleFAQ(6)">
-                <span>Do you provide job placement assistance?</span>
-                <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="faq-answer">
-                While we don't guarantee job placement, we help you build a strong portfolio, provide resume guidance,
-                and prepare you for technical interviews.
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Final CTA -->
