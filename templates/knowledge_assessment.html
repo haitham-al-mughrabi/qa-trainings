@@ -144,21 +144,7 @@
         border: 1px solid rgba(34, 197, 94, 0.3);
     }
 
-    .delete-btn {
-        padding: 4px 10px;
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        border-radius: 4px;
-        color: #ef4444;
-        font-size: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
 
-    .delete-btn:hover {
-        background: rgba(239, 68, 68, 0.2);
-        transform: translateY(-1px);
-    }
 
     .save-indicator {
         display: inline-block;
@@ -174,23 +160,7 @@
     }
 
     /* Skill Management Styles */
-    .manage-skills-btn {
-        padding: 10px 20px;
-        background: linear-gradient(135deg, var(--accent), rgba(168, 85, 247, 0.8));
-        border: none;
-        border-radius: 8px;
-        color: white;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        margin-bottom: 20px;
-    }
 
-    .manage-skills-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
-    }
 
     .modal {
         display: none;
@@ -289,36 +259,7 @@
         gap: 8px;
     }
 
-    .edit-skill-btn,
-    .delete-skill-btn {
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: none;
-    }
 
-    .edit-skill-btn {
-        background: rgba(59, 130, 246, 0.15);
-        color: #3b82f6;
-        border: 1px solid rgba(59, 130, 246, 0.3);
-    }
-
-    .edit-skill-btn:hover {
-        background: rgba(59, 130, 246, 0.25);
-    }
-
-    .delete-skill-btn {
-        background: rgba(239, 68, 68, 0.15);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .delete-skill-btn:hover {
-        background: rgba(239, 68, 68, 0.25);
-    }
 
     .form-group {
         margin-bottom: 20px;
@@ -346,24 +287,6 @@
         outline: none;
         border-color: var(--accent);
     }
-
-    .submit-btn {
-        width: 100%;
-        padding: 12px;
-        background: linear-gradient(135deg, var(--accent), rgba(168, 85, 247, 0.8));
-        border: none;
-        border-radius: 8px;
-        color: white;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
-    }
 </style>
 
 <div class="knowledge-hero">
@@ -389,7 +312,7 @@
 <div class="assessment-table-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <h2 style="font-size: 22px; margin: 0; font-weight: 600; color: var(--accent);">Skill Assessment Matrix</h2>
-        <button class="manage-skills-btn" onclick="openSkillsModal()">⚙️ Manage Skills</button>
+        <button class="btn btn-primary" onclick="openSkillsModal()">⚙️ Manage Skills</button>
     </div>
 
     <table class="assessment-table">
@@ -435,7 +358,8 @@
                 {% endfor %}
                 {% endfor %}
                 <td>
-                    <button class="delete-btn" onclick="clearStudentAssessments({{ student.id }})">Clear All</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearStudentAssessments({{ student.id }})">Clear
+                        All</button>
                 </td>
             </tr>
             {% endfor %}
@@ -455,7 +379,7 @@
             <!-- Skills will be loaded here -->
         </div>
 
-        <button class="submit-btn" onclick="openAddSkillModal()">+ Add New Skill</button>
+        <button class="btn btn-primary" onclick="openAddSkillModal()">+ Add New Skill</button>
     </div>
 </div>
 
@@ -482,7 +406,7 @@
                     placeholder="e.g., Python - Testing level">
             </div>
 
-            <button type="submit" class="submit-btn">Save Skill</button>
+            <button type="submit" class="btn btn-primary">Save Skill</button>
         </form>
     </div>
 </div>
@@ -632,8 +556,8 @@
                         <div class="skill-topic">${skill.topic}</div>
                     </div>
                     <div class="skill-actions">
-                        <button class="edit-skill-btn" onclick="editSkill(${skill.id}, '${skill.category}', '${skill.topic}')">Edit</button>
-                        <button class="delete-skill-btn" onclick="deleteSkill(${skill.id})">Delete</button>
+                        <button class="btn btn-secondary btn-sm" onclick="editSkill(${skill.id}, '${skill.category}', '${skill.topic}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteSkill(${skill.id})">Delete</button>
                     </div>
                 `;
                 skillsList.appendChild(skillItem);

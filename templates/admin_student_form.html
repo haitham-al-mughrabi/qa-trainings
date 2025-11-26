@@ -6,20 +6,24 @@
         max-width: 600px;
         margin: 0 auto;
     }
+
     .form-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
         border-radius: 14px;
         padding: 32px;
     }
+
     .form-title {
         font-size: 24px;
         font-weight: 600;
         margin-bottom: 24px;
     }
+
     .form-group {
         margin-bottom: 20px;
     }
+
     .form-label {
         display: block;
         margin-bottom: 8px;
@@ -27,6 +31,7 @@
         font-weight: 500;
         color: var(--text);
     }
+
     .form-input {
         width: 100%;
         padding: 10px 14px;
@@ -37,43 +42,35 @@
         font-size: 14px;
         transition: all 0.2s ease;
     }
+
     .form-input:focus {
         outline: none;
         border-color: var(--accent);
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
+
     .form-actions {
         display: flex;
         gap: 12px;
         margin-top: 24px;
-    }
-    .btn-cancel {
-        padding: 10px 20px;
-        background: rgba(148, 163, 184, 0.1);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 8px;
-        color: var(--text);
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-    .btn-cancel:hover {
-        background: rgba(148, 163, 184, 0.15);
     }
 </style>
 
 <div class="form-container">
     <div class="form-card">
         <h1 class="form-title">{% if student %}Edit Student{% else %}Add New Student{% endif %}</h1>
-        
+
         <form method="POST">
             <div class="form-group">
                 <label class="form-label" for="name">Student Name *</label>
-                <input type="text" id="name" name="name" class="form-input" value="{{ student.name if student else '' }}" required>
+                <input type="text" id="name" name="name" class="form-input"
+                    value="{{ student.name if student else '' }}" required>
             </div>
-            
+
             <div class="form-actions">
-                <button type="submit" class="btn-primary">{% if student %}Update Student{% else %}Create Student{% endif %}</button>
-                <a href="{{ url_for('admin_dashboard') }}" class="btn-cancel">Cancel</a>
+                <button type="submit" class="btn btn-primary">{% if student %}Update Student{% else %}Create Student{%
+                    endif %}</button>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-cancel">Cancel</a>
             </div>
         </form>
     </div>

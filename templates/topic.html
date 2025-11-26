@@ -12,6 +12,7 @@
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
+
     .topic-hero::before {
         content: '';
         position: absolute;
@@ -22,6 +23,7 @@
         background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
         border-radius: 50%;
     }
+
     .phase-badge {
         display: inline-flex;
         align-items: center;
@@ -36,7 +38,7 @@
         margin-bottom: 12px;
         box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
     }
-    
+
     /* Tab Navigation */
     .topic-tabs {
         position: sticky;
@@ -49,10 +51,12 @@
         padding: 0 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
     .tabs-container {
         display: flex;
         gap: 0;
     }
+
     .topic-tab-btn {
         padding: 18px 28px;
         background: transparent;
@@ -70,6 +74,7 @@
         align-items: center;
         gap: 10px;
     }
+
     .topic-tab-btn::after {
         content: '';
         position: absolute;
@@ -81,38 +86,52 @@
         transform: translateX(-50%);
         transition: width 0.3s ease;
     }
+
     .topic-tab-btn:hover {
         color: var(--text);
         background: rgba(99, 102, 241, 0.08);
     }
+
     .topic-tab-btn:hover::after {
         width: 100%;
     }
+
     .topic-tab-btn.active {
         color: var(--accent);
         background: rgba(99, 102, 241, 0.15);
     }
+
     .topic-tab-btn.active::after {
         width: 100%;
     }
+
     .tab-icon {
         width: 18px;
         height: 18px;
     }
-    
+
     /* Tab Content */
     .tab-content {
         display: none;
     }
+
     .tab-content.active {
         display: block;
         animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    
+
     .video-container {
         background: #000;
         border-radius: 12px;
@@ -120,12 +139,14 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         border: 1px solid rgba(99, 102, 241, 0.2);
     }
+
     .video-wrapper {
         position: relative;
         padding-bottom: 56.25%;
         height: 0;
         overflow: hidden;
     }
+
     .video-wrapper iframe {
         position: absolute;
         top: 0;
@@ -133,6 +154,7 @@
         width: 100%;
         height: 100%;
     }
+
     .notes-container {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -140,11 +162,13 @@
         padding: 30px;
         min-height: 400px;
     }
+
     .management-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
     }
+
     .management-card {
         background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
         border: 1px solid rgba(99, 102, 241, 0.15);
@@ -153,10 +177,12 @@
         backdrop-filter: blur(8px);
         transition: all 0.3s ease;
     }
+
     .management-card:hover {
         border-color: rgba(99, 102, 241, 0.3);
         box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
     }
+
     .card-header {
         display: flex;
         align-items: center;
@@ -165,6 +191,7 @@
         padding-bottom: 16px;
         border-bottom: 1px solid rgba(99, 102, 241, 0.15);
     }
+
     .card-icon {
         width: 40px;
         height: 40px;
@@ -175,12 +202,14 @@
         justify-content: center;
         box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
+
     .card-title {
         font-size: 18px;
         font-weight: 600;
         margin: 0;
         color: var(--text);
     }
+
     .student-item {
         padding: 14px;
         background: rgba(148, 163, 184, 0.05);
@@ -189,20 +218,24 @@
         margin-bottom: 12px;
         transition: all 0.2s ease;
     }
+
     .student-item:hover {
         background: rgba(148, 163, 184, 0.08);
         border-color: rgba(148, 163, 184, 0.2);
     }
+
     .student-name {
         font-weight: 500;
         margin-bottom: 8px;
         color: var(--text);
     }
+
     .radio-group {
         display: flex;
         gap: 12px;
         font-size: 13px;
     }
+
     .radio-group label {
         cursor: pointer;
         padding: 6px 12px;
@@ -211,14 +244,17 @@
         border-radius: 6px;
         transition: all 0.2s ease;
     }
+
     .radio-group label:has(input:checked) {
         background: rgba(99, 102, 241, 0.2);
         border-color: var(--accent);
         color: var(--accent);
     }
+
     .radio-group input[type="radio"] {
         margin-right: 4px;
     }
+
     .form-input {
         background: rgba(30, 41, 59, 0.8);
         border: 1px solid rgba(148, 163, 184, 0.2);
@@ -229,11 +265,13 @@
         font-size: 14px;
         transition: all 0.2s ease;
     }
+
     .form-input:focus {
         outline: none;
         border-color: var(--accent);
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
+
     .form-select {
         background: rgba(30, 41, 59, 0.8);
         border: 1px solid rgba(148, 163, 184, 0.2);
@@ -244,30 +282,37 @@
         cursor: pointer;
         transition: all 0.2s ease;
     }
+
     .form-select:focus {
         outline: none;
         border-color: var(--accent);
     }
+
     .scrollable-list {
         max-height: 400px;
         overflow-y: auto;
         margin-bottom: 20px;
         padding-right: 8px;
     }
+
     .scrollable-list::-webkit-scrollbar {
         width: 6px;
     }
+
     .scrollable-list::-webkit-scrollbar-track {
         background: rgba(148, 163, 184, 0.05);
         border-radius: 3px;
     }
+
     .scrollable-list::-webkit-scrollbar-thumb {
         background: rgba(99, 102, 241, 0.3);
         border-radius: 3px;
     }
+
     .scrollable-list::-webkit-scrollbar-thumb:hover {
         background: rgba(99, 102, 241, 0.5);
     }
+
     .breadcrumb {
         display: flex;
         align-items: center;
@@ -276,41 +321,43 @@
         font-size: 14px;
         color: var(--muted);
     }
+
     .breadcrumb a {
         color: var(--accent);
         text-decoration: none;
         transition: color 0.2s;
     }
+
     .breadcrumb a:hover {
         color: #a855f7;
     }
 </style>
 
 <script>
-function showTab(tabName) {
-    // Hide all tab contents
-    document.querySelectorAll('.tab-content').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Remove active from all tabs
-    document.querySelectorAll('.topic-tab-btn').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Show selected tab
-    document.getElementById('tab-' + tabName).classList.add('active');
-    document.getElementById('btn-' + tabName).classList.add('active');
-}
+    function showTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.remove('active');
+        });
 
-// Show first available tab on load
-window.addEventListener('DOMContentLoaded', function() {
-    {% if topic.video_url %}
-    showTab('video');
-    {% else %}
-    showTab('notes');
-    {% endif %}
-});
+        // Remove active from all tabs
+        document.querySelectorAll('.topic-tab-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show selected tab
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.getElementById('btn-' + tabName).classList.add('active');
+    }
+
+    // Show first available tab on load
+    window.addEventListener('DOMContentLoaded', function () {
+        {% if topic.video_url %}
+        showTab('video');
+        {% else %}
+        showTab('notes');
+        {% endif %}
+    });
 </script>
 
 <!-- Breadcrumb -->
@@ -329,7 +376,8 @@ window.addEventListener('DOMContentLoaded', function() {
     {% endif %}
     <h1 style="font-size: 32px; margin: 0 0 12px 0; position: relative; z-index: 1;">{{ topic.name }}</h1>
     {% if topic.instructor %}
-    <div style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; position: relative; z-index: 1;">
+    <div
+        style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; position: relative; z-index: 1;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -384,10 +432,10 @@ window.addEventListener('DOMContentLoaded', function() {
 <div id="tab-video" class="tab-content">
     <div class="video-container">
         <div class="video-wrapper">
-            <iframe 
-                src="{{ topic.video_url.replace('youtu.be/', 'www.youtube.com/embed/').replace('watch?v=', 'embed/') }}" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            <iframe
+                src="{{ topic.video_url.replace('youtu.be/', 'www.youtube.com/embed/').replace('watch?v=', 'embed/') }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
             </iframe>
         </div>
@@ -404,11 +452,13 @@ window.addEventListener('DOMContentLoaded', function() {
         {% else %}
         <p style="color: var(--muted); font-style: italic;">No notes available for this topic yet.</p>
         {% endif %}
-        <div style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 10px;">
+        <div
+            style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 10px;">
             <h3 style="font-size: 16px; margin: 0 0 10px 0; color: var(--accent);">Quick Links</h3>
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 {% if topic.video_url %}
-                <a href="{{ topic.video_url }}" target="_blank" style="color: var(--text-light); text-decoration: none; font-size: 14px;">📹 Watch on YouTube</a>
+                <a href="{{ topic.video_url }}" target="_blank"
+                    style="color: var(--text-light); text-decoration: none; font-size: 14px;">📹 Watch on YouTube</a>
                 {% endif %}
             </div>
         </div>
@@ -427,14 +477,16 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
             <h2 class="card-title">Mark Attendance</h2>
         </div>
-        
+
         <form method="POST" action="{{ url_for('topic_detail', topic_id=topic.id) }}">
             <input type="hidden" name="action" value="attendance">
             <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 500;">Session Date</label>
+                <label
+                    style="display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 500;">Session
+                    Date</label>
                 <input type="date" name="date" required class="form-input">
             </div>
-            
+
             <div class="scrollable-list">
                 {% for student in students %}
                 <div class="student-item">
@@ -453,7 +505,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </div>
                 {% endfor %}
             </div>
-            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Save Attendance</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Save
+                Attendance</button>
         </form>
     </div>
 </div>
@@ -470,7 +523,7 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
             <h2 class="card-title">Track Progress</h2>
         </div>
-        
+
         <form method="POST" action="{{ url_for('topic_detail', topic_id=topic.id) }}">
             <input type="hidden" name="action" value="progress">
             <div class="scrollable-list">
@@ -479,15 +532,19 @@ window.addEventListener('DOMContentLoaded', function() {
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="student-name">{{ student.name }}</div>
                         <select name="student_{{ student.id }}" class="form-select">
-                            <option value="Not Started" {% if progress_map.get(student.id) == 'Not Started' %}selected{% endif %}>Not Started</option>
-                            <option value="In Progress" {% if progress_map.get(student.id) == 'In Progress' %}selected{% endif %}>In Progress</option>
-                            <option value="Completed" {% if progress_map.get(student.id) == 'Completed' %}selected{% endif %}>Completed</option>
+                            <option value="Not Started" {% if progress_map.get(student.id)=='Not Started' %}selected{%
+                                endif %}>Not Started</option>
+                            <option value="In Progress" {% if progress_map.get(student.id)=='In Progress' %}selected{%
+                                endif %}>In Progress</option>
+                            <option value="Completed" {% if progress_map.get(student.id)=='Completed' %}selected{% endif
+                                %}>Completed</option>
                         </select>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-            <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Update Progress</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">Update
+                Progress</button>
         </form>
     </div>
 </div>
