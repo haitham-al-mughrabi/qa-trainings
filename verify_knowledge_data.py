@@ -33,8 +33,8 @@ def verify_knowledge_data():
         print(f"📊 Total Students: {len(all_students)}")
         print()
         
-        # Create a set of valid (category, topic) combinations from active skills
-        valid_skills = {(skill.category, skill.topic) for skill in active_skills}
+        # Create a set of valid topics from active skills
+        valid_skills = {skill.topic for skill in active_skills}
         
         # Check for orphaned assessments
         print("-" * 60)
@@ -43,7 +43,7 @@ def verify_knowledge_data():
         
         orphaned_assessments = []
         for assessment in all_assessments:
-            if (assessment.category, assessment.topic) not in valid_skills:
+            if assessment.topic not in valid_skills:
                 orphaned_assessments.append(assessment)
         
         if orphaned_assessments:
@@ -54,7 +54,6 @@ def verify_knowledge_data():
                 student_name = student.name if student else "Unknown Student"
                 print(f"  • ID: {assessment.id}")
                 print(f"    Student: {student_name} (ID: {assessment.student_id})")
-                print(f"    Category: {assessment.category}")
                 print(f"    Topic: {assessment.topic}")
                 print(f"    Proficiency: {assessment.proficiency_level}")
                 print()
@@ -70,7 +69,6 @@ def verify_knowledge_data():
         skills_without_assessments = []
         for skill in active_skills:
             assessment_count = KnowledgeAssessment.query.filter_by(
-                category=skill.category,
                 topic=skill.topic
             ).count()
             
@@ -88,29 +86,17 @@ def verify_knowledge_data():
             print("✅ All active skills have at least one assessment!")
         print()
         
-        # Summary by category
+        # Summary of all skills
         print("-" * 60)
-        print("Summary by Category")
+        print("All Active Skills")
         print("-" * 60)
         
-        categories = {}
         for skill in active_skills:
-            if skill.category not in categories:
-                categories[skill.category] = {
-                    'skills': 0,
-                    'assessments': 0
-                }
-            categories[skill.category]['skills'] += 1
-        
-        for assessment in all_assessments:
-            if (assessment.category, assessment.topic) in valid_skills:
-                if assessment.category in categories:
-                    categories[assessment.category]['assessments'] += 1
-        
-        for category, stats in sorted(categories.items()):
-            print(f"\n📁 {category}")
-            print(f"   Skills: {stats['skills']}")
-            print(f"   Assessments: {stats['assessments']}")
+            assessment_count = KnowledgeAssessment.query.filter_by(
+                topic=skill.topic
+            ).count()
+            print(f"\n📌 {skill.topic}")
+            print(f"   Assessments: {assessment_count}")
         
         print()
         print("=" * 60)

@@ -692,16 +692,14 @@
                 </div>
             </div>
 
-            {% if assessments_by_category %}
+            {% if assessments_list %}
             <div class="info-card">
                 <div class="info-card-title">
                     <span>🎯</span>
-                    Skills Breakdown
+                    Skills Overview
                 </div>
                 <div class="info-card-content">
-                    {% for category, assessments in assessments_by_category.items() %}
-                    <p><strong>{{ category }}:</strong> {{ assessments|length }} skill(s) assessed</p>
-                    {% endfor %}
+                    <p><strong>Total Skills Assessed:</strong> {{ assessments_list|length }}</p>
                 </div>
             </div>
             {% endif %}
@@ -770,50 +768,42 @@
 
     <!-- Knowledge & Skills Tab -->
     <div id="skills-tab" class="tab-content">
-        {% if assessments_by_category %}
-        {% for category, assessments in assessments_by_category.items() %}
-        <div class="training-section">
-            <div class="training-header">
-                <h3 class="training-name">{{ category }}</h3>
-            </div>
-
-            <div class="topics-list">
-                {% for assessment in assessments %}
-                <div class="topic-item" style="grid-template-columns: 1fr auto;">
-                    <div>
-                        <div class="topic-name">{{ assessment.topic }}</div>
-                        <div class="topic-phase">Last updated: {{ assessment.last_updated.strftime('%Y-%m-%d') if
-                            assessment.last_updated else 'N/A' }}</div>
-                    </div>
-
-                    <div>
-                        {% if assessment.proficiency_level == 'Beginner' %}
-                        <span class="status-badge"
-                            style="background: linear-gradient(135deg, rgba(148, 163, 184, 0.3), rgba(148, 163, 184, 0.2)); color: var(--muted); border: 2px solid rgba(148, 163, 184, 0.5);">
-                            Beginner
-                        </span>
-                        {% elif assessment.proficiency_level == 'Intermediate' %}
-                        <span class="status-badge"
-                            style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2)); color: #3b82f6; border: 2px solid rgba(59, 130, 246, 0.5);">
-                            Intermediate
-                        </span>
-                        {% elif assessment.proficiency_level == 'Advance' %}
-                        <span class="status-badge"
-                            style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.2)); color: #fbbf24; border: 2px solid rgba(251, 191, 36, 0.5);">
-                            Advance
-                        </span>
-                        {% elif assessment.proficiency_level == 'Expert' %}
-                        <span class="status-badge"
-                            style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.2)); color: #22c55e; border: 2px solid rgba(34, 197, 94, 0.5);">
-                            Expert
-                        </span>
-                        {% endif %}
-                    </div>
+        {% if assessments_list %}
+        <div class="topics-list">
+            {% for assessment in assessments_list %}
+            <div class="topic-item" style="grid-template-columns: 1fr auto;">
+                <div>
+                    <div class="topic-name">{{ assessment.topic }}</div>
+                    <div class="topic-phase">Last updated: {{ assessment.last_updated.strftime('%Y-%m-%d') if
+                        assessment.last_updated else 'N/A' }}</div>
                 </div>
-                {% endfor %}
+
+                <div>
+                    {% if assessment.proficiency_level == 'Beginner' %}
+                    <span class="status-badge"
+                        style="background: linear-gradient(135deg, rgba(148, 163, 184, 0.3), rgba(148, 163, 184, 0.2)); color: var(--muted); border: 2px solid rgba(148, 163, 184, 0.5);">
+                        Beginner
+                    </span>
+                    {% elif assessment.proficiency_level == 'Intermediate' %}
+                    <span class="status-badge"
+                        style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2)); color: #3b82f6; border: 2px solid rgba(59, 130, 246, 0.5);">
+                        Intermediate
+                    </span>
+                    {% elif assessment.proficiency_level == 'Advance' %}
+                    <span class="status-badge"
+                        style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(251, 191, 36, 0.2)); color: #fbbf24; border: 2px solid rgba(251, 191, 36, 0.5);">
+                        Advance
+                    </span>
+                    {% elif assessment.proficiency_level == 'Expert' %}
+                    <span class="status-badge"
+                        style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.2)); color: #22c55e; border: 2px solid rgba(34, 197, 94, 0.5);">
+                        Expert
+                    </span>
+                    {% endif %}
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
         {% else %}
         <div class="empty-state">
             <p style="font-size: 16px;">No skill assessments found for this student.</p>

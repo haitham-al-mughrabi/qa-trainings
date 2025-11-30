@@ -324,31 +324,21 @@
         <thead>
             <tr>
                 <th>Student</th>
-                {% for category, topics in knowledge_structure.items() %}
-                {% for topic in topics %}
-                <th>{{ topic }}</th>
-                {% endfor %}
+                {% for skill in skills %}
+                <th>{{ skill.topic }}</th>
                 {% endfor %}
                 <th>Actions</th>
-            </tr>
-            <tr>
-                <th></th>
-                {% for category, topics in knowledge_structure.items() %}
-                <th colspan="{{ topics|length }}" class="category-header">{{ category }}</th>
-                {% endfor %}
-                <th></th>
             </tr>
         </thead>
         <tbody id="assessment-tbody">
             {% for student in students %}<tr data-student-id="{{ student.id }}" class="student-row">
                 <td style="font-weight: 500;">{{ student.name }}</td>
-                {% for category, topics in knowledge_structure.items() %}
-                {% for topic in topics %}
+                {% for skill in skills %}
                 <td>
-                    {% set key = student.id|string + '_' + category + '_' + topic %}
+                    {% set key = student.id|string + '_' + skill.topic %}
                     {% set assessment = assessment_map.get(key) %}
-                    <select class="proficiency-select" data-student-id="{{ student.id }}" data-category="{{ category }}"
-                        data-topic="{{ topic }}" data-assessment-id="{{ assessment.id if assessment else '' }}"
+                    <select class="proficiency-select" data-student-id="{{ student.id }}" data-topic="{{ skill.topic }}"
+                        data-assessment-id="{{ assessment.id if assessment else '' }}"
                         onchange="updateAssessment(this)">
                         <option value="">Not Assessed</option>
                         {% for level in proficiency_levels %}
@@ -360,7 +350,6 @@
                     </select>
                     <span class="save-indicator">✓ Saved</span>
                 </td>
-                {% endfor %}
                 {% endfor %}
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="clearStudentAssessments({{ student.id }})">Clear
@@ -400,15 +389,9 @@
             <input type="hidden" id="skill-id" value="">
 
             <div class="form-group">
-                <label class="form-label">Category</label>
-                <input type="text" id="skill-category" class="form-input" required
-                    placeholder="e.g., Automation, Performance, API">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Topic/Skill Name</label>
+                <label class="form-label">Skill/Topic Name</label>
                 <input type="text" id="skill-topic" class="form-input" required
-                    placeholder="e.g., Python - Testing level">
+                    placeholder="e.g., Automation - Python - Testing level, Performance - K6">
             </div>
 
             <button type="submit" class="btn btn-primary">Save Skill</button>
@@ -435,11 +418,10 @@
     let autoSaveEnabled = true;
 
     function markChanged(selectElement) {
-        const key = `${selectElement.dataset.studentId}_${selectElement.dataset.category}_${selectElement.dataset.topic}`;
+        const key = `${selectElement.dataset.studentId}_${selectElement.dataset.topic}`;
         pendingChanges.set(key, {
             element: selectElement,
             studentId: selectElement.dataset.studentId,
-            category: selectElement.dataset.category,
             topic: selectElement.dataset.topic,
             proficiencyLevel: selectElement.value,
             assessmentId: selectElement.dataset.assessmentId
@@ -462,7 +444,7 @@
     }
 
     function clearChanged(selectElement) {
-        const key = `${selectElement.dataset.studentId}_${selectElement.dataset.category}_${selectElement.dataset.topic}`;
+        const key = `${selectElement.dataset.studentId}_${selectElement.dataset.topic}`;
         pendingChanges.delete(key);
 
         // Update save button
@@ -510,12 +492,11 @@
 
     async function updateAssessment(selectElement) {
         const studentId = selectElement.dataset.studentId;
-        const category = selectElement.dataset.category;
         const topic = selectElement.dataset.topic;
         const proficiencyLevel = selectElement.value;
         const saveIndicator = selectElement.nextElementSibling;
 
-        console.log('updateAssessment called:', { studentId, category, topic, proficiencyLevel });
+        console.log('updateAssessment called:', { studentId, topic, proficiencyLevel });
 
         // Mark as changed if auto-save is disabled
         if (!autoSaveEnabled) {
@@ -553,7 +534,6 @@
                 },
                 body: JSON.stringify({
                     student_id: parseInt(studentId),
-                    category: category,
                     topic: topic,
                     proficiency_level: proficiencyLevel
                 })
@@ -673,11 +653,10 @@
                 skillItem.className = 'skill-item';
                 skillItem.innerHTML = `
                     <div class="skill-info">
-                        <div class="skill-category">${skill.category}</div>
                         <div class="skill-topic">${skill.topic}</div>
                     </div>
                     <div class="skill-actions">
-                        <button class="btn btn-secondary btn-sm" onclick="editSkill(${skill.id}, '${skill.category}', '${skill.topic}')">Edit</button>
+                        <button class="btn btn-secondary btn-sm" onclick="editSkill(${skill.id}, '${skill.topic.replace(/'/g, "\\'")}')">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteSkill(${skill.id})">Delete</button>
                     </div>
                 `;
@@ -689,10 +668,9 @@
         }
     }
 
-    function editSkill(id, category, topic) {
+    function editSkill(id, topic) {
         document.getElementById('skill-form-title').textContent = 'Edit Skill';
         document.getElementById('skill-id').value = id;
-        document.getElementById('skill-category').value = category;
         document.getElementById('skill-topic').value = topic;
         document.getElementById('skill-form-modal').classList.add('show');
     }
@@ -701,7 +679,6 @@
         event.preventDefault();
 
         const skillId = document.getElementById('skill-id').value;
-        const category = document.getElementById('skill-category').value;
         const topic = document.getElementById('skill-topic').value;
 
         try {
@@ -714,7 +691,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ category, topic })
+                    body: JSON.stringify({ topic })
                 });
             } else {
                 // Add new skill
@@ -723,7 +700,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ category, topic })
+                    body: JSON.stringify({ topic })
                 });
             }
 

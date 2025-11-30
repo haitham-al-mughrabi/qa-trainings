@@ -306,39 +306,23 @@ def progress():
 def knowledge_assessment():
     students = Student.query.all()
     
-    # Get skills from database, grouped by category
-    skills = KnowledgeSkill.query.filter_by(is_active=True).order_by(KnowledgeSkill.category, KnowledgeSkill.order).all()
-    
-    # Build knowledge structure from database
-    knowledge_structure = {}
-    for skill in skills:
-        if skill.category not in knowledge_structure:
-            knowledge_structure[skill.category] = []
-        knowledge_structure[skill.category].append(skill.topic)
-    
-    # If no skills exist, initialize with default structure
-    if not knowledge_structure:
-        # knowledge_structure remains empty, no default skills are added
-        pass
+    # Get skills from database as a flat list
+    skills = KnowledgeSkill.query.filter_by(is_active=True).order_by(KnowledgeSkill.order).all()
     
     proficiency_levels = ['Beginner', 'Intermediate', 'Advance', 'Expert']
     
-    # Get all assessments and organize by student
+    # Get all assessments and organize by student + topic
     assessments = KnowledgeAssessment.query.all()
     assessment_map = {}
     for assessment in assessments:
-        key = f"{assessment.student_id}_{assessment.category}_{assessment.topic}"
+        key = f"{assessment.student_id}_{assessment.topic}"
         assessment_map[key] = assessment
-    
-    # Get all categories for management
-    all_skills = KnowledgeSkill.query.order_by(KnowledgeSkill.category, KnowledgeSkill.order).all()
     
     return render_template('knowledge_assessment.html',
                          students=students,
-                         knowledge_structure=knowledge_structure,
+                         skills=skills,
                          proficiency_levels=proficiency_levels,
-                         assessment_map=assessment_map,
-                         all_skills=all_skills)
+                         assessment_map=assessment_map)
 
 # API endpoint to get assessments for a student
 @app.route('/api/knowledge-assessment/student/<int:student_id>')
@@ -346,7 +330,6 @@ def get_student_assessments(student_id):
     assessments = KnowledgeAssessment.query.filter_by(student_id=student_id).all()
     return jsonify([{
         'id': a.id,
-        'category': a.category,
         'topic': a.topic,
         'proficiency_level': a.proficiency_level,
         'last_updated': a.last_updated.isoformat() if a.last_updated else None
@@ -357,14 +340,12 @@ def get_student_assessments(student_id):
 def update_assessment():
     data = request.json
     student_id = data.get('student_id')
-    category = data.get('category')
     topic = data.get('topic')
     proficiency_level = data.get('proficiency_level')
     
     # Check if assessment exists
     assessment = KnowledgeAssessment.query.filter_by(
         student_id=student_id,
-        category=category,
         topic=topic
     ).first()
     
@@ -373,7 +354,6 @@ def update_assessment():
     else:
         assessment = KnowledgeAssessment(
             student_id=student_id,
-            category=category,
             topic=topic,
             proficiency_level=proficiency_level
         )
@@ -403,10 +383,9 @@ def delete_assessment(assessment_id):
 # Get all skills
 @app.route('/api/skills')
 def get_all_skills():
-    skills = KnowledgeSkill.query.order_by(KnowledgeSkill.category, KnowledgeSkill.order).all()
+    skills = KnowledgeSkill.query.order_by(KnowledgeSkill.order).all()
     return jsonify([{
         'id': s.id,
-        'category': s.category,
         'topic': s.topic,
         'order': s.order,
         'is_active': s.is_active
@@ -416,14 +395,13 @@ def get_all_skills():
 @app.route('/api/skills', methods=['POST'])
 def add_skill():
     data = request.json
-    category = data.get('category')
     topic = data.get('topic')
     
-    if not category or not topic:
-        return jsonify({'success': False, 'error': 'Category and topic are required'}), 400
+    if not topic:
+        return jsonify({'success': False, 'error': 'Topic is required'}), 400
     
     # Check if skill already exists
-    existing = KnowledgeSkill.query.filter_by(category=category, topic=topic).first()
+    existing = KnowledgeSkill.query.filter_by(topic=topic).first()
     if existing:
         if not existing.is_active:
             # Reactivate if it was deactivated
@@ -432,11 +410,10 @@ def add_skill():
             return jsonify({'success': True, 'id': existing.id, 'reactivated': True})
         return jsonify({'success': False, 'error': 'Skill already exists'}), 400
     
-    # Get max order for this category
-    max_order = db.session.query(db.func.max(KnowledgeSkill.order)).filter_by(category=category).scalar() or 0
+    # Get max order
+    max_order = db.session.query(db.func.max(KnowledgeSkill.order)).scalar() or 0
     
     skill = KnowledgeSkill(
-        category=category,
         topic=topic,
         order=max_order + 1
     )
@@ -452,39 +429,32 @@ def update_skill(skill_id):
         skill = KnowledgeSkill.query.get_or_404(skill_id)
         data = request.json
         
-        old_category = skill.category
         old_topic = skill.topic
-        
-        new_category = data.get('category', skill.category)
         new_topic = data.get('topic', skill.topic)
         
         # Validate input
-        if not new_category or not new_topic:
-            return jsonify({'success': False, 'error': 'Category and topic are required'}), 400
+        if not new_topic:
+            return jsonify({'success': False, 'error': 'Topic is required'}), 400
         
-        # Check if another skill with the new category/topic already exists
-        if old_category != new_category or old_topic != new_topic:
+        # Check if another skill with the new topic already exists
+        if old_topic != new_topic:
             existing = KnowledgeSkill.query.filter_by(
-                category=new_category, 
                 topic=new_topic
             ).filter(KnowledgeSkill.id != skill_id).first()
             
             if existing:
-                return jsonify({'success': False, 'error': 'A skill with this category and topic already exists'}), 400
+                return jsonify({'success': False, 'error': 'A skill with this topic already exists'}), 400
         
         # Update skill
-        skill.category = new_category
         skill.topic = new_topic
         
         # Update all related assessments using bulk update
         updated_count = 0
-        if old_category != new_category or old_topic != new_topic:
+        if old_topic != new_topic:
             # Use synchronize_session=False and expire_all to ensure fresh data
             updated_count = KnowledgeAssessment.query.filter_by(
-                category=old_category,
                 topic=old_topic
             ).update({
-                'category': new_category,
                 'topic': new_topic
             }, synchronize_session=False)
         
@@ -496,7 +466,6 @@ def update_skill(skill_id):
         
         # Verify the update was successful
         final_count = KnowledgeAssessment.query.filter_by(
-            category=new_category,
             topic=new_topic
         ).count()
         
@@ -542,12 +511,8 @@ def student_profile(student_id):
     # Get knowledge assessments for this student
     knowledge_assessments = KnowledgeAssessment.query.filter_by(student_id=student_id).all()
     
-    # Organize assessments by category
-    assessments_by_category = {}
-    for assessment in knowledge_assessments:
-        if assessment.category not in assessments_by_category:
-            assessments_by_category[assessment.category] = []
-        assessments_by_category[assessment.category].append(assessment)
+    # Get assessments as a simple list (no category grouping)
+    assessments_list = knowledge_assessments
     
     # Get unique trainings the student is enrolled in (based on attendance or progress)
     attended_topic_ids = set([a.topic_id for a in attendance_records])
@@ -582,7 +547,7 @@ def student_profile(student_id):
                          attendance_map=attendance_map,
                          progress_map=progress_map,
                          stats=stats,
-                         assessments_by_category=assessments_by_category)
+                         assessments_list=assessments_list)
 
 @app.route('/students')
 def students_list():
