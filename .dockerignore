@@ -1,6 +1,6 @@
 .git
 __pycache__
-instance
+
 .gemini
 .idea
 *.pyc

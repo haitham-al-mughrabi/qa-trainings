@@ -312,7 +312,12 @@
 <div class="assessment-table-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <h2 style="font-size: 22px; margin: 0; font-weight: 600; color: var(--accent);">Skill Assessment Matrix</h2>
-        <button class="btn btn-primary" onclick="openSkillsModal()">⚙️ Manage Skills</button>
+        <div style="display: flex; gap: 12px;">
+            <button class="btn btn-success" onclick="saveAllChanges()" id="save-all-btn" style="display: none;">
+                💾 Save All Changes
+            </button>
+            <button class="btn btn-primary" onclick="openSkillsModal()">⚙️ Manage Skills</button>
+        </div>
     </div>
 
     <table class="assessment-table">
@@ -425,6 +430,84 @@
         });
     }
 
+    // Track pending changes
+    let pendingChanges = new Map();
+    let autoSaveEnabled = true;
+
+    function markChanged(selectElement) {
+        const key = `${selectElement.dataset.studentId}_${selectElement.dataset.category}_${selectElement.dataset.topic}`;
+        pendingChanges.set(key, {
+            element: selectElement,
+            studentId: selectElement.dataset.studentId,
+            category: selectElement.dataset.category,
+            topic: selectElement.dataset.topic,
+            proficiencyLevel: selectElement.value,
+            assessmentId: selectElement.dataset.assessmentId
+        });
+
+        // Show save button if there are pending changes
+        const saveBtn = document.getElementById('save-all-btn');
+        if (pendingChanges.size > 0) {
+            saveBtn.style.display = 'block';
+            saveBtn.textContent = `💾 Save All Changes (${pendingChanges.size})`;
+        } else {
+            saveBtn.style.display = 'none';
+        }
+
+        // Change select border to indicate unsaved
+        if (!autoSaveEnabled) {
+            selectElement.style.borderColor = '#fbbf24';
+            selectElement.style.borderWidth = '2px';
+        }
+    }
+
+    function clearChanged(selectElement) {
+        const key = `${selectElement.dataset.studentId}_${selectElement.dataset.category}_${selectElement.dataset.topic}`;
+        pendingChanges.delete(key);
+
+        // Update save button
+        const saveBtn = document.getElementById('save-all-btn');
+        if (pendingChanges.size > 0) {
+            saveBtn.textContent = `💾 Save All Changes (${pendingChanges.size})`;
+        } else {
+            saveBtn.style.display = 'none';
+        }
+
+        // Reset border
+        selectElement.style.borderColor = '';
+        selectElement.style.borderWidth = '';
+    }
+
+    async function saveAllChanges() {
+        const saveBtn = document.getElementById('save-all-btn');
+        const originalText = saveBtn.textContent;
+        saveBtn.disabled = true;
+        saveBtn.textContent = '💾 Saving...';
+
+        let successCount = 0;
+        let errorCount = 0;
+
+        for (const [key, change] of pendingChanges.entries()) {
+            try {
+                await updateAssessment(change.element);
+                successCount++;
+            } catch (error) {
+                console.error('Error saving change:', error);
+                errorCount++;
+            }
+        }
+
+        saveBtn.disabled = false;
+
+        if (errorCount === 0) {
+            alert(`Successfully saved ${successCount} assessment(s)!`);
+            pendingChanges.clear();
+            saveBtn.style.display = 'none';
+        } else {
+            alert(`Saved ${successCount} assessment(s) with ${errorCount} error(s). Check console for details.`);
+        }
+    }
+
     async function updateAssessment(selectElement) {
         const studentId = selectElement.dataset.studentId;
         const category = selectElement.dataset.category;
@@ -432,17 +515,37 @@
         const proficiencyLevel = selectElement.value;
         const saveIndicator = selectElement.nextElementSibling;
 
+        console.log('updateAssessment called:', { studentId, category, topic, proficiencyLevel });
+
+        // Mark as changed if auto-save is disabled
+        if (!autoSaveEnabled) {
+            markChanged(selectElement);
+            return; // Don't save immediately
+        }
+
         if (!proficiencyLevel) {
             // If empty, delete the assessment
             const assessmentId = selectElement.dataset.assessmentId;
             if (assessmentId) {
+                console.log('Deleting assessment:', assessmentId);
                 await deleteAssessment(assessmentId);
                 selectElement.dataset.assessmentId = '';
+
+                // Show feedback
+                saveIndicator.textContent = '✓ Cleared';
+                saveIndicator.classList.add('show');
+                setTimeout(() => {
+                    saveIndicator.classList.remove('show');
+                    saveIndicator.textContent = '✓ Saved';
+                }, 2000);
             }
+            clearChanged(selectElement);
             return;
         }
 
         try {
+            console.log('Sending POST request to /api/knowledge-assessment');
+
             const response = await fetch('/api/knowledge-assessment', {
                 method: 'POST',
                 headers: {
@@ -456,7 +559,9 @@
                 })
             });
 
+            console.log('Response status:', response.status);
             const data = await response.json();
+            console.log('Response data:', data);
 
             if (data.success) {
                 // Update assessment ID
@@ -467,10 +572,26 @@
                 setTimeout(() => {
                     saveIndicator.classList.remove('show');
                 }, 2000);
+
+                console.log('Assessment saved successfully, ID:', data.id);
+                clearChanged(selectElement);
+            } else {
+                console.error('Save failed:', data);
+                alert('Failed to save assessment: ' + (data.error || 'Unknown error'));
             }
         } catch (error) {
             console.error('Error updating assessment:', error);
-            alert('Failed to update assessment. Please try again.');
+            alert('Failed to update assessment. Please check the console for details.');
+
+            // Show error indicator
+            saveIndicator.textContent = '✗ Error';
+            saveIndicator.style.color = '#ef4444';
+            saveIndicator.classList.add('show');
+            setTimeout(() => {
+                saveIndicator.classList.remove('show');
+                saveIndicator.textContent = '✓ Saved';
+                saveIndicator.style.color = '';
+            }, 3000);
         }
     }
 
@@ -611,9 +732,18 @@
             if (data.success) {
                 closeSkillFormModal();
                 await loadSkills();
-                alert(skillId ? 'Skill updated successfully! Refreshing page...' : 'Skill added successfully! Refreshing page...');
-                // Reload page to update the assessment table
-                window.location.reload();
+
+                // Show detailed success message
+                let message = skillId ? 'Skill updated successfully!' : 'Skill added successfully!';
+                if (data.updated_assessments !== undefined && data.updated_assessments > 0) {
+                    message += `\n${data.updated_assessments} student assessment(s) updated.`;
+                }
+                message += '\n\nRefreshing page to show changes...';
+
+                alert(message);
+
+                // Reload page with cache-busting parameter to ensure fresh data
+                window.location.href = window.location.pathname + '?t=' + new Date().getTime();
             } else {
                 alert(data.error || 'Failed to save skill. Please try again.');
             }

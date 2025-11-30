@@ -6,7 +6,8 @@ import re
 from datetime import datetime
 
 app = Flask(__name__, static_folder='statics', static_url_path='/statics')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/trainings.db'
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'instance', 'trainings.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -317,20 +318,8 @@ def knowledge_assessment():
     
     # If no skills exist, initialize with default structure
     if not knowledge_structure:
-        knowledge_structure = {
-            'Automation': ['Python - Testing level', 'Robot Framework'],
-            'Performance': ['Javascript - Testing level', 'K6'],
-            'API': ['Postman', 'Mocking'],
-            'Database': ['SQL']
-        }
-        # Save default skills to database
-        order = 0
-        for category, topics in knowledge_structure.items():
-            for topic in topics:
-                skill = KnowledgeSkill(category=category, topic=topic, order=order)
-                db.session.add(skill)
-                order += 1
-        db.session.commit()
+        # knowledge_structure remains empty, no default skills are added
+        pass
     
     proficiency_levels = ['Beginner', 'Intermediate', 'Advance', 'Expert']
     
@@ -459,38 +448,68 @@ def add_skill():
 # Update skill
 @app.route('/api/skills/<int:skill_id>', methods=['PUT'])
 def update_skill(skill_id):
-    skill = KnowledgeSkill.query.get_or_404(skill_id)
-    data = request.json
-    
-    old_category = skill.category
-    old_topic = skill.topic
-    
-    new_category = data.get('category', skill.category)
-    new_topic = data.get('topic', skill.topic)
-    
-    # Update skill
-    skill.category = new_category
-    skill.topic = new_topic
-    
-    # Update all related assessments using bulk update to avoid session issues
-    if old_category != new_category or old_topic != new_topic:
-        KnowledgeAssessment.query.filter_by(
-            category=old_category,
-            topic=old_topic
-        ).update({
-            'category': new_category,
-            'topic': new_topic
-        }, synchronize_session='fetch')
-    
-    db.session.commit()
-    
-    # Count updated assessments
-    updated_count = KnowledgeAssessment.query.filter_by(
-        category=new_category,
-        topic=new_topic
-    ).count()
-    
-    return jsonify({'success': True, 'updated_assessments': updated_count})
+    try:
+        skill = KnowledgeSkill.query.get_or_404(skill_id)
+        data = request.json
+        
+        old_category = skill.category
+        old_topic = skill.topic
+        
+        new_category = data.get('category', skill.category)
+        new_topic = data.get('topic', skill.topic)
+        
+        # Validate input
+        if not new_category or not new_topic:
+            return jsonify({'success': False, 'error': 'Category and topic are required'}), 400
+        
+        # Check if another skill with the new category/topic already exists
+        if old_category != new_category or old_topic != new_topic:
+            existing = KnowledgeSkill.query.filter_by(
+                category=new_category, 
+                topic=new_topic
+            ).filter(KnowledgeSkill.id != skill_id).first()
+            
+            if existing:
+                return jsonify({'success': False, 'error': 'A skill with this category and topic already exists'}), 400
+        
+        # Update skill
+        skill.category = new_category
+        skill.topic = new_topic
+        
+        # Update all related assessments using bulk update
+        updated_count = 0
+        if old_category != new_category or old_topic != new_topic:
+            # Use synchronize_session=False and expire_all to ensure fresh data
+            updated_count = KnowledgeAssessment.query.filter_by(
+                category=old_category,
+                topic=old_topic
+            ).update({
+                'category': new_category,
+                'topic': new_topic
+            }, synchronize_session=False)
+        
+        # Commit all changes
+        db.session.commit()
+        
+        # Expire all cached objects to ensure fresh reads
+        db.session.expire_all()
+        
+        # Verify the update was successful
+        final_count = KnowledgeAssessment.query.filter_by(
+            category=new_category,
+            topic=new_topic
+        ).count()
+        
+        return jsonify({
+            'success': True, 
+            'updated_assessments': updated_count,
+            'total_assessments': final_count
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error updating skill: {str(e)}")
+        return jsonify({'success': False, 'error': f'Failed to update skill: {str(e)}'}), 500
 
 # Delete skill (soft delete)
 @app.route('/api/skills/<int:skill_id>', methods=['DELETE'])
@@ -1030,4 +1049,4 @@ def view_certificate(unique_code):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(port=6500,debug=True)
+    app.run(port=6501,debug=True)
