@@ -2,133 +2,319 @@
 
 {% block content %}
 <style>
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ==================== HERO SECTION ==================== */
     .progress-hero {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        padding: 40px;
-        margin-bottom: 30px;
+        position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
         text-align: center;
     }
-    
-    .filters-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
-        margin-bottom: 30px;
+
+    .progress-hero::before {
+        content: '';
+        position: absolute;
+        top: -40%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
     }
-    
+
+    .progress-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
+    }
+
+    .progress-hero h1 {
+        font-size: clamp(40px, 5vw, 56px);
+        font-weight: 800;
+        margin: 0 0 20px 0;
+        background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-in-up 0.6s ease-out;
+        position: relative;
+        z-index: 2;
+    }
+
+    .progress-hero p {
+        color: #cbd5e1;
+        margin: 0;
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        animation: slide-in-up 0.7s ease-out 0.1s both;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ==================== FILTERS CARD ==================== */
+    .filters-card {
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: slide-in-up 0.7s ease-out 0.2s both;
+    }
+
+    .filters-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        border-radius: 18px 18px 0 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .filters-card:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.15);
+    }
+
+    .filters-card:hover::before {
+        transform: scaleX(1);
+    }
+
     .filters-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 16px;
+        gap: 20px;
     }
-    
+
     .filter-group {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
     }
-    
+
     .filter-label {
         font-size: 13px;
-        font-weight: 500;
-        color: var(--text);
+        font-weight: 600;
+        color: #f9fafb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
-    
+
     .filter-select {
-        padding: 10px 14px;
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 8px;
-        color: white;
+        padding: 12px 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius: 12px;
+        color: #f9fafb;
         font-size: 14px;
+        transition: all 0.3s ease;
+        font-weight: 500;
     }
-    
+
+    .filter-select::placeholder {
+        color: #9ca3af;
+    }
+
     .filter-select:focus {
         outline: none;
-        border-color: var(--accent);
+        border-color: rgba(56, 189, 248, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
     }
-    
+
+    /* ==================== SECTION CARD ==================== */
     .section-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 28px;
-        margin-bottom: 24px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: slide-in-up 0.7s ease-out 0.3s both;
+        overflow: hidden;
     }
-    
+
+    .section-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        border-radius: 18px 18px 0 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .section-card:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.15);
+    }
+
+    .section-card:hover::before {
+        transform: scaleX(1);
+    }
+
     .section-title {
         font-size: 22px;
-        font-weight: 600;
-        margin-bottom: 24px;
-        color: var(--accent);
+        font-weight: 700;
+        margin-bottom: 28px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        position: relative;
+        z-index: 2;
     }
-    
+
     .chart-container {
         margin-bottom: 30px;
     }
-    
+
     .donut-chart {
         width: 200px;
         height: 200px;
         margin: 0 auto 20px;
         position: relative;
     }
-    
+
     .donut-segment {
         stroke-width: 30;
         fill: none;
         transform-origin: center;
         transform: rotate(-90deg);
     }
-    
+
     .chart-legend {
         display: flex;
         justify-content: center;
         gap: 24px;
         flex-wrap: wrap;
     }
-    
+
     .legend-item {
         display: flex;
         align-items: center;
         gap: 8px;
         font-size: 13px;
     }
-    
+
     .legend-color {
         width: 16px;
         height: 16px;
         border-radius: 4px;
     }
-    
+
     .student-progress-list {
         display: grid;
-        gap: 12px;
+        gap: 16px;
+        position: relative;
+        z-index: 2;
     }
-    
+
+    /* ==================== PROGRESS ITEM ==================== */
     .student-progress-item {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(99, 102, 241, 0.1);
-        border-radius: 10px;
-        padding: 16px;
+        position: relative;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.1);
+        border-radius: 14px;
+        padding: 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        animation: slide-in-up 0.6s ease-out forwards;
     }
-    
+
+    .student-progress-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .student-progress-item:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 12px 30px rgba(56, 189, 248, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .student-progress-item:hover::before {
+        transform: scaleX(1);
+    }
+
     .student-name {
-        font-weight: 500;
-        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        color: #f9fafb;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 2;
     }
-    
+
     .progress-bar-container {
         background: rgba(148, 163, 184, 0.1);
         height: 24px;
         border-radius: 6px;
         overflow: hidden;
         display: flex;
+        position: relative;
+        z-index: 2;
     }
-    
+
     .progress-segment {
         display: flex;
         align-items: center;
@@ -138,88 +324,167 @@
         color: white;
         transition: width 0.3s ease;
     }
-    
+
     .progress-completed {
         background: linear-gradient(90deg, #10b981, #059669);
     }
-    
+
     .progress-in-progress {
         background: linear-gradient(90deg, #f59e0b, #d97706);
     }
-    
+
     .progress-not-started {
         background: rgba(148, 163, 184, 0.3);
     }
-    
+
     .phase-comparison {
         display: grid;
         gap: 20px;
     }
-    
+
     .phase-item {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(99, 102, 241, 0.1);
-        border-radius: 10px;
-        padding: 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.1);
+        border-radius: 14px;
+        padding: 20px;
+        transition: all 0.3s ease;
     }
-    
+
+    .phase-item:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        background: rgba(15, 23, 42, 0.8);
+    }
+
     .phase-name {
-        font-weight: 500;
+        font-weight: 600;
+        color: #f9fafb;
         margin-bottom: 12px;
     }
-    
+
     .topic-progress-grid {
         display: grid;
         gap: 16px;
+        position: relative;
+        z-index: 2;
     }
-    
+
     .topic-item {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(99, 102, 241, 0.1);
-        border-radius: 10px;
-        padding: 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.1);
+        border-radius: 14px;
+        padding: 20px;
+        transition: all 0.3s ease;
     }
-    
+
+    .topic-item:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        background: rgba(15, 23, 42, 0.8);
+    }
+
     .topic-name {
-        font-weight: 500;
+        font-weight: 600;
+        color: #f9fafb;
         margin-bottom: 12px;
     }
-    
+
     .status-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 8px;
     }
-    
+
     .status-badge {
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 12px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
         text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
     }
-    
+
     .status-completed {
         background: rgba(16, 185, 129, 0.15);
         color: #10b981;
         border: 1px solid rgba(16, 185, 129, 0.3);
     }
-    
+
+    .status-completed:hover {
+        background: rgba(16, 185, 129, 0.25);
+        border-color: rgba(16, 185, 129, 0.5);
+    }
+
     .status-in-progress {
         background: rgba(245, 158, 11, 0.15);
         color: #f59e0b;
         border: 1px solid rgba(245, 158, 11, 0.3);
     }
-    
+
+    .status-in-progress:hover {
+        background: rgba(245, 158, 11, 0.25);
+        border-color: rgba(245, 158, 11, 0.5);
+    }
+
     .status-not-started {
         background: rgba(148, 163, 184, 0.15);
         color: var(--muted);
         border: 1px solid rgba(148, 163, 184, 0.3);
     }
+
+    .status-not-started:hover {
+        background: rgba(148, 163, 184, 0.25);
+        border-color: rgba(148, 163, 184, 0.5);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .progress-hero {
+            padding: 60px 24px;
+            margin-bottom: 40px;
+        }
+
+        .progress-hero h1 {
+            font-size: 32px;
+        }
+
+        .progress-hero p {
+            font-size: 16px;
+        }
+
+        .filters-card {
+            padding: 24px;
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-card {
+            padding: 24px;
+        }
+
+        .student-progress-item {
+            padding: 16px;
+        }
+
+        .student-name {
+            font-size: 15px;
+        }
+
+        .progress-bar-container {
+            height: 20px;
+        }
+
+        .progress-segment {
+            font-size: 10px;
+        }
+    }
 </style>
 
 <div class="progress-hero">
-    <h1 style="font-size: 36px; margin: 0 0 12px 0;">Progress Analytics</h1>
-    <p style="color: var(--text-light); margin: 0;">View student progress across trainings, phases, and topics</p>
+    <h1>Progress Analytics</h1>
+    <p>View student progress across trainings, phases, and topics</p>
 </div>
 
 <!-- Filters -->
@@ -267,6 +532,7 @@
     <div id="topic-content"></div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <script>
 const progressData = {{ progress_data|tojson }};
 const students = {{ students|tojson }};
@@ -342,6 +608,14 @@ function hideAllSections() {
     document.getElementById('topic-progress').style.display = 'none';
 }
 
+function applyStaggeredAnimation() {
+    const items = document.querySelectorAll('.student-progress-item');
+    items.forEach((item, index) => {
+        item.style.animationDelay = index * 0.05 + 's';
+    });
+    feather.replace();
+}
+
 function showTrainingProgress(trainingId) {
     hideAllSections();
     const training = progressData[trainingId];
@@ -374,6 +648,7 @@ function showTrainingProgress(trainingId) {
     html += '</div>';
     content.innerHTML = html;
     section.style.display = 'block';
+    applyStaggeredAnimation();
 }
 
 function showPhaseProgress(trainingId, phaseName) {
@@ -409,6 +684,7 @@ function showPhaseProgress(trainingId, phaseName) {
     html += '</div>';
     content.innerHTML = html;
     section.style.display = 'block';
+    applyStaggeredAnimation();
 }
 
 function showTopicProgress(trainingId, phaseName, topicId) {
@@ -438,7 +714,13 @@ function showTopicProgress(trainingId, phaseName, topicId) {
     html += '</div>';
     content.innerHTML = html;
     section.style.display = 'block';
+    applyStaggeredAnimation();
 }
+
+// Initialize feather icons on page load
+document.addEventListener('DOMContentLoaded', () => {
+    feather.replace();
+});
 </script>
 
 {% endblock %}

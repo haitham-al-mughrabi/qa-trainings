@@ -585,27 +585,27 @@
     <h1 class="student-name">{{ student.name }}</h1>
     <div class="stats-grid">
         <div class="stat-card">
-            <span class="stat-icon">📚</span>
+            <span class="stat-icon"><i data-feather="book-open" style="width: 32px; height: 32px; stroke-width: 1.5; color: #38bdf8;"></i></span>
             <div class="stat-value">{{ stats.total_trainings }}</div>
             <div class="stat-label">Enrolled Trainings</div>
         </div>
         <div class="stat-card">
-            <span class="stat-icon">📝</span>
+            <span class="stat-icon"><i data-feather="file-text" style="width: 32px; height: 32px; stroke-width: 1.5; color: #38bdf8;"></i></span>
             <div class="stat-value">{{ stats.total_topics }}</div>
             <div class="stat-label">Total Topics</div>
         </div>
         <div class="stat-card">
-            <span class="stat-icon">✅</span>
+            <span class="stat-icon"><i data-feather="check-circle" style="width: 32px; height: 32px; stroke-width: 1.5; color: #22c55e;"></i></span>
             <div class="stat-value">{{ stats.attendance_rate }}%</div>
             <div class="stat-label">Attendance Rate</div>
         </div>
         <div class="stat-card">
-            <span class="stat-icon">🎯</span>
+            <span class="stat-icon"><i data-feather="target" style="width: 32px; height: 32px; stroke-width: 1.5; color: #f97316;"></i></span>
             <div class="stat-value">{{ stats.completion_rate }}%</div>
             <div class="stat-label">Completion Rate</div>
         </div>
         <div class="stat-card">
-            <span class="stat-icon">⭐</span>
+            <span class="stat-icon"><i data-feather="star" style="width: 32px; height: 32px; stroke-width: 1.5; fill: currentColor; color: #a855f7;"></i></span>
             <div class="stat-value">{{ stats.total_skills }}</div>
             <div class="stat-label">Assessed Skills</div>
         </div>
@@ -617,15 +617,15 @@
     <!-- Tab Navigation -->
     <div class="tabs-nav">
         <button class="tab-button active" onclick="switchTab('overview')">
-            <span class="tab-icon">📊</span>
+            <span class="tab-icon"><i data-feather="bar-chart-2" style="width: 18px; height: 18px;"></i></span>
             Overview
         </button>
         <button class="tab-button" onclick="switchTab('trainings')">
-            <span class="tab-icon">🎓</span>
+            <span class="tab-icon"><i data-feather="book" style="width: 18px; height: 18px;"></i></span>
             Trainings & Topics
         </button>
         <button class="tab-button" onclick="switchTab('skills')">
-            <span class="tab-icon">⭐</span>
+            <span class="tab-icon"><i data-feather="award" style="width: 18px; height: 18px;"></i></span>
             Knowledge & Skills
         </button>
     </div>
@@ -635,7 +635,7 @@
         <div class="overview-grid">
             <div class="info-card">
                 <div class="info-card-title">
-                    <span>📈</span>
+                    <i data-feather="trending-up" style="width: 18px; height: 18px;"></i>
                     Performance Summary
                 </div>
                 <div class="info-card-content">
@@ -651,7 +651,7 @@
             {% if assessments_list %}
             <div class="info-card">
                 <div class="info-card-title">
-                    <span>🎯</span>
+                    <i data-feather="target" style="width: 18px; height: 18px;"></i>
                     Skills Overview
                 </div>
                 <div class="info-card-content">
@@ -668,7 +668,7 @@
         {% for training in trainings %}
         <div class="training-section">
             <div class="training-header">
-                <h2 class="training-name">{{ training.name }}</h2>
+                <h2 class="training-name"><i data-feather="book-open" style="width: 24px; height: 24px; stroke-width: 1.5;"></i>{{ training.name }}</h2>
             </div>
 
             <div class="topics-list">
@@ -715,6 +715,7 @@
         {% endfor %}
         {% else %}
         <div class="empty-state">
+            <div class="empty-state-icon"><i data-feather="inbox" style="width: 60px; height: 60px; stroke-width: 1; opacity: 0.6;"></i></div>
             <p style="font-size: 16px;">No training records found for this student.</p>
             <p style="font-size: 14px; margin-top: 8px;">Attendance and progress records will appear here once added.
             </p>
@@ -762,6 +763,7 @@
         </div>
         {% else %}
         <div class="empty-state">
+            <div class="empty-state-icon"><i data-feather="inbox" style="width: 60px; height: 60px; stroke-width: 1; opacity: 0.6;"></i></div>
             <p style="font-size: 16px;">No skill assessments found for this student.</p>
             <p style="font-size: 14px; margin-top: 8px;">Knowledge assessments will appear here once added.</p>
         </div>
@@ -769,6 +771,7 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <script>
     function switchTab(tabName) {
         // Hide all tab contents
@@ -791,7 +794,15 @@
 
         // Add active class to clicked button
         event.target.closest('.tab-button').classList.add('active');
+
+        // Re-initialize feather icons after tab switch
+        feather.replace();
     }
+
+    // Initialize feather icons on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        feather.replace();
+    });
 </script>
 
 {% endblock %}

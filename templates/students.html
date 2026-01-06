@@ -350,7 +350,7 @@
                 <div class="stat-label">Total Students</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">📚</div>
+                <div class="stat-number"><i data-feather="book-open" style="width: 40px; height: 40px; stroke-width: 1.5; color: #38bdf8;"></i></div>
                 <div class="stat-label">Active Learners</div>
             </div>
         </div>
@@ -363,7 +363,7 @@
         type="text"
         class="search-box"
         id="search-input"
-        placeholder="🔍 Search students by name..."
+        placeholder="Search students by name..."
         onkeyup="filterStudents()"
     >
 </div>
@@ -379,19 +379,20 @@
             <h3 class="student-name">{{ student.name }}</h3>
             <div class="student-meta">
                 <div class="meta-badge">
-                    👤 View Profile
+                    <i data-feather="user" style="width: 14px; height: 14px; stroke-width: 2;"></i> View Profile
                 </div>
             </div>
         </a>
         {% endfor %}
     {% else %}
         <div class="empty-state">
-            <div class="empty-state-icon">👥</div>
+            <div class="empty-state-icon"><i data-feather="users" style="width: 60px; height: 60px; stroke-width: 1; opacity: 0.6;"></i></div>
             <div class="empty-state-text">No students found.</div>
         </div>
     {% endif %}
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <script>
     function filterStudents() {
         const searchInput = document.getElementById('search-input').value.toLowerCase();
@@ -415,6 +416,8 @@
         cards.forEach((card, index) => {
             card.style.animationDelay = index * 0.05 + 's';
         });
+        // Initialize feather icons
+        feather.replace();
     });
 </script>
 

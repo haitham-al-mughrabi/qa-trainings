@@ -388,7 +388,7 @@
                 <div class="stat-label">Expert Instructors</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">∞</div>
+                <div class="stat-number"><i data-feather="star" style="width: 40px; height: 40px; stroke-width: 1.5; fill: currentColor; color: #f97316;"></i></div>
                 <div class="stat-label">Experience</div>
             </div>
         </div>
@@ -401,7 +401,7 @@
         type="text"
         class="search-box"
         id="search-input"
-        placeholder="🔍 Search instructors by name or expertise..."
+        placeholder="Search instructors by name or expertise..."
         onkeyup="filterInstructors()"
     >
 </div>
@@ -431,19 +431,20 @@
 
             <div class="instructor-meta">
                 <div class="meta-badge">
-                    📚 {{ instructor.trainings.count() }} Training{{ 's' if instructor.trainings.count() != 1 else '' }}
+                    <i data-feather="book" style="width: 14px; height: 14px; stroke-width: 2;"></i> {{ instructor.trainings.count() }} Training{{ 's' if instructor.trainings.count() != 1 else '' }}
                 </div>
             </div>
         </a>
         {% endfor %}
     {% else %}
         <div class="empty-state">
-            <div class="empty-state-icon">👥</div>
+            <div class="empty-state-icon"><i data-feather="users" style="width: 60px; height: 60px; stroke-width: 1; opacity: 0.6;"></i></div>
             <div class="empty-state-text">No instructors available at the moment.</div>
         </div>
     {% endif %}
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <script>
     function filterInstructors() {
         const searchInput = document.getElementById('search-input').value.toLowerCase();
@@ -468,6 +469,8 @@
         cards.forEach((card, index) => {
             card.style.animationDelay = index * 0.05 + 's';
         });
+        // Initialize feather icons
+        feather.replace();
     });
 </script>
 

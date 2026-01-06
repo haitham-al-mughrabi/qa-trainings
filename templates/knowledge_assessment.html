@@ -2,55 +2,197 @@
 
 {% block content %}
 <style>
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ==================== HERO SECTION ==================== */
     .knowledge-hero {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        padding: 40px;
-        margin-bottom: 30px;
+        position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
         text-align: center;
     }
 
+    .knowledge-hero::before {
+        content: '';
+        position: absolute;
+        top: -40%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .knowledge-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
+    }
+
+    .knowledge-hero h1 {
+        font-size: clamp(40px, 5vw, 56px);
+        font-weight: 800;
+        margin: 0 0 20px 0;
+        background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-in-up 0.6s ease-out;
+        position: relative;
+        z-index: 2;
+    }
+
+    .knowledge-hero p {
+        color: #cbd5e1;
+        margin: 0;
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        animation: slide-in-up 0.7s ease-out 0.1s both;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ==================== FILTERS CARD ==================== */
     .filters-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
-        margin-bottom: 30px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: slide-in-up 0.7s ease-out 0.2s both;
+    }
+
+    .filters-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        border-radius: 18px 18px 0 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .filters-card:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.15);
+    }
+
+    .filters-card:hover::before {
+        transform: scaleX(1);
     }
 
     .filter-group {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
     }
 
     .filter-label {
         font-size: 13px;
-        font-weight: 500;
-        color: var(--text);
+        font-weight: 600;
+        color: #f9fafb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .filter-select {
-        padding: 10px 14px;
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 8px;
-        color: white;
+        padding: 12px 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius: 12px;
+        color: #f9fafb;
         font-size: 14px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .filter-select::placeholder {
+        color: #9ca3af;
     }
 
     .filter-select:focus {
         outline: none;
-        border-color: var(--accent);
+        border-color: rgba(56, 189, 248, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
     }
 
+    /* ==================== TABLE CARD ==================== */
     .assessment-table-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 28px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
         overflow-x: auto;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: slide-in-up 0.7s ease-out 0.3s both;
+    }
+
+    .assessment-table-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        border-radius: 18px 18px 0 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .assessment-table-card:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.15);
+    }
+
+    .assessment-table-card:hover::before {
+        transform: scaleX(1);
     }
 
     .assessment-table {
@@ -60,16 +202,16 @@
     }
 
     .assessment-table thead {
-        background: rgba(99, 102, 241, 0.1);
+        background: rgba(56, 189, 248, 0.1);
     }
 
     .assessment-table th {
         padding: 12px 16px;
         text-align: left;
         font-size: 13px;
-        font-weight: 600;
-        color: var(--accent);
-        border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+        font-weight: 700;
+        color: #38bdf8;
+        border-bottom: 2px solid rgba(56, 189, 248, 0.3);
     }
 
     .assessment-table td {
@@ -181,14 +323,16 @@
     }
 
     .modal-content {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius: 18px;
         padding: 32px;
         max-width: 600px;
         width: 90%;
         max-height: 80vh;
         overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
     }
 
     .modal-header {
@@ -200,8 +344,11 @@
 
     .modal-title {
         font-size: 24px;
-        font-weight: 600;
-        color: var(--accent);
+        font-weight: 700;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
     .close-btn {
@@ -228,14 +375,20 @@
     }
 
     .skill-item {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(99, 102, 241, 0.1);
-        border-radius: 10px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.1);
+        border-radius: 12px;
         padding: 16px;
         margin-bottom: 12px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .skill-item:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        background: rgba(15, 23, 42, 0.8);
     }
 
     .skill-info {
@@ -244,14 +397,15 @@
 
     .skill-category {
         font-size: 12px;
-        color: var(--accent);
+        color: #38bdf8;
         font-weight: 600;
         margin-bottom: 4px;
     }
 
     .skill-topic {
         font-size: 14px;
-        color: var(--text);
+        color: #f9fafb;
+        font-weight: 500;
     }
 
     .skill-actions {
@@ -269,30 +423,66 @@
         display: block;
         margin-bottom: 8px;
         font-size: 13px;
-        font-weight: 500;
-        color: var(--text);
+        font-weight: 600;
+        color: #f9fafb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .form-input {
         width: 100%;
-        padding: 10px 14px;
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 8px;
-        color: white;
+        padding: 12px 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius: 12px;
+        color: #f9fafb;
         font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .form-input::placeholder {
+        color: #9ca3af;
     }
 
     .form-input:focus {
         outline: none;
-        border-color: var(--accent);
+        border-color: rgba(56, 189, 248, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .knowledge-hero {
+            padding: 60px 24px;
+            margin-bottom: 40px;
+        }
+
+        .knowledge-hero h1 {
+            font-size: 32px;
+        }
+
+        .knowledge-hero p {
+            font-size: 16px;
+        }
+
+        .filters-card {
+            padding: 24px;
+        }
+
+        .assessment-table-card {
+            padding: 24px;
+        }
+
+        .assessment-table {
+            min-width: 600px;
+        }
     }
 </style>
 
 <div class="knowledge-hero">
-    <h1 style="font-size: 36px; margin: 0 0 12px 0;">Knowledge Assessment</h1>
-    <p style="color: var(--text-light); margin: 0;">Manage and track student skill levels across different categories
-    </p>
+    <h1>Knowledge Assessment</h1>
+    <p>Manage and track student skill levels across different categories</p>
 </div>
 
 <!-- Filters -->
@@ -311,12 +501,14 @@
 <!-- Assessment Table -->
 <div class="assessment-table-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-        <h2 style="font-size: 22px; margin: 0; font-weight: 600; color: var(--accent);">Skill Assessment Matrix</h2>
+        <h2 style="font-size: 22px; margin: 0; font-weight: 700; background: linear-gradient(135deg, #38bdf8, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent;">Skill Assessment Matrix</h2>
         <div style="display: flex; gap: 12px;">
             <button class="btn btn-success" onclick="saveAllChanges()" id="save-all-btn" style="display: none;">
-                💾 Save All Changes
+                <i data-feather="save" style="width: 14px; height: 14px; stroke-width: 2; display: inline; margin-right: 6px;"></i> Save All Changes
             </button>
-            <button class="btn btn-primary" onclick="openSkillsModal()">⚙️ Manage Skills</button>
+            <button class="btn btn-primary" onclick="openSkillsModal()">
+                <i data-feather="settings" style="width: 14px; height: 14px; stroke-width: 2; display: inline; margin-right: 6px;"></i> Manage Skills
+            </button>
         </div>
     </div>
 
@@ -352,8 +544,9 @@
                 </td>
                 {% endfor %}
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="clearStudentAssessments({{ student.id }})">Clear
-                        All</button>
+                    <button class="btn btn-danger btn-sm" onclick="clearStudentAssessments({{ student.id }})">
+                        <i data-feather="trash-2" style="width: 14px; height: 14px; stroke-width: 2; display: inline; margin-right: 4px;"></i> Clear
+                    </button>
                 </td>
             </tr>
             {% endfor %}
@@ -373,7 +566,9 @@
             <!-- Skills will be loaded here -->
         </div>
 
-        <button class="btn btn-primary" onclick="openAddSkillModal()">+ Add New Skill</button>
+        <button class="btn btn-primary" onclick="openAddSkillModal()">
+            <i data-feather="plus" style="width: 14px; height: 14px; stroke-width: 2; display: inline; margin-right: 6px;"></i> Add New Skill
+        </button>
     </div>
 </div>
 
@@ -399,6 +594,7 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <script>
     function filterTable() {
         const studentId = document.getElementById('student-filter').value;
@@ -755,6 +951,18 @@
             alert('Failed to delete skill. Please try again.');
         }
     }
+
+    // Initialize feather icons on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        feather.replace();
+    });
+
+    // Also reinitialize feather icons after loading skills
+    const originalLoadSkills = loadSkills;
+    loadSkills = async function() {
+        await originalLoadSkills();
+        feather.replace();
+    };
 </script>
 
 {% endblock %}

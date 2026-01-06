@@ -374,6 +374,7 @@
     }
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 <script>
     function showPhase(phaseIndex) {
         // Hide all phase contents
@@ -389,11 +390,16 @@
         // Show selected phase
         document.getElementById('phase-' + phaseIndex).classList.add('active');
         document.getElementById('tab-' + phaseIndex).classList.add('active');
+
+        // Re-initialize feather icons
+        feather.replace();
     }
 
     // Show first phase on load
     window.addEventListener('DOMContentLoaded', function () {
         showPhase(1);
+        // Initialize feather icons on page load
+        feather.replace();
     });
 </script>
 
@@ -415,14 +421,14 @@
         {% endif %}
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
             <div style="padding: 10px 18px; background: rgba(56, 189, 248, 0.1); border: 1.5px solid rgba(56, 189, 248, 0.2); border-radius: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 20px;">📚</span>
+                <i data-feather="book-open" style="width: 20px; height: 20px; stroke-width: 1.5; color: #38bdf8;"></i>
                 <div>
                     <strong style="color: #38bdf8; display: block;">{{ phases|length }}</strong>
                     <span style="color: #9ca3af; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phases</span>
                 </div>
             </div>
             <div style="padding: 10px 18px; background: rgba(56, 189, 248, 0.1); border: 1.5px solid rgba(56, 189, 248, 0.2); border-radius: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 20px;">🎯</span>
+                <i data-feather="target" style="width: 20px; height: 20px; stroke-width: 1.5; color: #38bdf8;"></i>
                 <div>
                     <strong style="color: #38bdf8; display: block;">{{ phases.values()|map('length')|sum }}</strong>
                     <span style="color: #9ca3af; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Topics</span>
