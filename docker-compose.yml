@@ -1,8 +1,44 @@
 version: '3.8'
+
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: qa-trainings-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: qa_trainings
+      MYSQL_USER: qa_user
+      MYSQL_PASSWORD: qa_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - qa_network
+
   web:
     build: .
+    container_name: qa-trainings-web
     ports:
       - "5000:5000"
-    # volumes:
-    #   - .:/app
+    environment:
+      DATABASE_URL: mysql+pymysql://qa_user:qa_password@mysql:3306/qa_trainings
+      FLASK_ENV: production
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - qa_network
+
+volumes:
+  mysql_data:
+
+networks:
+  qa_network:
+    driver: bridge
