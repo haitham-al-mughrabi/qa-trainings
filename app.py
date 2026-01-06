@@ -33,7 +33,24 @@ def inject_now():
 def index():
     trainings = Training.query.all()
     instructors = Instructor.query.filter_by(is_active=True).limit(3).all()
-    return render_template('index.html', trainings=trainings, instructors=instructors)
+
+    # Get real statistics from database
+    total_students = Student.query.count()
+    total_trainings = Training.query.count()
+    total_certificates = Certificate.query.filter_by(is_issued=True).count()
+
+    # Calculate completion rate
+    total_progress = Progress.query.count()
+    completed_progress = Progress.query.filter_by(status='Completed').count()
+    completion_rate = int((completed_progress / total_progress * 100)) if total_progress > 0 else 0
+
+    return render_template('index_new.html',
+                         trainings=trainings,
+                         instructors=instructors,
+                         total_students=total_students,
+                         total_trainings=total_trainings,
+                         completion_rate=completion_rate,
+                         total_certificates=total_certificates)
 
 @app.route('/trainings')
 def trainings():

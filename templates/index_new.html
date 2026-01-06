@@ -1,0 +1,1453 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* =========================== ANIMATIONS & KEYFRAMES =========================== */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) scale(1); }
+        50% { transform: translateY(-20px) scale(1.05); }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3),
+                        0 0 40px rgba(168, 85, 247, 0.2);
+        }
+        50% {
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.5),
+                        0 0 60px rgba(168, 85, 247, 0.3);
+        }
+    }
+
+    @keyframes gradient-shift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes gradient-text {
+        0% { background-position: 0% center; }
+        100% { background-position: 200% center; }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slide-in-left {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slide-in-right {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes count-up {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes particle-float {
+        0% {
+            opacity: 0;
+            transform: translateY(100vh) translateX(0);
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-100vh) translateX(100px);
+        }
+    }
+
+    @keyframes rotate-icon {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* =========================== LANDING PAGE STYLES =========================== */
+
+    /* Background particles */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        border-radius: 50%;
+        opacity: 0;
+        animation: particle-float linear infinite;
+    }
+
+    /* Hero Section */
+    .landing-hero {
+        position: relative;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -32px -16px 0 -16px;
+        padding: 60px 16px;
+        overflow: hidden;
+    }
+
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+        z-index: 0;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.15);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        color: #38bdf8;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        animation: slide-in-up 0.6s ease-out;
+        position: relative;
+        z-index: 10;
+    }
+
+    .hero-badge::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: #38bdf8;
+        border-radius: 50%;
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .hero-title {
+        font-size: clamp(36px, 5vw, 64px);
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        animation: slide-in-up 0.7s ease-out 0.1s both;
+    }
+
+    .hero-title .gradient-text {
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316, #38bdf8);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: gradient-text 4s linear infinite;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+        color: #cbd5e1;
+        max-width: 600px;
+        margin: 0 auto 32px;
+        line-height: 1.6;
+        animation: slide-in-up 0.7s ease-out 0.2s both;
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: slide-in-up 0.7s ease-out 0.3s both;
+    }
+
+    .btn-cta {
+        padding: 14px 32px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-cta-primary {
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        color: white;
+        box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+    }
+
+    .btn-cta-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.3s ease;
+    }
+
+    .btn-cta-primary:hover::before {
+        left: 100%;
+    }
+
+    .btn-cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(56, 189, 248, 0.45);
+    }
+
+    .btn-cta-secondary {
+        background: rgba(15, 23, 42, 0.8);
+        color: #cbd5e1;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-cta-secondary:hover {
+        background: rgba(15, 23, 42, 0.95);
+        border-color: rgba(148, 163, 184, 0.8);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Live Counter */
+    .hero-stats {
+        display: flex;
+        gap: 32px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 48px;
+        animation: slide-in-up 0.7s ease-out 0.4s both;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: count-up 0.6s ease-out;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    /* =========================== STATISTICS SECTION =========================== */
+    .section-padding {
+        padding: 80px 0;
+        position: relative;
+    }
+
+    .section-container {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .section-header-main {
+        text-align: center;
+        margin-bottom: 60px;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 16px;
+    }
+
+    .section-title-main {
+        font-size: clamp(32px, 4vw, 48px);
+        font-weight: 800;
+        margin-bottom: 16px;
+        line-height: 1.2;
+    }
+
+    .section-title-main .highlight {
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .section-description {
+        font-size: 18px;
+        color: #cbd5e1;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        margin-bottom: 80px;
+    }
+
+    .stat-card {
+        position: relative;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        padding: 32px 24px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        background: rgba(15, 23, 42, 0.8);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(56, 189, 248, 0.15);
+    }
+
+    .stat-card:hover::before {
+        top: -30%;
+        right: -30%;
+    }
+
+    .stat-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-card:hover .stat-icon {
+        animation: rotate-icon 0.6s ease-out;
+    }
+
+    .stat-card-number {
+        font-size: 40px;
+        font-weight: 800;
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-card-label {
+        font-size: 15px;
+        color: #cbd5e1;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-card-desc {
+        font-size: 13px;
+        color: #9ca3af;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* =========================== TRAINING PROGRAMS SECTION =========================== */
+    .programs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 28px;
+    }
+
+    .program-card {
+        position: relative;
+        background: linear-gradient(135deg, #020617, #020617) padding-box,
+                    linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.2)) border-box;
+        border: 1px solid transparent;
+        border-radius: 20px;
+        padding: 32px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .program-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.1) 0%, transparent 60%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 0;
+    }
+
+    .program-card:hover {
+        transform: translateY(-12px);
+        border-color: rgba(56, 189, 248, 0.6);
+    }
+
+    .program-card:hover::before {
+        opacity: 1;
+    }
+
+    .program-header {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .program-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+
+    .program-card:hover .program-icon {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.4));
+        transform: scale(1.1);
+    }
+
+    .program-badge {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        align-self: flex-start;
+    }
+
+    .program-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-description {
+        font-size: 14px;
+        color: #cbd5e1;
+        line-height: 1.6;
+        margin-bottom: 24px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-meta {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .program-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .program-meta-item span {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #38bdf8;
+    }
+
+    .program-cta {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #38bdf8;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .program-card:hover .program-cta {
+        gap: 12px;
+    }
+
+    /* =========================== WHY CHOOSE US SECTION =========================== */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 32px;
+        align-items: start;
+    }
+
+    .feature-card {
+        position: relative;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .feature-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: translateY(-4px) scale(1.1);
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.4));
+    }
+
+    .feature-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .feature-description {
+        font-size: 14px;
+        color: #cbd5e1;
+        line-height: 1.6;
+    }
+
+    /* =========================== TESTIMONIALS SECTION =========================== */
+    .testimonials-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 48px 32px;
+    }
+
+    .testimonial-content {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .testimonial-text {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 1.8;
+        margin-bottom: 32px;
+        color: #f9fafb;
+    }
+
+    .testimonial-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin: 0 auto 16px;
+        border: 2px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .testimonial-name {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .testimonial-role {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .testimonial-nav {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 32px;
+    }
+
+    .testimonial-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(148, 163, 184, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-dot.active {
+        background: #38bdf8;
+        width: 24px;
+        border-radius: 999px;
+    }
+
+    /* =========================== TIMELINE SECTION =========================== */
+    .timeline {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-left: 80px;
+        margin-bottom: 48px;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .timeline-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 56px;
+        height: 56px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
+        border: 2px solid #38bdf8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        z-index: 2;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-marker {
+        transform: scale(1.15);
+        border-color: #a855f7;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.4));
+    }
+
+    .timeline-line {
+        position: absolute;
+        left: 27px;
+        top: 56px;
+        width: 2px;
+        height: calc(100% + 48px);
+        background: linear-gradient(180deg, #38bdf8 0%, transparent 100%);
+        opacity: 0.5;
+    }
+
+    .timeline-item:last-child .timeline-line {
+        display: none;
+    }
+
+    .timeline-content {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 14px;
+        padding: 24px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-content {
+        border-color: rgba(56, 189, 248, 0.4);
+        background: rgba(15, 23, 42, 0.8);
+    }
+
+    .timeline-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .timeline-description {
+        font-size: 14px;
+        color: #cbd5e1;
+        line-height: 1.6;
+    }
+
+    /* =========================== INSTRUCTOR SECTION =========================== */
+    .instructors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 28px;
+    }
+
+    .instructor-card {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        padding: 28px;
+        backdrop-filter: blur(10px);
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: slide-in-up 0.7s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .instructor-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .instructor-card:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        background: rgba(15, 23, 42, 0.8);
+        transform: translateY(-8px);
+    }
+
+    .instructor-card:hover::before {
+        opacity: 1;
+        top: -30%;
+        right: -30%;
+    }
+
+    .instructor-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        margin: 0 auto 16px;
+        border: 3px solid rgba(56, 189, 248, 0.3);
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+
+    .instructor-card:hover .instructor-avatar {
+        transform: scale(1.1);
+        border-color: #a855f7;
+    }
+
+    .instructor-name {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .instructor-role {
+        font-size: 13px;
+        color: #38bdf8;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .instructor-bio {
+        font-size: 13px;
+        color: #cbd5e1;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .instructor-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .skill-tag {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* =========================== CTA SECTION =========================== */
+    .cta-section {
+        position: relative;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(168, 85, 247, 0.1));
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 60px 32px;
+        overflow: hidden;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .cta-background {
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .cta-title {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        line-height: 1.3;
+    }
+
+    .cta-description {
+        font-size: 16px;
+        color: #cbd5e1;
+        margin-bottom: 32px;
+        line-height: 1.6;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
+
+    /* Newsletter form */
+    .newsletter-form {
+        max-width: 500px;
+        margin: 0 auto;
+        display: flex;
+        gap: 12px;
+        background: rgba(15, 23, 42, 0.8);
+        padding: 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .newsletter-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: #f9fafb;
+        padding: 12px 16px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .newsletter-input::placeholder {
+        color: #9ca3af;
+    }
+
+    .newsletter-button {
+        padding: 12px 24px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        color: white;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .newsletter-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
+    }
+
+    /* =========================== RESPONSIVE DESIGN =========================== */
+    @media (max-width: 768px) {
+        .landing-hero {
+            min-height: 80vh;
+            padding: 40px 16px;
+        }
+
+        .hero-title {
+            font-size: 32px;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+        }
+
+        .hero-stats {
+            gap: 20px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+        }
+
+        .section-title-main {
+            font-size: 32px;
+        }
+
+        .section-description {
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            padding: 24px 16px;
+        }
+
+        .programs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .program-card {
+            padding: 24px;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .timeline-item {
+            padding-left: 60px;
+        }
+
+        .timeline-marker {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+        }
+
+        .timeline-line {
+            left: 23px;
+        }
+
+        .timeline-item:hover .timeline-marker {
+            transform: scale(1.1);
+        }
+
+        .cta-section {
+            padding: 40px 24px;
+        }
+
+        .cta-title {
+            font-size: 28px;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .btn-cta {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .newsletter-form {
+            flex-direction: column;
+        }
+
+        .section-padding {
+            padding: 60px 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .landing-hero {
+            min-height: 70vh;
+            padding: 30px 12px;
+        }
+
+        .hero-title {
+            font-size: 24px;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+        }
+
+        .hero-ctas {
+            gap: 10px;
+        }
+
+        .btn-cta {
+            padding: 12px 24px;
+            font-size: 14px;
+        }
+
+        .hero-stats {
+            gap: 16px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+        }
+
+        .section-title-main {
+            font-size: 24px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            padding: 20px 16px;
+        }
+
+        .stat-card-number {
+            font-size: 32px;
+        }
+
+        .programs-grid {
+            gap: 16px;
+        }
+
+        .program-card {
+            padding: 20px;
+        }
+
+        .program-title {
+            font-size: 16px;
+        }
+
+        .timeline-item {
+            padding-left: 50px;
+            margin-bottom: 32px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        .timeline-line {
+            left: 19px;
+        }
+
+        .cta-section {
+            padding: 30px 16px;
+        }
+
+        .cta-title {
+            font-size: 22px;
+        }
+
+        .instructor-card {
+            padding: 20px;
+        }
+
+        .instructor-avatar {
+            width: 64px;
+            height: 64px;
+            font-size: 28px;
+        }
+
+        .testimonial-container {
+            padding: 32px 16px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+        }
+    }
+</style>
+
+<!-- Main Content -->
+<div class="particles" id="particles-container"></div>
+
+<!-- Hero Section -->
+<section class="landing-hero">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            Takamol QA Training Portal
+        </div>
+        <h1 class="hero-title">
+            <span class="gradient-text">QA Training Management</span> System
+        </h1>
+        <p class="hero-subtitle">
+            Central hub for QA automation and testing training. Track your progress, access course materials, and build industry-relevant skills.
+        </p>
+        <div class="hero-ctas">
+            <a href="{{ url_for('trainings') }}" class="btn-cta btn-cta-primary">
+                Browse All Training Programs
+            </a>
+            <a href="{{ url_for('instructors_list') }}" class="btn-cta btn-cta-secondary">
+                View Instructors
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="students-count" data-value="{{ total_students }}">{{ total_students }}</div>
+                <div class="stat-label">Enrolled Students</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="trainings-count" data-value="{{ total_trainings }}">{{ total_trainings }}</div>
+                <div class="stat-label">Training Programs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="success-count" data-value="{{ completion_rate }}">{{ completion_rate }}</div>
+                <div class="stat-label">Avg Completion Rate</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="certs-count" data-value="{{ total_certificates }}">{{ total_certificates }}</div>
+                <div class="stat-label">Certifications Issued</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Training Programs Section -->
+<section class="section-padding" id="programs">
+    <div class="section-container">
+        <div class="section-header-main">
+            <h2 class="section-title-main">
+                Available <span class="highlight">Training Programs</span>
+            </h2>
+            <p class="section-description">
+                Enroll in QA automation and testing courses. Click on any program to view curriculum and topics.
+            </p>
+        </div>
+        <div class="programs-grid">
+            {% for training in trainings[:3] %}
+            <div class="program-card">
+                <div class="program-header">
+                    <div class="program-icon">📚</div>
+                    <div class="program-badge">Popular Program</div>
+                </div>
+                <h3 class="program-title">{{ training.name }}</h3>
+                <p class="program-description">
+                    {{ training.description or 'Comprehensive training program in ' + training.name }}
+                </p>
+                <div class="program-meta">
+                    <div class="program-meta-item">
+                        <span></span>{{ training.topics|length }} Topics
+                    </div>
+                    <div class="program-meta-item">
+                        <span></span>Professional Level
+                    </div>
+                </div>
+                <a href="{{ url_for('training_detail', training_id=training.id) }}" class="program-cta">
+                    View Curriculum →
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Instructors Section -->
+<section class="section-padding">
+    <div class="section-container">
+        <div class="section-header-main">
+            <h2 class="section-title-main">
+                Meet Your <span class="highlight">Instructors</span>
+            </h2>
+            <p class="section-description">
+                Experienced QA professionals delivering hands-on training
+            </p>
+        </div>
+        <div class="instructors-grid">
+            {% for instructor in instructors %}
+            <div class="instructor-card">
+                <div class="instructor-avatar">
+                    {% if instructor.photo_url %}
+                    <img src="{{ instructor.photo_url }}" alt="{{ instructor.name }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    {% else %}
+                    {{ instructor.name.split()[0][0] }}{{ instructor.name.split()[-1][0] if instructor.name.split()|length > 1 else '' }}
+                    {% endif %}
+                </div>
+                <div class="instructor-name">{{ instructor.name }}</div>
+                <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
+                <p class="instructor-bio">
+                    {{ instructor.bio or 'Expert QA professional with extensive industry experience.' }}
+                </p>
+                {% if instructor.expertise %}
+                <div class="instructor-skills">
+                    {% for skill in instructor.expertise.split(',')[:3] %}
+                    <span class="skill-tag">{{ skill.strip() }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Quick Access Section -->
+<section class="section-padding">
+    <div class="section-container">
+        <div class="cta-section">
+            <div class="cta-background"></div>
+            <div class="cta-content">
+                <h2 class="cta-title">
+                    Get <span class="highlight">Started</span>
+                </h2>
+                <p class="cta-description">
+                    Browse training programs, track your progress, or view your instructor's profiles.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('trainings') }}" class="btn-cta btn-cta-primary">
+                        View All Programs
+                    </a>
+                    <a href="{{ url_for('progress') }}" class="btn-cta btn-cta-secondary">
+                        My Progress
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+    // ==================== Particle Animation ====================
+    function createParticles() {
+        const container = document.getElementById('particles-container');
+        const particleCount = 15;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            const leftPos = Math.random() * 100;
+            const duration = Math.random() * 4 + 6;
+            const delay = Math.random() * 2;
+
+            particle.style.left = leftPos + '%';
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = delay + 's';
+
+            container.appendChild(particle);
+        }
+    }
+
+    // ==================== Counter Animation ====================
+    function animateCounter(elementId, targetValue, duration = 2000) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const startValue = 0;
+        const increment = targetValue / (duration / 16);
+        let currentValue = startValue;
+
+        const updateCounter = () => {
+            currentValue += increment;
+            if (currentValue >= targetValue) {
+                element.textContent = targetValue + '+';
+            } else {
+                element.textContent = Math.floor(currentValue) + '+';
+                requestAnimationFrame(updateCounter);
+            }
+        };
+
+        updateCounter();
+    }
+
+    // ==================== Intersection Observer for Scroll Animations ====================
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+
+                // Trigger hero counters on page load
+                if (entry.target.closest('.landing-hero')) {
+                    animateHeroCounters();
+                }
+
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // ==================== Hero Counters ====================
+    function animateHeroCounters() {
+        const studentsVal = parseInt(document.getElementById('students-count').getAttribute('data-value')) || 0;
+        const trainingsVal = parseInt(document.getElementById('trainings-count').getAttribute('data-value')) || 0;
+        const successVal = parseInt(document.getElementById('success-count').getAttribute('data-value')) || 0;
+        const certsVal = parseInt(document.getElementById('certs-count').getAttribute('data-value')) || 0;
+
+        animateCounterToValue('students-count', studentsVal, 2000);
+        animateCounterToValue('trainings-count', trainingsVal, 2000);
+        animateCounterToValue('success-count', successVal, 2000, '%');
+        animateCounterToValue('certs-count', certsVal, 2000);
+    }
+
+    function animateCounterToValue(elementId, targetValue, duration = 2000, suffix = '+') {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const startValue = 0;
+        const increment = targetValue / (duration / 16);
+        let currentValue = startValue;
+
+        const updateCounter = () => {
+            currentValue += increment;
+            if (currentValue >= targetValue) {
+                element.textContent = targetValue + suffix;
+            } else {
+                element.textContent = Math.floor(currentValue) + suffix;
+                requestAnimationFrame(updateCounter);
+            }
+        };
+
+        updateCounter();
+    }
+
+
+    // ==================== Initialize ====================
+    document.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+
+        // Observe all animated elements
+        document.querySelectorAll('.slide-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Animate hero counters immediately on page load
+        setTimeout(animateHeroCounters, 500);
+    });
+</script>
+
+{% endblock %}
