@@ -2,52 +2,177 @@
 
 {% block content %}
 <style>
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ==================== HERO SECTION ==================== */
     .instructors-hero {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        padding: 50px 40px;
-        margin-bottom: 40px;
         position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
         text-align: center;
     }
 
     .instructors-hero::before {
         content: '';
         position: absolute;
-        top: -50%;
+        top: -40%;
         left: 50%;
         transform: translateX(-50%);
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
         border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
     }
 
+    .instructors-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
+    }
+
+    .instructors-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .instructors-hero h1 {
+        font-size: clamp(40px, 5vw, 56px);
+        font-weight: 800;
+        margin: 0 0 20px 0;
+        background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-in-up 0.6s ease-out;
+    }
+
+    .instructors-hero p {
+        color: #cbd5e1;
+        margin: 0;
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        animation: slide-in-up 0.7s ease-out 0.1s both;
+    }
+
+    .instructors-stats {
+        display: flex;
+        gap: 40px;
+        justify-content: center;
+        margin-top: 40px;
+        flex-wrap: wrap;
+        animation: slide-in-up 0.8s ease-out 0.2s both;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 40px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 8px;
+    }
+
+    /* ==================== SEARCH BOX ==================== */
+    .instructors-search {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+        align-items: center;
+        animation: slide-in-up 0.7s ease-out 0.3s both;
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 250px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius: 12px;
+        padding: 12px 16px;
+        color: #f9fafb;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .search-box::placeholder {
+        color: #9ca3af;
+    }
+
+    .search-box:focus {
+        outline: none;
+        border-color: rgba(56, 189, 248, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+
+    /* ==================== GRID ==================== */
     .instructors-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 24px;
+        gap: 28px;
         margin-bottom: 60px;
     }
 
+    /* ==================== CARD ==================== */
     .instructor-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 16px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
         padding: 32px 24px;
         text-decoration: none;
         color: inherit;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
         overflow: hidden;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        gap: 16px;
+        animation: slide-in-up 0.7s ease-out;
     }
 
     .instructor-card::before {
@@ -56,35 +181,59 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, var(--accent), #a855f7);
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
         transform: scaleX(0);
-        transition: transform 0.3s ease;
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .instructor-card::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: all 0.4s ease;
     }
 
     .instructor-card:hover {
-        border-color: rgba(99, 102, 241, 0.4);
-        transform: translateY(-6px);
-        box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);
+        border-color: rgba(56, 189, 248, 0.4);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.25);
     }
 
     .instructor-card:hover::before {
         transform: scaleX(1);
     }
 
+    .instructor-card:hover::after {
+        opacity: 1;
+        top: -30%;
+        right: -30%;
+    }
+
     .instructor-photo {
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 36px;
+        font-size: 48px;
         font-weight: 700;
         color: white;
-        margin-bottom: 20px;
-        border: 3px solid rgba(99, 102, 241, 0.3);
+        border: 4px solid rgba(56, 189, 248, 0.3);
+        flex-shrink: 0;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
     }
 
     .instructor-photo img {
@@ -96,15 +245,22 @@
 
     .instructor-name {
         font-size: 22px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--text);
+        font-weight: 700;
+        color: #f9fafb;
+        margin: 0;
+        position: relative;
+        z-index: 2;
     }
 
     .instructor-role {
         font-size: 14px;
-        color: var(--muted);
-        margin-bottom: 16px;
+        color: #38bdf8;
+        margin: 0;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        z-index: 2;
     }
 
     .instructor-expertise {
@@ -112,67 +268,207 @@
         flex-wrap: wrap;
         gap: 8px;
         justify-content: center;
-        margin-top: 16px;
+        position: relative;
+        z-index: 2;
     }
 
     .expertise-tag {
-        padding: 4px 10px;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 6px;
-        font-size: 11px;
-        color: var(--text-light);
+        padding: 6px 12px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 8px;
+        font-size: 12px;
+        color: #38bdf8;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
 
-    .instructor-trainings-count {
-        margin-top: 16px;
-        font-size: 13px;
-        color: var(--accent);
-        font-weight: 500;
+    .expertise-tag:hover {
+        background: rgba(56, 189, 248, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .instructor-meta {
+        display: flex;
+        gap: 12px;
+        position: relative;
+        z-index: 2;
+        padding-top: 12px;
+        border-top: 1px solid rgba(56, 189, 248, 0.1);
+        width: 100%;
+        justify-content: center;
+    }
+
+    .meta-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 8px;
+        font-size: 12px;
+        color: #38bdf8;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .instructor-card:hover .meta-badge {
+        background: rgba(56, 189, 248, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    /* ==================== EMPTY STATE ==================== */
+    .empty-state {
+        text-align: center;
+        padding: 80px 40px;
+        background: rgba(56, 189, 248, 0.05);
+        border: 2px dashed rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        margin: 40px 0;
+        grid-column: 1 / -1;
+    }
+
+    .empty-state-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .empty-state-text {
+        color: #cbd5e1;
+        font-size: 18px;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .instructors-hero {
+            padding: 60px 24px;
+            margin-bottom: 40px;
+        }
+
+        .instructors-hero h1 {
+            font-size: 32px;
+        }
+
+        .instructors-hero p {
+            font-size: 16px;
+        }
+
+        .instructors-stats {
+            gap: 24px;
+        }
+
+        .instructors-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .instructor-card {
+            padding: 24px 20px;
+        }
+
+        .instructors-search {
+            flex-direction: column;
+        }
+
+        .search-box {
+            width: 100%;
+        }
     }
 </style>
 
 <div class="instructors-hero">
-    <h1 style="font-size: 42px; margin: 0 0 16px 0; position: relative; z-index: 1;">Our Instructors</h1>
-    <p
-        style="color: var(--text-light); margin: 0; font-size: 16px; max-width: 600px; margin: 0 auto; position: relative; z-index: 1;">
-        Learn from experienced QA professionals who bring real-world expertise to every lesson
-    </p>
+    <div class="instructors-hero-content">
+        <h1>Meet Our Instructors</h1>
+        <p>Learn from experienced QA professionals who bring real-world expertise and passion to every lesson</p>
+
+        <div class="instructors-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ instructors|length }}</div>
+                <div class="stat-label">Expert Instructors</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Experience</div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="instructors-grid">
-    {% for instructor in instructors %}
-    <a href="{{ url_for('instructor_profile', instructor_id=instructor.id) }}" class="instructor-card">
-        <div class="instructor-photo">
-            {% if instructor.photo_url %}
-            <img src="{{ instructor.photo_url }}" alt="{{ instructor.name }}">
-            {% else %}
-            {{ instructor.name.split()[0][0] }}{{ instructor.name.split()[-1][0] if instructor.name.split()|length > 1
-            else '' }}
+<!-- Search Controls -->
+<div class="instructors-search">
+    <input
+        type="text"
+        class="search-box"
+        id="search-input"
+        placeholder="🔍 Search instructors by name or expertise..."
+        onkeyup="filterInstructors()"
+    >
+</div>
+
+<!-- Instructors Grid -->
+<div class="instructors-grid" id="instructors-container">
+    {% if instructors|length > 0 %}
+        {% for instructor in instructors %}
+        <a href="{{ url_for('instructor_profile', instructor_id=instructor.id) }}" class="instructor-card" data-name="{{ instructor.name|lower }}" data-expertise="{{ (instructor.expertise or '')|lower }}">
+            <div class="instructor-photo">
+                {% if instructor.photo_url %}
+                <img src="{{ instructor.photo_url }}" alt="{{ instructor.name }}">
+                {% else %}
+                {{ instructor.name.split()[0][0] }}{{ instructor.name.split()[-1][0] if instructor.name.split()|length > 1 else '' }}
+                {% endif %}
+            </div>
+            <h3 class="instructor-name">{{ instructor.name }}</h3>
+            <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
+
+            {% if instructor.expertise %}
+            <div class="instructor-expertise">
+                {% for tag in instructor.expertise.split(',')[:4] %}
+                <span class="expertise-tag">{{ tag.strip() }}</span>
+                {% endfor %}
+            </div>
             {% endif %}
-        </div>
-        <h3 class="instructor-name">{{ instructor.name }}</h3>
-        <div class="instructor-role">{{ instructor.role or 'QA Instructor' }}</div>
 
-        {% if instructor.expertise %}
-        <div class="instructor-expertise">
-            {% for tag in instructor.expertise.split(',')[:5] %}
-            <span class="expertise-tag">{{ tag.strip() }}</span>
-            {% endfor %}
+            <div class="instructor-meta">
+                <div class="meta-badge">
+                    📚 {{ instructor.trainings.count() }} Training{{ 's' if instructor.trainings.count() != 1 else '' }}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            <div class="empty-state-text">No instructors available at the moment.</div>
         </div>
-        {% endif %}
-
-        <div class="instructor-trainings-count">
-            {{ instructor.trainings.count() }} Training{{ 's' if instructor.trainings.count() != 1 else '' }}
-        </div>
-    </a>
-    {% endfor %}
+    {% endif %}
 </div>
 
-{% if not instructors %}
-<div style="text-align: center; padding: 60px 20px; color: var(--muted);">
-    <p>No instructors available at the moment.</p>
-</div>
-{% endif %}
+<script>
+    function filterInstructors() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        const cards = document.querySelectorAll('.instructor-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            const expertise = card.getAttribute('data-expertise');
+            if (name.includes(searchInput) || expertise.includes(searchInput)) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Add staggered animation to cards
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.instructor-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = index * 0.05 + 's';
+        });
+    });
+</script>
 
 {% endblock %}

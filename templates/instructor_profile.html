@@ -2,30 +2,89 @@
 
 {% block content %}
 <style>
-    .profile-header {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 20px;
-        padding: 50px 40px;
-        margin: 40px 0;
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(56, 189, 248, 0.5); }
+    }
+
+    /* ==================== PROFILE HEADER ==================== */
+    .profile-hero {
+        position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
+    }
+
+    .profile-hero::before {
+        content: '';
+        position: absolute;
+        top: -40%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .profile-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
+    }
+
+    .profile-hero-content {
+        position: relative;
+        z-index: 2;
         display: flex;
         gap: 40px;
         align-items: center;
     }
 
     .profile-photo {
-        width: 150px;
-        height: 150px;
+        width: 180px;
+        height: 180px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 48px;
+        font-size: 64px;
         font-weight: 700;
         color: white;
-        border: 4px solid rgba(99, 102, 241, 0.3);
+        border: 5px solid rgba(56, 189, 248, 0.3);
         flex-shrink: 0;
+        animation: slide-in-up 0.6s ease-out;
+        box-shadow: 0 20px 60px rgba(56, 189, 248, 0.3);
     }
 
     .profile-photo img {
@@ -37,133 +96,313 @@
 
     .profile-info {
         flex: 1;
+        animation: slide-in-up 0.7s ease-out 0.1s both;
     }
 
     .profile-name {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 8px;
+        font-size: 44px;
+        font-weight: 800;
+        margin: 0 0 8px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
     .profile-role {
         font-size: 18px;
-        color: var(--accent);
-        margin-bottom: 20px;
+        color: #38bdf8;
+        margin-bottom: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .profile-bio {
         font-size: 15px;
-        color: var(--text-light);
+        color: #cbd5e1;
         line-height: 1.7;
         margin-bottom: 20px;
+        max-width: 600px;
     }
 
     .profile-expertise {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
+        margin-bottom: 20px;
     }
 
     .expertise-tag {
-        padding: 6px 14px;
-        background: rgba(99, 102, 241, 0.15);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 8px;
-        font-size: 12px;
-        color: var(--text);
+        padding: 8px 16px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1.5px solid rgba(56, 189, 248, 0.3);
+        border-radius: 20px;
+        font-size: 13px;
+        color: #38bdf8;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .expertise-tag:hover {
+        background: rgba(56, 189, 248, 0.2);
+        border-color: rgba(56, 189, 248, 0.5);
+        transform: translateY(-2px);
     }
 
     .profile-contact {
-        margin-top: 20px;
         font-size: 14px;
-        color: var(--text-light);
+        color: #cbd5e1;
     }
 
     .profile-contact a {
-        color: var(--accent);
+        color: #38bdf8;
         text-decoration: none;
-    }
-
-    .section-title {
-        font-size: 28px;
+        transition: all 0.3s ease;
         font-weight: 600;
-        margin: 50px 0 30px;
     }
 
+    .profile-contact a:hover {
+        color: #a855f7;
+    }
+
+    /* ==================== SECTION TITLE ==================== */
+    .section-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 60px 0 40px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-in-up 0.7s ease-out 0.3s both;
+    }
+
+    /* ==================== TRAINING CARDS ==================== */
     .trainings-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 28px;
         margin-bottom: 60px;
     }
 
     .training-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
         text-decoration: none;
         color: inherit;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        animation: slide-in-up 0.7s ease-out;
+    }
+
+    .training-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .training-card::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: all 0.4s ease;
     }
 
     .training-card:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.25);
+    }
+
+    .training-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .training-card:hover::after {
+        opacity: 1;
+        top: -30%;
+        right: -30%;
+    }
+
+    .training-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
+    }
+
+    .training-content {
+        position: relative;
+        z-index: 2;
+        flex: 1;
     }
 
     .training-name {
         font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: var(--text);
+        font-weight: 700;
+        color: #f9fafb;
+        margin: 0;
+        margin-bottom: 8px;
     }
 
     .training-description {
+        color: #cbd5e1;
         font-size: 14px;
-        color: var(--text-light);
         line-height: 1.6;
+        margin: 0;
     }
 
+    .training-meta {
+        display: flex;
+        gap: 12px;
+        position: relative;
+        z-index: 2;
+        padding-top: 12px;
+        border-top: 1px solid rgba(56, 189, 248, 0.1);
+    }
+
+    .meta-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 8px;
+        font-size: 12px;
+        color: #38bdf8;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .training-card:hover .meta-badge {
+        background: rgba(56, 189, 248, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    /* ==================== EMPTY STATE ==================== */
+    .empty-state {
+        text-align: center;
+        padding: 80px 40px;
+        background: rgba(56, 189, 248, 0.05);
+        border: 2px dashed rgba(56, 189, 248, 0.2);
+        border-radius: 20px;
+        margin: 40px 0;
+    }
+
+    .empty-state-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .empty-state-text {
+        color: #cbd5e1;
+        font-size: 18px;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
-        .profile-header {
+        .profile-hero {
+            padding: 60px 24px;
+            margin-bottom: 40px;
+        }
+
+        .profile-hero-content {
             flex-direction: column;
             text-align: center;
+        }
+
+        .profile-name {
+            font-size: 32px;
+        }
+
+        .profile-photo {
+            width: 140px;
+            height: 140px;
+            font-size: 48px;
+        }
+
+        .profile-role {
+            font-size: 16px;
+        }
+
+        .trainings-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .training-card {
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 40px 0 30px;
         }
     }
 </style>
 
-<div class="profile-header">
-    <div class="profile-photo">
-        {% if instructor.photo_url %}
-        <img src="{{ instructor.photo_url }}" alt="{{ instructor.name }}">
-        {% else %}
-        {{ instructor.name.split()[0][0] }}{{ instructor.name.split()[-1][0] if instructor.name.split()|length > 1 else
-        '' }}
-        {% endif %}
-    </div>
-    <div class="profile-info">
-        <h1 class="profile-name">{{ instructor.name }}</h1>
-        <div class="profile-role">{{ instructor.role or 'QA Instructor' }}</div>
-
-        {% if instructor.bio %}
-        <p class="profile-bio">{{ instructor.bio }}</p>
-        {% endif %}
-
-        {% if instructor.expertise %}
-        <div class="profile-expertise">
-            {% for tag in instructor.expertise.split(',') %}
-            <span class="expertise-tag">{{ tag.strip() }}</span>
-            {% endfor %}
+<div class="profile-hero">
+    <div class="profile-hero-content">
+        <div class="profile-photo">
+            {% if instructor.photo_url %}
+            <img src="{{ instructor.photo_url }}" alt="{{ instructor.name }}">
+            {% else %}
+            {{ instructor.name.split()[0][0] }}{{ instructor.name.split()[-1][0] if instructor.name.split()|length > 1 else '' }}
+            {% endif %}
         </div>
-        {% endif %}
+        <div class="profile-info">
+            <h1 class="profile-name">{{ instructor.name }}</h1>
+            <div class="profile-role">{{ instructor.role or 'QA Instructor' }}</div>
 
-        {% if instructor.email %}
-        <div class="profile-contact">
-            <strong>Contact:</strong> <a href="mailto:{{ instructor.email }}">{{ instructor.email }}</a>
+            {% if instructor.bio %}
+            <p class="profile-bio">{{ instructor.bio }}</p>
+            {% endif %}
+
+            {% if instructor.expertise %}
+            <div class="profile-expertise">
+                {% for tag in instructor.expertise.split(',') %}
+                <span class="expertise-tag">{{ tag.strip() }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if instructor.email %}
+            <div class="profile-contact">
+                <strong>📧 Email:</strong> <a href="mailto:{{ instructor.email }}">{{ instructor.email }}</a>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 </div>
 
@@ -172,17 +411,45 @@
 {% if trainings %}
 <div class="trainings-grid">
     {% for training in trainings %}
-    <a href="{{ url_for('training_detail', training_id=training.id) }}" class="training-card">
-        <h3 class="training-name">{{ training.name }}</h3>
-        {% if training.description %}
-        <p class="training-description">{{ training.description }}</p>
-        {% endif %}
+    <a href="{{ url_for('training_detail', training_id=training.id) }}" class="training-card" data-index="{{ loop.index0 }}">
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div class="training-icon">📚</div>
+            <div class="training-content">
+                <h3 class="training-name">{{ training.name }}</h3>
+                <p class="training-description">
+                    {% if training.description %}
+                        {{ training.description[:80] }}{% if training.description|length > 80 %}...{% endif %}
+                    {% else %}
+                        Comprehensive training program designed to enhance your skills.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="training-meta">
+            <div class="meta-badge">
+                📖 {{ training.topics|length }} Topics
+            </div>
+            <div class="meta-badge">
+                ⏱️ Self-Paced
+            </div>
+        </div>
     </a>
     {% endfor %}
 </div>
+
+<script>
+    // Staggered animation for training cards
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.training-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = (index * 0.05) + 's';
+        });
+    });
+</script>
 {% else %}
-<div style="text-align: center; padding: 40px 20px; color: var(--muted);">
-    <p>This instructor is not currently assigned to any training programs.</p>
+<div class="empty-state">
+    <div class="empty-state-icon">📭</div>
+    <div class="empty-state-text">This instructor is not currently assigned to any training programs.</div>
 </div>
 {% endif %}
 

@@ -2,41 +2,75 @@
 
 {% block content %}
 <style>
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .topic-hero {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        padding: 40px;
-        margin-bottom: 30px;
         position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
     }
 
     .topic-hero::before {
         content: '';
         position: absolute;
-        top: -50%;
+        top: -40%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .topic-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
         right: -10%;
         width: 400px;
         height: 400px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
         border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
     }
 
     .phase-badge {
         display: inline-flex;
         align-items: center;
-        padding: 6px 14px;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 600;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         color: white;
-        margin-bottom: 12px;
-        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        margin-bottom: 16px;
+        box-shadow: 0 4px 16px rgba(56, 189, 248, 0.3);
+        position: relative;
+        z-index: 2;
     }
 
     /* Tab Navigation */
@@ -156,10 +190,10 @@
     }
 
     .notes-container {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 30px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
         min-height: 400px;
     }
 
@@ -170,17 +204,17 @@
     }
 
     .management-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 24px;
-        backdrop-filter: blur(8px);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 32px;
+        backdrop-filter: blur(10px);
         transition: all 0.3s ease;
     }
 
     .management-card:hover {
-        border-color: rgba(99, 102, 241, 0.3);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.15);
     }
 
     .card-header {
@@ -193,14 +227,14 @@
     }
 
     .card-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--accent), #a855f7);
-        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
     }
 
     .card-title {
@@ -211,17 +245,17 @@
     }
 
     .student-item {
-        padding: 14px;
-        background: rgba(148, 163, 184, 0.05);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 10px;
+        padding: 16px;
+        background: rgba(56, 189, 248, 0.05);
+        border: 1px solid rgba(56, 189, 248, 0.15);
+        border-radius: 12px;
         margin-bottom: 12px;
         transition: all 0.2s ease;
     }
 
     .student-item:hover {
-        background: rgba(148, 163, 184, 0.08);
-        border-color: rgba(148, 163, 184, 0.2);
+        background: rgba(56, 189, 248, 0.08);
+        border-color: rgba(56, 189, 248, 0.25);
     }
 
     .student-name {
@@ -331,6 +365,32 @@
     .breadcrumb a:hover {
         color: #a855f7;
     }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .topic-hero {
+            padding: 60px 24px;
+            margin-bottom: 40px;
+        }
+
+        .topic-hero h1 {
+            font-size: 32px;
+        }
+
+        .management-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .topic-tabs {
+            margin: 0 -8px 30px;
+            padding: 0 8px;
+        }
+
+        .topic-tab-btn {
+            padding: 16px 20px;
+            font-size: 12px;
+        }
+    }
 </style>
 
 <script>
@@ -371,20 +431,21 @@
 
 <!-- Topic Hero -->
 <div class="topic-hero">
-    {% if topic.phase %}
-    <div class="phase-badge">{{ topic.phase|regex_replace('^\d+\s*-\s*', '') }}</div>
-    {% endif %}
-    <h1 style="font-size: 32px; margin: 0 0 12px 0; position: relative; z-index: 1;">{{ topic.name }}</h1>
-    {% if topic.instructor %}
-    <div
-        style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; position: relative; z-index: 1;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-        <span>{{ topic.instructor }}</span>
+    <div style="position: relative; z-index: 2; animation: slide-in-up 0.6s ease-out;">
+        {% if topic.phase %}
+        <div class="phase-badge">{{ topic.phase|regex_replace('^\d+\s*-\s*', '') }}</div>
+        {% endif %}
+        <h1 style="font-size: clamp(32px, 5vw, 48px); margin: 0 0 16px 0; background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800;">{{ topic.name }}</h1>
+        {% if topic.instructor %}
+        <div style="display: flex; align-items: center; gap: 8px; color: #cbd5e1; font-size: 16px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span><strong style="color: #38bdf8;">Instructor:</strong> {{ topic.instructor }}</span>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 
 <!-- Tab Navigation -->

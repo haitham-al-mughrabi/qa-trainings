@@ -2,26 +2,58 @@
 
 {% block content %}
 <style>
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .training-header {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 16px;
-        padding: 40px;
-        margin-bottom: 30px;
         position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
     }
 
     .training-header::before {
         content: '';
         position: absolute;
-        top: -50%;
+        top: -40%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .training-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
         right: -10%;
         width: 400px;
         height: 400px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
         border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
     }
 
     /* Tabbed Navigation */
@@ -179,21 +211,24 @@
 
     .topic-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 28px;
     }
 
     .topic-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 22px;
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 28px;
         text-decoration: none;
         color: inherit;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
         overflow: hidden;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .topic-card::before {
@@ -201,49 +236,52 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(180deg, var(--accent), #a855f7);
-        transform: scaleY(0);
-        transition: transform 0.3s ease;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
     }
 
     .topic-card::after {
         content: '';
         position: absolute;
-        top: 0;
-        right: 0;
-        width: 100px;
-        height: 100px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-        border-radius: 50%;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: all 0.4s ease;
     }
 
     .topic-card:hover {
-        border-color: rgba(99, 102, 241, 0.4);
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 41, 59, 0.8) 100%);
-        transform: translateY(-6px);
-        box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2), 0 0 0 1px rgba(99, 102, 241, 0.1);
+        border-color: rgba(56, 189, 248, 0.4);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.25);
     }
 
     .topic-card:hover::before {
-        transform: scaleY(1);
+        transform: scaleX(1);
     }
 
     .topic-card:hover::after {
         opacity: 1;
+        top: -30%;
+        right: -30%;
     }
 
     .topic-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0 0 14px 0;
-        color: var(--text);
-        line-height: 1.5;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+        color: #f9fafb;
+        line-height: 1.6;
         position: relative;
-        z-index: 1;
+        z-index: 2;
     }
 
     .topic-meta {
@@ -252,36 +290,39 @@
         gap: 10px;
         align-items: center;
         position: relative;
-        z-index: 1;
+        z-index: 2;
+        padding-top: 12px;
+        border-top: 1px solid rgba(56, 189, 248, 0.1);
     }
 
     .topic-badge {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 5px 12px;
-        background: rgba(148, 163, 184, 0.12);
-        border: 1px solid rgba(148, 163, 184, 0.25);
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.2);
         border-radius: 8px;
         font-size: 12px;
-        color: var(--muted);
-        transition: all 0.2s ease;
+        color: #38bdf8;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
 
     .topic-badge:hover {
-        background: rgba(148, 163, 184, 0.18);
-        border-color: rgba(148, 163, 184, 0.35);
+        background: rgba(56, 189, 248, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
     }
 
     .topic-badge.video {
-        background: rgba(99, 102, 241, 0.15);
-        border-color: rgba(99, 102, 241, 0.35);
-        color: var(--accent);
+        background: rgba(56, 189, 248, 0.1);
+        border-color: rgba(56, 189, 248, 0.2);
+        color: #38bdf8;
     }
 
     .topic-badge.video:hover {
-        background: rgba(99, 102, 241, 0.25);
-        border-color: rgba(99, 102, 241, 0.5);
+        background: rgba(56, 189, 248, 0.15);
+        border-color: rgba(56, 189, 248, 0.4);
     }
 
     .breadcrumb {
@@ -300,6 +341,36 @@
 
     .breadcrumb a:hover {
         text-decoration: underline;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .training-header {
+            padding: 60px 24px;
+            margin-bottom: 40px;
+        }
+
+        .training-header h1 {
+            font-size: 32px;
+        }
+
+        .topic-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .topic-card {
+            padding: 24px;
+        }
+
+        .phase-tabs {
+            margin: 0 -8px 30px;
+            padding: 0 8px;
+        }
+
+        .phase-header {
+            flex-wrap: wrap;
+        }
     }
 </style>
 
@@ -335,54 +406,60 @@
 
 <!-- Training Header -->
 <div class="training-header">
-    <h1 style="font-size: 36px; margin: 0 0 12px 0; position: relative; z-index: 1;">{{ training.name }}</h1>
-    {% if training.description %}
-    <p
-        style="color: var(--text-light); margin: 0; font-size: 16px; line-height: 1.6; max-width: 800px; position: relative; z-index: 1;">
-        {{ training.description }}
-    </p>
-    {% endif %}
-    <div style="margin-top: 20px; display: flex; gap: 15px; position: relative; z-index: 1;">
-        <div
-            style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
-            <strong style="color: var(--accent);">{{ phases|length }}</strong> <span
-                style="color: var(--muted);">Phases</span>
-        </div>
-        <div
-            style="padding: 8px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 13px;">
-            <strong style="color: var(--accent);">{{ phases.values()|map('length')|sum }}</strong> <span
-                style="color: var(--muted);">Topics</span>
+    <div style="position: relative; z-index: 2; animation: slide-in-up 0.6s ease-out;">
+        <h1 style="font-size: clamp(32px, 5vw, 48px); margin: 0 0 16px 0; background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800;">{{ training.name }}</h1>
+        {% if training.description %}
+        <p style="color: #cbd5e1; margin: 0 0 24px 0; font-size: 16px; line-height: 1.7; max-width: 800px;">
+            {{ training.description }}
+        </p>
+        {% endif %}
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div style="padding: 10px 18px; background: rgba(56, 189, 248, 0.1); border: 1.5px solid rgba(56, 189, 248, 0.2); border-radius: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">📚</span>
+                <div>
+                    <strong style="color: #38bdf8; display: block;">{{ phases|length }}</strong>
+                    <span style="color: #9ca3af; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phases</span>
+                </div>
+            </div>
+            <div style="padding: 10px 18px; background: rgba(56, 189, 248, 0.1); border: 1.5px solid rgba(56, 189, 248, 0.2); border-radius: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">🎯</span>
+                <div>
+                    <strong style="color: #38bdf8; display: block;">{{ phases.values()|map('length')|sum }}</strong>
+                    <span style="color: #9ca3af; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Topics</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Instructors Section -->
 {% if training.instructors %}
-<div style="margin-bottom: 30px;">
-    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: var(--text);">Instructors</h3>
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+<div style="margin-bottom: 60px;">
+    <h3 style="font-size: 28px; font-weight: 700; margin-bottom: 30px; background: linear-gradient(135deg, #38bdf8, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent;">Meet the Instructors</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px;">
         {% for instructor in training.instructors %}
         <a href="{{ url_for('instructor_profile', instructor_id=instructor.id) }}" style="
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            border-radius: 12px;
-            padding: 20px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border: 1.5px solid rgba(56, 189, 248, 0.15);
+            border-radius: 18px;
+            padding: 28px;
             text-decoration: none;
             color: inherit;
-            transition: all 0.3s ease;
-            display: block;
-        " onmouseover="this.style.borderColor='rgba(99, 102, 241, 0.4)'; this.style.transform='translateY(-4px)'"
-            onmouseout="this.style.borderColor='rgba(99, 102, 241, 0.15)'; this.style.transform='translateY(0)'">
-            <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--text);">{{ instructor.name
-                }}</div>
-            <div style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">{{ instructor.role or 'QA
-                Instructor' }}</div>
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        " onmouseover="this.style.borderColor='rgba(56, 189, 248, 0.4)'; this.style.backgroundColor='rgba(15, 23, 42, 0.85)'; this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 50px rgba(56, 189, 248, 0.25)'"
+            onmouseout="this.style.borderColor='rgba(56, 189, 248, 0.15)'; this.style.backgroundColor=''; this.style.transform='translateY(0)'; this.style.boxShadow=''">
+            <div style="font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #f9fafb;">{{ instructor.name }}</div>
+            <div style="font-size: 13px; color: #38bdf8; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">{{ instructor.role or 'QA Instructor' }}</div>
             {% if instructor.expertise %}
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 8px; border-top: 1px solid rgba(56, 189, 248, 0.1);">
                 {% for tag in instructor.expertise.split(',')[:3] %}
-                <span
-                    style="padding: 3px 8px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 6px; font-size: 11px; color: var(--text-light);">{{
-                    tag.strip() }}</span>
+                <span style="padding: 6px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; font-size: 12px; color: #38bdf8; font-weight: 600;">{{ tag.strip() }}</span>
                 {% endfor %}
             </div>
             {% endif %}
