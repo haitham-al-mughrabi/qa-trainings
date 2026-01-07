@@ -25,8 +25,8 @@
         background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
         border: 1px solid rgba(56, 189, 248, 0.2);
         border-radius: 24px;
-        padding: 80px 40px;
-        margin-bottom: 60px;
+        padding: 60px 40px;
+        margin-bottom: 40px;
         overflow: hidden;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
                     inset 0 1px 0 rgba(56, 189, 248, 0.1);
@@ -59,9 +59,9 @@
     }
 
     .admin-hero h1 {
-        font-size: clamp(40px, 5vw, 56px);
+        font-size: clamp(32px, 4vw, 44px);
         font-weight: 800;
-        margin: 0 0 20px 0;
+        margin: 0 0 12px 0;
         background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316);
         -webkit-background-clip: text;
         background-clip: text;
@@ -74,8 +74,8 @@
     .admin-hero p {
         color: #cbd5e1;
         margin: 0;
-        font-size: 18px;
-        max-width: 700px;
+        font-size: 16px;
+        max-width: 600px;
         margin: 0 auto;
         line-height: 1.6;
         animation: slide-in-up 0.7s ease-out 0.1s both;
@@ -88,7 +88,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 24px;
-        margin-bottom: 60px;
+        margin-bottom: 40px;
     }
 
     .stat-card {
@@ -146,6 +146,99 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         font-weight: 600;
+    }
+
+    /* ==================== TAB NAVIGATION ==================== */
+    .admin-tabs {
+        position: sticky;
+        top: 64px;
+        z-index: 40;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(15, 23, 42, 0.95) 100%);
+        backdrop-filter: blur(12px);
+        border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+        margin: 0 -16px 40px;
+        padding: 0 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .tabs-container {
+        display: flex;
+        gap: 0;
+        max-width: 1120px;
+        margin: 0 auto;
+    }
+
+    .admin-tab-btn {
+        padding: 18px 28px;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: #9ca3af;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .admin-tab-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+
+    .admin-tab-btn:hover {
+        color: #f9fafb;
+        background: rgba(56, 189, 248, 0.08);
+    }
+
+    .admin-tab-btn:hover::after {
+        width: 100%;
+    }
+
+    .admin-tab-btn.active {
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.15);
+    }
+
+    .admin-tab-btn.active::after {
+        width: 100%;
+    }
+
+    .tab-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* ==================== TAB CONTENT ==================== */
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* ==================== SECTION CARD ==================== */
@@ -430,12 +523,12 @@
     /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
         .admin-hero {
-            padding: 60px 24px;
-            margin-bottom: 40px;
+            padding: 40px 24px;
+            margin-bottom: 30px;
         }
 
         .admin-hero h1 {
-            font-size: 32px;
+            font-size: 28px;
         }
 
         .admin-hero p {
@@ -453,6 +546,20 @@
 
         .stat-number {
             font-size: 32px;
+        }
+
+        .admin-tabs {
+            padding: 0;
+            margin: 0 -16px 30px;
+        }
+
+        .tabs-container {
+            flex-wrap: wrap;
+        }
+
+        .admin-tab-btn {
+            padding: 14px 16px;
+            font-size: 13px;
         }
 
         .section-card {
@@ -507,180 +614,249 @@
     </div>
 </div>
 
-<!-- Trainings Section -->
-<div class="section-card">
-    <div class="section-header">
-        <h2 class="section-title">Trainings</h2>
-        <a href="{{ url_for('admin_add_training') }}" class="btn btn-primary">+ Add Training</a>
+<!-- Tab Navigation -->
+<nav class="admin-tabs">
+    <div class="tabs-container">
+        <button id="btn-trainings" class="admin-tab-btn active" onclick="showTab('trainings')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <span>Trainings</span>
+        </button>
+        <button id="btn-topics" class="admin-tab-btn" onclick="showTab('topics')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            <span>Topics</span>
+        </button>
+        <button id="btn-students" class="admin-tab-btn" onclick="showTab('students')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Students</span>
+        </button>
+        <button id="btn-instructors" class="admin-tab-btn" onclick="showTab('instructors')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Instructors</span>
+        </button>
+        <button id="btn-certificates" class="admin-tab-btn" onclick="showTab('certificates')">
+            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Certificates</span>
+        </button>
     </div>
-    
-    {% if trainings %}
-        <div class="items-grid">
-            {% for training in trainings %}
-            <div class="item-card">
-                <div class="item-info">
-                    <h3 class="item-title">{{ training.name }}</h3>
-                    <p class="item-meta">{{ training.topics|length }} topics</p>
-                </div>
-                <div class="item-actions">
-                    <a href="{{ url_for('admin_edit_training', training_id=training.id) }}" class="btn btn-edit">Edit</a>
-                    <form method="POST" action="{{ url_for('admin_delete_training', training_id=training.id) }}"
-                        style="display: inline;"
-                        onsubmit="return confirm('Are you sure you want to delete this training?');">
-                        <button type="submit" class="btn btn-delete">Delete</button>
-                    </form>
-                </div>
-            </div>
-            {% endfor %}
+</nav>
+
+<!-- Trainings Tab -->
+<div id="tab-trainings" class="tab-content active">
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Trainings</h2>
+            <a href="{{ url_for('admin_add_training') }}" class="btn btn-primary">+ Add Training</a>
         </div>
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-state-icon">📚</div>
-            <div class="empty-state-text">No trainings found</div>
-            <a href="{{ url_for('admin_add_training') }}" class="btn btn-primary">Add Your First Training</a>
-        </div>
-    {% endif %}
-</div>
 
-<!-- Topics Section -->
-<div class="section-card">
-    <div class="section-header">
-        <h2 class="section-title">Topics</h2>
-        <a href="{{ url_for('admin_add_topic') }}" class="btn btn-primary">+ Add Topic</a>
-    </div>
-
-    {% if trainings %}
-        {% for training in trainings %}
-        <div style="margin-bottom: 24px;">
-            <button class="training-header-btn" onclick="toggleTraining({{ training.id }})">
-                <div class="training-header-title">
-                    <span>{{ training.name }}</span>
-                    <span class="training-header-count">({{ training.topics|length }} topics)</span>
-                </div>
-                <svg id="training-icon-{{ training.id }}" class="training-collapse-icon" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-            <div id="training-topics-{{ training.id }}" class="training-topics-container">
-                {% set ns = namespace(phases={}) %}
-                {% for topic in training.topics %}
-                {% set phase_key = topic.phase or 'No Phase' %}
-                {% if phase_key not in ns.phases %}
-                {% set _ = ns.phases.update({phase_key: []}) %}
-                {% endif %}
-                {% set _ = ns.phases[phase_key].append(topic) %}
-                {% endfor %}
-
-                {% for phase_name in ns.phases.keys()|sort %}
-                <div style="margin-bottom: 20px;">
-                    <button class="phase-header-btn" onclick="togglePhase({{ training.id }}, '{{ loop.index }}')">
-                        <div class="phase-header-title">
-                            <span>{{ phase_name|regex_replace('^\d+\s*-\s*', '') if phase_name !=
-                                'No Phase' else phase_name }}</span>
-                            <span class="phase-header-count">({{ ns.phases[phase_name]|length }} topics)</span>
-                        </div>
-                        <svg id="phase-icon-{{ training.id }}-{{ loop.index }}" class="phase-collapse-icon"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
-                    <div id="phase-topics-{{ training.id }}-{{ loop.index }}" class="phase-topics-container">
-                        <div class="items-grid">
-                            {% for topic in ns.phases[phase_name]|sort(attribute='order') %}
-                            <div class="item-card">
-                                <div class="item-info">
-                                    <h3 class="item-title">{{ topic.name }}</h3>
-                                    <p class="item-meta">{% if topic.instructor %}{{ topic.instructor }}{% else %}No instructor{% endif %}</p>
-                                </div>
-                                <div class="item-actions">
-                                    <a href="{{ url_for('admin_edit_topic', topic_id=topic.id) }}"
-                                        class="btn btn-edit">Edit</a>
-                                    <form method="POST" action="{{ url_for('admin_delete_topic', topic_id=topic.id) }}"
-                                        style="display: inline;"
-                                        onsubmit="return confirm('Are you sure you want to delete this topic?');">
-                                        <button type="submit" class="btn btn-delete">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
+        {% if trainings %}
+            <div class="items-grid">
+                {% for training in trainings %}
+                <div class="item-card">
+                    <div class="item-info">
+                        <h3 class="item-title">{{ training.name }}</h3>
+                        <p class="item-meta">{{ training.topics|length }} topics</p>
+                    </div>
+                    <div class="item-actions">
+                        <a href="{{ url_for('admin_edit_training', training_id=training.id) }}" class="btn btn-edit">Edit</a>
+                        <form method="POST" action="{{ url_for('admin_delete_training', training_id=training.id) }}"
+                            style="display: inline;"
+                            onsubmit="return confirm('Are you sure you want to delete this training?');">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-        </div>
-        {% endfor %}
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-state-icon">📋</div>
-            <div class="empty-state-text">No trainings found. Add a training first to create topics.</div>
-            <a href="{{ url_for('admin_add_training') }}" class="btn btn-primary">Add Training</a>
-        </div>
-    {% endif %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📚</div>
+                <div class="empty-state-text">No trainings found</div>
+                <a href="{{ url_for('admin_add_training') }}" class="btn btn-primary">Add Your First Training</a>
+            </div>
+        {% endif %}
+    </div>
 </div>
 
-<!-- Students Section -->
-<div class="section-card">
-    <div class="section-header">
-        <h2 class="section-title">Students</h2>
-        <a href="{{ url_for('admin_add_student') }}" class="btn btn-primary">+ Add Student</a>
-    </div>
-    
-    {% if students %}
-        <div class="items-grid">
-            {% for student in students %}
-            <div class="item-card">
-                <div class="item-info">
-                    <h3 class="item-title"><a href="{{ url_for('student_profile', student_id=student.id) }}">{{ student.name }}</a></h3>
-                </div>
-                <div class="item-actions">
-                    <a href="{{ url_for('admin_edit_student', student_id=student.id) }}" class="btn btn-edit">Edit</a>
-                    <form method="POST" action="{{ url_for('admin_delete_student', student_id=student.id) }}"
-                        style="display: inline;"
-                        onsubmit="return confirm('Are you sure you want to delete this student?');">
-                        <button type="submit" class="btn btn-delete">Delete</button>
-                    </form>
+<!-- Topics Tab -->
+<div id="tab-topics" class="tab-content">
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Topics</h2>
+            <a href="{{ url_for('admin_add_topic') }}" class="btn btn-primary">+ Add Topic</a>
+        </div>
+
+        {% if trainings %}
+            {% for training in trainings %}
+            <div style="margin-bottom: 24px;">
+                <button class="training-header-btn" onclick="toggleTraining({{ training.id }})">
+                    <div class="training-header-title">
+                        <span>{{ training.name }}</span>
+                        <span class="training-header-count">({{ training.topics|length }} topics)</span>
+                    </div>
+                    <svg id="training-icon-{{ training.id }}" class="training-collapse-icon" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                <div id="training-topics-{{ training.id }}" class="training-topics-container">
+                    {% set ns = namespace(phases={}) %}
+                    {% for topic in training.topics %}
+                    {% set phase_key = topic.phase or 'No Phase' %}
+                    {% if phase_key not in ns.phases %}
+                    {% set _ = ns.phases.update({phase_key: []}) %}
+                    {% endif %}
+                    {% set _ = ns.phases[phase_key].append(topic) %}
+                    {% endfor %}
+
+                    {% for phase_name in ns.phases.keys()|sort %}
+                    <div style="margin-bottom: 20px;">
+                        <button class="phase-header-btn" onclick="togglePhase({{ training.id }}, '{{ loop.index }}')">
+                            <div class="phase-header-title">
+                                <span>{{ phase_name|regex_replace('^\d+\s*-\s*', '') if phase_name !=
+                                    'No Phase' else phase_name }}</span>
+                                <span class="phase-header-count">({{ ns.phases[phase_name]|length }} topics)</span>
+                            </div>
+                            <svg id="phase-icon-{{ training.id }}-{{ loop.index }}" class="phase-collapse-icon"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                        <div id="phase-topics-{{ training.id }}-{{ loop.index }}" class="phase-topics-container">
+                            <div class="items-grid">
+                                {% for topic in ns.phases[phase_name]|sort(attribute='order') %}
+                                <div class="item-card">
+                                    <div class="item-info">
+                                        <h3 class="item-title">{{ topic.name }}</h3>
+                                        <p class="item-meta">{% if topic.instructor %}{{ topic.instructor }}{% else %}No instructor{% endif %}</p>
+                                    </div>
+                                    <div class="item-actions">
+                                        <a href="{{ url_for('admin_edit_topic', topic_id=topic.id) }}"
+                                            class="btn btn-edit">Edit</a>
+                                        <form method="POST" action="{{ url_for('admin_delete_topic', topic_id=topic.id) }}"
+                                            style="display: inline;"
+                                            onsubmit="return confirm('Are you sure you want to delete this topic?');">
+                                            <button type="submit" class="btn btn-delete">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
             {% endfor %}
-        </div>
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-state-icon">👤</div>
-            <div class="empty-state-text">No students found</div>
-            <a href="{{ url_for('admin_add_student') }}" class="btn btn-primary">Add Your First Student</a>
-        </div>
-    {% endif %}
-</div>
-
-<!-- Instructors Section -->
-<div class="section-card">
-    <div class="section-header">
-        <h2 class="section-title">Instructors</h2>
-        <a href="{{ url_for('admin_add_instructor') }}" class="btn btn-primary">+ Add Instructor</a>
-    </div>
-    
-    <div style="text-align: center; padding: 60px 20px;">
-        <p style="color: #cbd5e1; margin-bottom: 20px;">Manage instructor profiles, expertise, and training assignments.</p>
-        <a href="{{ url_for('admin_instructors') }}" class="btn btn-primary">Go to Instructors Management</a>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <div class="empty-state-text">No trainings found. Add a training first to create topics.</div>
+                <a href="{{ url_for('admin_add_training') }}" class="btn btn-primary">Add Training</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 
-<!-- Certificates Section -->
-<div class="section-card">
-    <div class="section-header">
-        <h2 class="section-title">Certificates</h2>
-        <a href="{{ url_for('admin_certificates') }}" class="btn btn-primary">+ Manage Certificates</a>
+<!-- Students Tab -->
+<div id="tab-students" class="tab-content">
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Students</h2>
+            <a href="{{ url_for('admin_add_student') }}" class="btn btn-primary">+ Add Student</a>
+        </div>
+
+        {% if students %}
+            <div class="items-grid">
+                {% for student in students %}
+                <div class="item-card">
+                    <div class="item-info">
+                        <h3 class="item-title"><a href="{{ url_for('student_profile', student_id=student.id) }}">{{ student.name }}</a></h3>
+                    </div>
+                    <div class="item-actions">
+                        <a href="{{ url_for('admin_edit_student', student_id=student.id) }}" class="btn btn-edit">Edit</a>
+                        <form method="POST" action="{{ url_for('admin_delete_student', student_id=student.id) }}"
+                            style="display: inline;"
+                            onsubmit="return confirm('Are you sure you want to delete this student?');">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">👤</div>
+                <div class="empty-state-text">No students found</div>
+                <a href="{{ url_for('admin_add_student') }}" class="btn btn-primary">Add Your First Student</a>
+            </div>
+        {% endif %}
     </div>
-    
-    <div style="text-align: center; padding: 60px 20px;">
-        <p style="color: #cbd5e1; margin-bottom: 20px;">Issue and manage student certificates with custom designs.</p>
-        <a href="{{ url_for('admin_certificates') }}" class="btn btn-primary">Go to Certificate Management</a>
+</div>
+
+<!-- Instructors Tab -->
+<div id="tab-instructors" class="tab-content">
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Instructors</h2>
+            <a href="{{ url_for('admin_add_instructor') }}" class="btn btn-primary">+ Add Instructor</a>
+        </div>
+
+        <div style="text-align: center; padding: 60px 20px;">
+            <p style="color: #cbd5e1; margin-bottom: 20px;">Manage instructor profiles, expertise, and training assignments.</p>
+            <a href="{{ url_for('admin_instructors') }}" class="btn btn-primary">Go to Instructors Management</a>
+        </div>
+    </div>
+</div>
+
+<!-- Certificates Tab -->
+<div id="tab-certificates" class="tab-content">
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Certificates</h2>
+            <a href="{{ url_for('admin_certificates') }}" class="btn btn-primary">+ Manage Certificates</a>
+        </div>
+
+        <div style="text-align: center; padding: 60px 20px;">
+            <p style="color: #cbd5e1; margin-bottom: 20px;">Issue and manage student certificates with custom designs.</p>
+            <a href="{{ url_for('admin_certificates') }}" class="btn btn-primary">Go to Certificate Management</a>
+        </div>
     </div>
 </div>
 
 <script>
+    function showTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Remove active from all tabs
+        document.querySelectorAll('.admin-tab-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show selected tab
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.getElementById('btn-' + tabName).classList.add('active');
+    }
+
     function toggleTraining(trainingId) {
         const content = document.getElementById('training-topics-' + trainingId);
         const icon = document.getElementById('training-icon-' + trainingId);
@@ -715,8 +891,5 @@
         });
     });
 </script>
-
-</div>
-</div>
 
 {% endblock %}
