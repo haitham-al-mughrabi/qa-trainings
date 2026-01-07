@@ -177,12 +177,16 @@
             }
         }
 
-        /* Footer */
+        /* Enhanced Footer with Glass Effect */
         .main-footer {
-            background: var(--bg-alt);
-            border-top: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
             margin-top: 80px;
-            padding: 40px 0 20px;
+            padding: 60px 0 20px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2),
+                        inset 0 1px 0 rgba(56, 189, 248, 0.1);
         }
 
         .footer-container {
@@ -195,19 +199,33 @@
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 40px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .footer-section h3 {
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: var(--text);
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #38bdf8;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #38bdf8, #a855f7);
+            border-radius: 2px;
         }
 
         .footer-section p {
-            font-size: 13px;
-            color: var(--muted);
-            line-height: 1.6;
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin: 0 0 15px 0;
         }
 
         .footer-links {
@@ -217,26 +235,83 @@
         }
 
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .footer-links a {
-            color: var(--muted);
+            color: #cbd5e1;
             text-decoration: none;
-            font-size: 13px;
-            transition: color 0.2s;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .footer-links a:hover {
-            color: var(--accent);
+            color: #38bdf8;
+            transform: translateX(5px);
+        }
+
+        .footer-links a i {
+            font-size: 12px;
+            color: #a855f7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(135deg, #38bdf8, #a855f7);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
         }
 
         .footer-bottom {
-            border-top: 1px solid var(--border);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
             padding-top: 20px;
             text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-links a {
+            color: #94a3b8;
+            text-decoration: none;
             font-size: 12px;
-            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #38bdf8;
         }
 
         /* Page Container */
@@ -298,34 +373,47 @@
                 <div class="footer-section">
                     <h3>Trainings</h3>
                     <ul class="footer-links">
-                        <li><a href="{{ url_for('trainings') }}">All Trainings</a></li>
-                        <li><a href="{{ url_for('trainings') }}">Python</a></li>
-                        <li><a href="{{ url_for('trainings') }}">Robot Framework</a></li>
-                        <li><a href="{{ url_for('trainings') }}">Postman</a></li>
+                        <li><a href="{{ url_for('trainings') }}"><i class="fas fa-chevron-right"></i> All Trainings</a></li>
+                        <li><a href="{{ url_for('trainings') }}"><i class="fas fa-chevron-right"></i> Python</a></li>
+                        <li><a href="{{ url_for('trainings') }}"><i class="fas fa-chevron-right"></i> Robot Framework</a></li>
+                        <li><a href="{{ url_for('trainings') }}"><i class="fas fa-chevron-right"></i> Postman</a></li>
+                        <li><a href="{{ url_for('trainings') }}"><i class="fas fa-chevron-right"></i> Selenium</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="{{ url_for('attendance') }}">Attendance</a></li>
-                        <li><a href="{{ url_for('progress') }}">Progress</a></li>
-                        <li><a href="{{ url_for('knowledge_assessment') }}">Knowledge Assessment</a></li>
-                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('attendance') }}"><i class="fas fa-chevron-right"></i> Attendance</a></li>
+                        <li><a href="{{ url_for('progress') }}"><i class="fas fa-chevron-right"></i> Progress</a></li>
+                        <li><a href="{{ url_for('knowledge_assessment') }}"><i class="fas fa-chevron-right"></i> Knowledge Assessment</a></li>
+                        <li><a href="{{ url_for('index') }}"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Documentation</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Organization</h3>
-                    <p style="font-size: 13px; line-height: 1.8; margin: 0;">
-                        <strong style="color: var(--text);">Takamol Holding</strong><br>
+                    <p style="font-size: 14px; line-height: 1.8; margin: 0;">
+                        <strong style="color: #e2e8f0;">Takamol Holding</strong><br>
                         Integrated Solutions<br>
-                        Quality Assurance Unit
+                        Quality Assurance Unit<br>
+                        <i class="fas fa-map-marker-alt" style="color: #a855f7; margin-right: 8px; margin-top: 10px;"></i> 
+                        <span>Riyadh, Saudi Arabia</span><br>
+                        <i class="fas fa-envelope" style="color: #a855f7; margin-right: 8px; margin-top: 10px;"></i> 
+                        <span>info@takamol.com</span>
                     </p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p style="margin-bottom: 8px;">&copy; {{ now.year }} Takamol QA Trainings. All Rights Reserved.</p>
-                <p style="font-size: 11px; color: rgba(148, 163, 184, 0.6);">
-                    Developed by: <strong style="color: var(--accent);">Haitham Al Mughrabi</strong>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact Us</a>
+                </div>
+                <p style="margin: 0;">&copy; {{ now.year }} Takamol QA Trainings. All Rights Reserved.</p>
+                <p style="font-size: 11px; color: rgba(148, 163, 184, 0.8); margin: 0;">
+                    Developed by: <strong style="color: #38bdf8;">Haitham Al Mughrabi</strong>
                 </p>
             </div>
         </div>
