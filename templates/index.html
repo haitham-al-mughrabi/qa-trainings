@@ -12,6 +12,39 @@
         position: relative;
         overflow: hidden;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: float 6s ease-in-out infinite;
+        min-height: 600px;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    /* Floating particles background */
+    .particles-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 20px;
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(99, 102, 241, 0.15);
+        animation: floatParticle linear infinite;
+    }
+    
+    @keyframes floatParticle {
+        to {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
     }
 
     .home-hero::before {
@@ -1061,44 +1094,26 @@
     </div>
 </section>
 
-<!-- Featured Trainings -->
-<section id="tracks">
-    <div class="section-header">
-        <div class="header-badge">OUR PROGRAMS</div>
-        <h2 class="section-title">Featured Training Programs</h2>
-        <div class="header-line"></div>
-        <p class="section-subtitle">From manual testing fundamentals to advanced automation and performance testing</p>
-    </div>
+<div class="section-header">
+    <div class="header-badge">FEATURED TRAININGS</div>
+    <h2 class="section-title">Our Popular Programs</h2>
+    <div class="header-line"></div>
+    <p class="section-subtitle">Discover our most sought-after training programs designed to elevate your QA career</p>
+</div>
 
-    <div class="trainings-grid">
-        {% for training in trainings[:4] %}
-        <a href="{{ url_for('training_detail', training_id=training.id) }}" class="training-card">
-            <div class="training-label">Training Module</div>
-            <h3 class="training-title">{{ training.name }}</h3>
-            <p class="training-description">
-                {% if training.description %}
-                {{ training.description[:120] }}...
-                {% else %}
-                Comprehensive training program covering essential topics and hands-on practice.
-                {% endif %}
-            </p>
-            <div class="training-link">
-                View full curriculum
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-
-    {% if trainings|length > 4 %}
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="{{ url_for('trainings') }}" class="btn-ghost">View All {{ trainings|length }} Training Programs →</a>
-    </div>
-    {% endif %}
-</section>
+<div class="trainings-grid">
+    {% for training in trainings[:3] %}
+    <a href="{{ url_for('training', training_id=training.id) }}" class="training-card">
+        <div class="training-label">{{ training.category.name if training.category else 'General' }}</div>
+        <h3 class="training-title">{{ training.name }}</h3>
+        <p class="training-description">{{ training.description[:120] }}{% if training.description|length > 120 %}...{% endif %}</p>
+        <div class="training-link">
+            <span>Explore Training</span>
+            <i data-feather="arrow-right"></i>
+        </div>
+    </a>
+    {% endfor %}
+</div>
 
 <!-- Tabbed Content Navigation -->
 <nav class="content-tabs">
@@ -1338,15 +1353,221 @@
     </section>
 </div>
 
-<!-- Final CTA -->
-<section class="cta-section">
+<div class="cta-section">
     <h2 class="cta-title">Ready to Start Your QA Journey?</h2>
-    <p class="cta-subtitle">Join hundreds of successful QA professionals who transformed their careers with our training
-        programs</p>
-    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a href="{{ url_for('trainings') }}" class="btn-primary">Browse Training Programs</a>
-        <a href="{{ url_for('students_list') }}" class="btn-ghost">View Student Profiles</a>
-    </div>
-</section>
+    <p class="cta-subtitle">Join hundreds of successful students who have advanced their careers with our comprehensive training programs.</p>
+    <a href="{{ url_for('trainings') }}" class="cta-button">Enroll Now</a>
+</div>
 
-{% endblock %}
+    <!-- Testimonials Carousel -->
+    <div class="testimonials-section">
+        <div class="section-header">
+            <div class="header-badge">SUCCESS STORIES</div>
+            <h2 class="section-title">What Our Students Say</h2>
+            <div class="header-line"></div>
+            <p class="section-subtitle">Hear from our graduates who have transformed their careers with our training</p>
+        </div>
+        
+        <div class="testimonials-container">
+            <div class="testimonials-track">
+                <div class="testimonial">
+                    <p class="testimonial-content">"The QA training program at Takamol completely transformed my career. The hands-on approach and expert instructors helped me land my dream job in quality assurance."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>QA Automation Engineer at TechCorp</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-content">"The Python and Robot Framework courses were incredibly comprehensive. The real-world projects gave me the confidence to tackle complex automation challenges."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Rodriguez</h4>
+                            <p>Senior Test Engineer at QA Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-content">"I highly recommend Takamol's training programs. The curriculum is up-to-date with industry trends and the support team is always available to help."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">EP</div>
+                        <div class="author-info">
+                            <h4>Emma Patel</h4>
+                            <p>Quality Assurance Lead at Digital Innovations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonials-nav">
+                <button class="nav-btn active" data-index="0"></button>
+                <button class="nav-btn" data-index="1"></button>
+                <button class="nav-btn" data-index="2"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Features Section -->
+    <div class="interactive-section">
+        <div class="section-header">
+            <div class="header-badge">INTERACTIVE FEATURES</div>
+            <h2 class="section-title">Why Choose Us</h2>
+            <div class="header-line"></div>
+            <p class="section-subtitle">Experience the difference with our unique approach to QA training</p>
+        </div>
+        
+        <div class="interactive-grid">
+            <div class="interactive-card">
+                <i data-feather="code" style="width: 40px; height: 40px; color: var(--accent); margin-bottom: 15px;"></i>
+                <h3>Hands-On Learning</h3>
+                <p>Apply concepts immediately with practical exercises and real-world projects that prepare you for industry challenges.</p>
+            </div>
+            
+            <div class="interactive-card">
+                <i data-feather="users" style="width: 40px; height: 40px; color: var(--accent); margin-bottom: 15px;"></i>
+                <h3>Expert Instructors</h3>
+                <p>Learn from industry professionals with years of experience in QA automation and testing methodologies.</p>
+            </div>
+            
+            <div class="interactive-card">
+                <i data-feather="award" style="width: 40px; height: 40px; color: var(--accent); margin-bottom: 15px;"></i>
+                <h3>Certification Ready</h3>
+                <p>Our curriculum is aligned with industry certifications to validate your skills and advance your career.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Showcase Section -->
+    <div class="certificate-section">
+        <div class="section-header">
+            <div class="header-badge">CERTIFICATION</div>
+            <h2 class="section-title">Sample Certificate</h2>
+            <div class="header-line"></div>
+            <p class="section-subtitle">Showcase your achievements with our industry-recognized certificates</p>
+        </div>
+        
+        <div class="certificate-container">
+            <div class="certificate-wrapper">
+                <div class="certificate">
+                    <div class="certificate-ornament top-left"></div>
+                    <div class="certificate-ornament top-right"></div>
+                    <div class="certificate-ornament bottom-left"></div>
+                    <div class="certificate-ornament bottom-right"></div>
+                    
+                    <div class="certificate-header">
+                        <div class="certificate-logo">TAKAMOL HOLDING</div>
+                        <h2 class="certificate-title">CERTIFICATE OF ACHIEVEMENT</h2>
+                        <p class="certificate-subtitle">This is to certify that</p>
+                    </div>
+                    
+                    <div class="certificate-body">
+                        <div class="certificate-label">Name</div>
+                        <h3 class="certificate-name">[Student Name]</h3>
+                        
+                        <p class="certificate-text">Has successfully completed the requirements of the Quality Assurance Training Program with distinction and proficiency.</p>
+                        
+                        <div class="certificate-course">QA Automation with Python & Robot Framework</div>
+                        
+                        <p class="certificate-text">This certification demonstrates mastery of modern QA practices and automation techniques.</p>
+                    </div>
+                    
+                    <div class="certificate-footer">
+                        <div>
+                            <div class="certificate-label">Date</div>
+                            <p>January 2026</p>
+                        </div>
+                        
+                        <div>
+                            <div class="certificate-label">Signature</div>
+                            <p>Haitham Al Mughrabi</p>
+                            <p style="font-size: 12px; color: var(--muted); margin-top: 5px;">Lead Instructor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 20 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration
+                const duration = Math.random() * 10 + 5;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Testimonials carousel
+            const testimonialsTrack = document.querySelector('.testimonials-track');
+            const testimonials = document.querySelectorAll('.testimonial');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            let currentIndex = 0;
+            
+            function updateCarousel() {
+                testimonialsTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // Update active button
+                navButtons.forEach((btn, index) => {
+                    if (index === currentIndex) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+            
+            navButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+            
+            // Auto-rotate testimonials
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % testimonials.length;
+                updateCarousel();
+            }, 5000);
+            
+            // Initialize feather icons
+            feather.replace();
+            
+            // Add interactive card hover effects
+            const interactiveCards = document.querySelectorAll('.interactive-card');
+            interactiveCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    // Add a subtle glow effect
+                    card.style.boxShadow = `0 0 30px rgba(99, 102, 241, 0.3)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.boxShadow = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
