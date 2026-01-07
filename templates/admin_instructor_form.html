@@ -2,44 +2,150 @@
 
 {% block content %}
 <style>
-    .form-container {
-        max-width: 800px;
-        margin: 40px auto;
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes float-slow {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
     }
 
-    .form-header {
-        margin-bottom: 30px;
+    @keyframes slide-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ==================== HERO SECTION ==================== */
+    .form-hero {
+        position: relative;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 24px;
+        padding: 60px 40px;
+        margin-bottom: 40px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(56, 189, 248, 0.1);
+        text-align: center;
+    }
+
+    .form-hero::before {
+        content: '';
+        position: absolute;
+        top: -40%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 8s ease-in-out infinite;
+    }
+
+    .form-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        right: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: float-slow 10s ease-in-out infinite;
+    }
+
+    .form-hero h1 {
+        font-size: clamp(32px, 4vw, 44px);
+        font-weight: 800;
+        margin: 0 0 12px 0;
+        background: linear-gradient(135deg, #38bdf8, #a855f7, #f97316);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: slide-in-up 0.6s ease-out;
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-hero p {
+        color: #cbd5e1;
+        margin: 0;
+        font-size: 16px;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+        animation: slide-in-up 0.7s ease-out 0.1s both;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ==================== FORM CARD ==================== */
+    .form-card {
+        position: relative;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.5) 100%);
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 18px;
+        padding: 40px;
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: slide-in-up 0.7s ease-out 0.2s both;
+        overflow: hidden;
+    }
+
+    .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        border-radius: 18px 18px 0 0;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .form-card:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 50px rgba(56, 189, 248, 0.15);
+    }
+
+    .form-card:hover::before {
+        transform: scaleX(1);
     }
 
     .form-title {
-        font-size: 32px;
+        font-size: 24px;
         font-weight: 700;
-        margin-bottom: 8px;
-    }
-
-    .form-subtitle {
-        font-size: 14px;
-        color: var(--muted);
-    }
-
-    .form-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 14px;
-        padding: 32px;
-        margin-bottom: 30px;
+        margin-bottom: 32px;
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        position: relative;
+        z-index: 2;
     }
 
     .form-group {
         margin-bottom: 24px;
+        position: relative;
+        z-index: 2;
     }
 
     .form-label {
         display: block;
+        margin-bottom: 10px;
         font-size: 13px;
         font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--text);
+        color: #f9fafb;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -48,31 +154,39 @@
     .form-textarea {
         width: 100%;
         padding: 12px 16px;
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 8px;
-        color: var(--text);
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius: 12px;
+        color: #f9fafb;
         font-size: 14px;
-        font-family: inherit;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+        color: #9ca3af;
     }
 
     .form-input:focus,
     .form-textarea:focus {
         outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        border-color: rgba(56, 189, 248, 0.5);
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
     }
 
     .form-textarea {
+        min-height: 120px;
         resize: vertical;
-        min-height: 100px;
     }
 
     .form-help {
         font-size: 12px;
-        color: var(--muted);
+        color: #9ca3af;
         margin-top: 6px;
+        position: relative;
+        z-index: 2;
     }
 
     .section-title {
@@ -80,7 +194,9 @@
         font-weight: 600;
         margin: 30px 0 20px;
         padding-bottom: 10px;
-        border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+        position: relative;
+        z-index: 2;
     }
 
     .training-checkbox-group {
@@ -88,6 +204,8 @@
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 12px;
         margin-top: 16px;
+        position: relative;
+        z-index: 2;
     }
 
     .checkbox-item {
@@ -96,14 +214,14 @@
         gap: 10px;
         padding: 12px;
         background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 8px;
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 12px;
         transition: all 0.2s;
     }
 
     .checkbox-item:has(input:checked) {
-        background: rgba(99, 102, 241, 0.1);
-        border-color: rgba(99, 102, 241, 0.3);
+        background: rgba(56, 189, 248, 0.1);
+        border-color: rgba(56, 189, 248, 0.3);
     }
 
     .checkbox-item input[type="checkbox"] {
@@ -116,7 +234,7 @@
         flex: 1;
         font-size: 14px;
         cursor: pointer;
-        color: var(--text-light);
+        color: #f9fafb;
     }
 
     .radio-group {
@@ -124,6 +242,8 @@
         flex-direction: column;
         gap: 8px;
         margin-top: 12px;
+        position: relative;
+        z-index: 2;
     }
 
     .radio-item {
@@ -132,8 +252,8 @@
         gap: 10px;
         padding: 10px;
         background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(99, 102, 241, 0.15);
-        border-radius: 8px;
+        border: 1.5px solid rgba(56, 189, 248, 0.15);
+        border-radius: 12px;
     }
 
     .radio-item input[type="radio"] {
@@ -146,116 +266,140 @@
         flex: 1;
         font-size: 13px;
         cursor: pointer;
-        color: var(--text-light);
+        color: #f9fafb;
     }
 
     .form-actions {
         display: flex;
-        gap: 12px;
-        margin-top: 30px;
+        gap: 16px;
+        margin-top: 32px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+        .form-hero {
+            padding: 40px 24px;
+            margin-bottom: 30px;
+        }
+
+        .form-hero h1 {
+            font-size: 28px;
+        }
+
+        .form-card {
+            padding: 30px 24px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .training-checkbox-group {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
-<div class="form-container">
-    <div class="form-header">
-        <h1 class="form-title">{% if instructor %}Edit Instructor{% else %}Add New Instructor{% endif %}</h1>
-        <p class="form-subtitle">{% if instructor %}Update instructor information and training assignments{% else
-            %}Create a new instructor profile{% endif %}</p>
-    </div>
+<div class="form-hero">
+    <h1>{% if instructor %}Edit Instructor{% else %}Add New Instructor{% endif %}</h1>
+    <p>{% if instructor %}Update instructor information and training assignments{% else
+        %}Create a new instructor profile{% endif %}</p>
+</div>
 
-    <form method="POST"
-        action="{% if instructor %}{{ url_for('admin_edit_instructor', instructor_id=instructor.id) }}{% else %}{{ url_for('admin_add_instructor') }}{% endif %}">
-        <div class="form-card">
-            <div class="form-group">
-                <label class="form-label" for="name">Instructor Name *</label>
-                <input type="text" id="name" name="name" class="form-input"
-                    value="{{ instructor.name if instructor else '' }}" required>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="role">Role / Title</label>
-                <input type="text" id="role" name="role" class="form-input"
-                    value="{{ instructor.role if instructor else '' }}" placeholder="e.g., Senior QA Engineer">
-                <p class="form-help">Job title or professional role</p>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-input"
-                    value="{{ instructor.email if instructor else '' }}" placeholder="instructor@example.com">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="bio">Biography</label>
-                <textarea id="bio" name="bio"
-                    class="form-textarea">{{ instructor.bio if instructor else '' }}</textarea>
-                <p class="form-help">Brief professional background and experience</p>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="expertise">Expertise Tags</label>
-                <input type="text" id="expertise" name="expertise" class="form-input"
-                    value="{{ instructor.expertise if instructor else '' }}"
-                    placeholder="Python, Robot Framework, API Testing, Performance Testing">
-                <p class="form-help">Comma-separated list of skills and technologies</p>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="photo_url">Photo URL</label>
-                <input type="url" id="photo_url" name="photo_url" class="form-input"
-                    value="{{ instructor.photo_url if instructor else '' }}"
-                    placeholder="https://example.com/photo.jpg">
-                <p class="form-help">URL to instructor's profile photo</p>
-            </div>
+<form method="POST"
+    action="{% if instructor %}{{ url_for('admin_edit_instructor', instructor_id=instructor.id) }}{% else %}{{ url_for('admin_add_instructor') }}{% endif %}">
+    <div class="form-card">
+        <div class="form-group">
+            <label class="form-label" for="name">Instructor Name *</label>
+            <input type="text" id="name" name="name" class="form-input"
+                value="{{ instructor.name if instructor else '' }}" required>
         </div>
 
-        <div class="form-card">
-            <h3 class="section-title">Training Assignments</h3>
-            <p class="form-help" style="margin-bottom: 16px;">Select the training programs this instructor will teach
-            </p>
+        <div class="form-group">
+            <label class="form-label" for="role">Role / Title</label>
+            <input type="text" id="role" name="role" class="form-input"
+                value="{{ instructor.role if instructor else '' }}" placeholder="e.g., Senior QA Engineer">
+            <p class="form-help">Job title or professional role</p>
+        </div>
 
-            {% if trainings %}
-            <div class="training-checkbox-group">
+        <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-input"
+                value="{{ instructor.email if instructor else '' }}" placeholder="instructor@example.com">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="bio">Biography</label>
+            <textarea id="bio" name="bio"
+                class="form-textarea">{{ instructor.bio if instructor else '' }}</textarea>
+            <p class="form-help">Brief professional background and experience</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="expertise">Expertise Tags</label>
+            <input type="text" id="expertise" name="expertise" class="form-input"
+                value="{{ instructor.expertise if instructor else '' }}"
+                placeholder="Python, Robot Framework, API Testing, Performance Testing">
+            <p class="form-help">Comma-separated list of skills and technologies</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="photo_url">Photo URL</label>
+            <input type="url" id="photo_url" name="photo_url" class="form-input"
+                value="{{ instructor.photo_url if instructor else '' }}"
+                placeholder="https://example.com/photo.jpg">
+            <p class="form-help">URL to instructor's profile photo</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <h3 class="section-title">Training Assignments</h3>
+        <p class="form-help" style="margin-bottom: 16px;">Select the training programs this instructor will teach
+        </p>
+
+        {% if trainings %}
+        <div class="training-checkbox-group">
+            {% for training in trainings %}
+            <div class="checkbox-item">
+                <input type="checkbox" id="training_{{ training.id }}" name="training_ids" value="{{ training.id }}"
+                    {% if instructor and training.id in current_training_ids %}checked{% endif %}>
+                <label for="training_{{ training.id }}">{{ training.name }}</label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 30px;">
+            <label class="form-label">Primary Training (Optional)</label>
+            <p class="form-help" style="margin-bottom: 12px;">Select one training as the primary assignment for this
+                instructor</p>
+            <div class="radio-group">
+                <div class="radio-item">
+                    <input type="radio" id="primary_none" name="primary_training_id" value="" {% if not
+                        primary_training_id %}checked{% endif %}>
+                    <label for="primary_none">None</label>
+                </div>
                 {% for training in trainings %}
-                <div class="checkbox-item">
-                    <input type="checkbox" id="training_{{ training.id }}" name="training_ids" value="{{ training.id }}"
-                        {% if instructor and training.id in current_training_ids %}checked{% endif %}>
-                    <label for="training_{{ training.id }}">{{ training.name }}</label>
+                <div class="radio-item">
+                    <input type="radio" id="primary_{{ training.id }}" name="primary_training_id"
+                        value="{{ training.id }}" {% if primary_training_id==training.id %}checked{% endif %}>
+                    <label for="primary_{{ training.id }}">{{ training.name }}</label>
                 </div>
                 {% endfor %}
             </div>
-
-            <div style="margin-top: 30px;">
-                <label class="form-label">Primary Training (Optional)</label>
-                <p class="form-help" style="margin-bottom: 12px;">Select one training as the primary assignment for this
-                    instructor</p>
-                <div class="radio-group">
-                    <div class="radio-item">
-                        <input type="radio" id="primary_none" name="primary_training_id" value="" {% if not
-                            primary_training_id %}checked{% endif %}>
-                        <label for="primary_none">None</label>
-                    </div>
-                    {% for training in trainings %}
-                    <div class="radio-item">
-                        <input type="radio" id="primary_{{ training.id }}" name="primary_training_id"
-                            value="{{ training.id }}" {% if primary_training_id==training.id %}checked{% endif %}>
-                        <label for="primary_{{ training.id }}">{{ training.name }}</label>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% else %}
-            <p style="color: var(--muted); font-size: 14px;">No trainings available. Create trainings first to assign
-                them to instructors.</p>
-            {% endif %}
         </div>
+        {% else %}
+        <p style="color: #9ca3af; font-size: 14px;">No trainings available. Create trainings first to assign
+            them to instructors.</p>
+        {% endif %}
+    </div>
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">{% if instructor %}Update Instructor{% else %}Create
-                Instructor{% endif %}</button>
-            <a href="{{ url_for('admin_instructors') }}" class="btn btn-secondary">Cancel</a>
-        </div>
-    </form>
-</div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{% if instructor %}Update Instructor{% else %}Create
+            Instructor{% endif %}</button>
+        <a href="{{ url_for('admin_instructors') }}" class="btn btn-cancel">Cancel</a>
+    </div>
+</form>
 
 {% endblock %}
