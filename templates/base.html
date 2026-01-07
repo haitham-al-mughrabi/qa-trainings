@@ -7,27 +7,33 @@
     <title>Takamol QA Trainings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Premium Navigation Bar */
+        /* Premium Navigation Bar - Redesigned as glassy and centered */
         .main-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.85) 100%);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-                        inset 0 1px 0 rgba(56, 189, 248, 0.1);
+            position: fixed;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(56, 189, 248, 0.1);
+            border-radius: 50px;
+            padding: 12px 24px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            min-width: auto;
         }
 
         .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 76px;
+            width: 100%;
         }
 
         .nav-logo {
@@ -43,6 +49,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-right: 14px;
         }
 
         .nav-logo::before {
@@ -63,7 +70,7 @@
 
         .nav-links {
             display: flex;
-            gap: 6px;
+            gap: 14px;
             align-items: center;
             list-style: none;
         }
@@ -147,27 +154,26 @@
         }
 
         @media (max-width: 768px) {
-            .nav-container {
-                padding: 0 16px;
-                height: 68px;
-            }
-
             .nav-links {
-                gap: 3px;
+                flex-direction: column;
             }
 
             .nav-links a {
-                padding: 8px 10px;
-                font-size: 11px;
-                border-radius: 8px;
+                padding: 10px;
+                width: 100%;
+                justify-content: center;
             }
 
+            .main-nav {
+                flex-direction: column;
+                padding: 20px;
+                border-radius: 20px;
+                min-width: 250px;
+            }
+            
             .nav-logo {
-                font-size: 16px;
-            }
-
-            .nav-logo::before {
-                font-size: 20px;
+                margin-right: 0;
+                margin-bottom: 15px;
             }
         }
 
@@ -236,12 +242,18 @@
         /* Page Container */
         .page-container {
             min-height: calc(100vh - 68px);
+            padding-top: 60px; /* Add space for the centered nav */
         }
 
         .container {
             max-width: 1120px;
             margin: 0 auto;
             padding: 0 16px;
+        }
+        
+        /* Add spacing to the top of the page to account for fixed nav */
+        body {
+            padding-top: 60px;
         }
     </style>
 </head>
@@ -251,7 +263,7 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="{{ url_for('index') }}" class="nav-logo">
-                Takamol <span>QA Trainings</span>
+                Takamol <span>QA</span>
             </a>
             <div class="nav-links">
                 <a href="{{ url_for('trainings') }}">Trainings</a>
