@@ -33,6 +33,9 @@ def inject_now():
 def index():
     trainings = Training.query.all()
     instructors = Instructor.query.filter_by(is_active=True).limit(3).all()
+    
+    # Get students for the partners slider (latest 8 students)
+    students = Student.query.order_by(Student.id.desc()).limit(8).all()
 
     # Get real statistics from database
     total_students = Student.query.count()
@@ -47,6 +50,7 @@ def index():
     return render_template('index_new.html',
                          trainings=trainings,
                          instructors=instructors,
+                         students=students,
                          total_students=total_students,
                          total_trainings=total_trainings,
                          completion_rate=completion_rate,
